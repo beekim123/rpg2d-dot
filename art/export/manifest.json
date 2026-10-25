@@ -1,0 +1,509 @@
+{
+  "format": "astra.art/1",
+  "assets": [
+    {
+      "id": "char.finn",
+      "file": "char.finn.png",
+      "category": "character",
+      "kind": "pixel",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 24,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            1
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            6,
+            7
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            12,
+            13
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            14,
+            15,
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            18,
+            19
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            1
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "e0b3a32293387ca4d10892e1ae14fac79a7d7dc2993bc2bdc59d84042e86841c"
+    },
+    {
+      "id": "char.hob",
+      "file": "char.hob.png",
+      "category": "character",
+      "kind": "pixel",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 2,
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            1
+          ],
+          "fps": 2,
+          "loop": true
+        },
+        "idle_down": {
+          "frames": [
+            0,
+            1
+          ],
+          "fps": 2,
+          "loop": true
+        }
+      },
+      "hash": "1ee62597ec332b559e3a1617e3079d00462ca1298d47335222f87bfcf764b45c"
+    },
+    {
+      "id": "portrait.finn",
+      "file": "portrait.finn.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "e922e0c3e5d508f8438e279dde88f99cbba66811571d06d711583bbdee90c6cc"
+    },
+    {
+      "id": "portrait.hob",
+      "file": "portrait.hob.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "21292549e428eff1eb0ff590929c2251760e37c4d7d31cb713f6fcc3541e4b23"
+    },
+    {
+      "id": "prop.flower",
+      "file": "prop.flower.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "859be60ad898faeb415f2cbd3ea188142e8254b497719283b4e96a06d964bce6"
+    },
+    {
+      "id": "prop.hedge",
+      "file": "prop.hedge.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "a350ab7d3d66e30a9896a219691ccd450812a5787aa692fdfa60be2523cfe55a"
+    },
+    {
+      "id": "prop.house",
+      "file": "prop.house.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        80,
+        80
+      ],
+      "anchor": [
+        40,
+        80
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "fde1b3806f9b41d9baa5980e2cf282669891b60fccbcb864d60e634fb2703e09"
+    },
+    {
+      "id": "prop.lamp",
+      "file": "prop.lamp.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        32
+      ],
+      "anchor": [
+        8,
+        32
+      ],
+      "frames": 3,
+      "animations": {
+        "unlit": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "lit": {
+          "frames": [
+            1,
+            2
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "919c1a00b827c3501657a8ceee7c153f93070785d8dd256c28c10e0bf40734fe"
+    },
+    {
+      "id": "prop.shadow",
+      "file": "prop.shadow.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        8
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "292e0b3e828ae77368ff8fd0809d99f464a72d179cfe79c92921e6910c51a8a5"
+    },
+    {
+      "id": "prop.tree",
+      "file": "prop.tree.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        32,
+        48
+      ],
+      "anchor": [
+        16,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "e965a82e784d6cd60f2008755830352ce39d0c060d0b5997e40fc9850da1ab6c"
+    },
+    {
+      "id": "tile.bridge",
+      "file": "tile.bridge.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "c0f1e5542c91e063460bb7e4de83633cd6064d359e8e2af4b62e0ccf8905cd77"
+    },
+    {
+      "id": "tile.edge",
+      "file": "tile.edge.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 16,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "5a9e1823c4f5ab28d956432a612c889e6d4c3bc02e5b22aae4f8714b5b5c0d2f"
+    },
+    {
+      "id": "tile.grass",
+      "file": "tile.grass.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 4,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "6e7890e74fafbd2cab75f75fea246ec8e5e1dce187acbe70a247e1d6c457cf26"
+    },
+    {
+      "id": "tile.path",
+      "file": "tile.path.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 4,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "ca4d84f0b9d3fcbd8b7220d1823aaea07e53224431fc9604dc55bcdbcaf57c99"
+    },
+    {
+      "id": "tile.water",
+      "file": "tile.water.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 2,
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            1
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "966f278ba28543fe3cc50c991bd68f240fc6bcbb977577f5506e2f83fa41aac5"
+    },
+    {
+      "id": "ui.panel",
+      "file": "ui.panel.png",
+      "category": "ui",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "nineSlice": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "hash": "a0ba4fd96edaf013e64395ab85c6ba5bc9fad70abbe02c994ef427975245ab48"
+    }
+  ]
+}

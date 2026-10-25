@@ -1,0 +1,86 @@
+{
+  "format": "astra.art/1",
+  "id": "char.hob",
+  "kind": "pixel",
+  "category": "character",
+  "size": [
+    16,
+    24
+  ],
+  "anchor": [
+    8,
+    24
+  ],
+  "animations": {
+    "idle": {
+      "frames": [
+        0,
+        1
+      ],
+      "fps": 2,
+      "loop": true
+    },
+    "idle_down": {
+      "frames": [
+        0,
+        1
+      ],
+      "fps": 2,
+      "loop": true
+    }
+  },
+  "frames": [
+    [
+      "................",
+      ".....AAAAAA.....",
+      "....AhjjjihA....",
+      "...AhjjjjjihA...",
+      "...AjjjjjjjhA...",
+      "..AviAjjAivvA...",
+      "..AvvjihijvvA...",
+      "...AHHhiHHHA....",
+      "..AHHHAgHHHHA...",
+      "...AHHAAHHHA....",
+      "....AAAAAAA.....",
+      "....AddddA......",
+      "...ATddSTA......",
+      "..ASTTSTTSSA....",
+      "..ASTTSTTSiA....",
+      "..AhTTSTTShA....",
+      "..ASTTSTTSSA....",
+      "..ASTTSTTSSA....",
+      "..ASTTSTTSSA....",
+      "...ASSSSSSA.....",
+      "....AAAAAA......",
+      "....AI..IA......",
+      "...AAI..IAA.....",
+      "................"
+    ],
+    [
+      "................",
+      ".....AAAAAA.....",
+      "....AhjjjihA....",
+      "...AhjjjjjihA...",
+      "...AjjjjjjjhA...",
+      "..AviAjjAjvvA...",
+      "..AvvjihijvvA...",
+      "...AHHhiHHHA....",
+      "..AHHHAgHHHHA...",
+      "...AHHAAHHHA....",
+      "....AAAAAAA.....",
+      "....AddddA......",
+      "...ATddSTA......",
+      "..ASTTSTTSSA....",
+      "..ASTTSTTSiA....",
+      "..AhTTSTTShA....",
+      "..ASTTSTTSSA....",
+      "..ASTTSTTSSA....",
+      "..ASTTSTTSSA....",
+      "...ASSSSSSA.....",
+      "....AAAAAA......",
+      "....AI..IA......",
+      "...AAI..IAA.....",
+      "................"
+    ]
+  ]
+}

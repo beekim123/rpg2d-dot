@@ -1,0 +1,216 @@
+import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
+import { PixelCanvas, rgba } from '../art/lib/pixel.mjs';
+import { encodePNG, decodePNG } from '../art/lib/png.mjs';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const defaultOutput = path.join(root, 'art/export');
+const json = value => `${JSON.stringify(value, null, 2)}\n`;
+const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+
+export async function loadPalette() {
+  const definition = JSON.parse(await readFile(path.join(root, 'art/palette.json'), 'utf8'));
+  const colors = { '.': '#00000000' }, used = new Set();
+  if (definition.format !== 'astra.palette/1' || definition.colors.length > 64) throw new Error('invalid palette');
+  for (const color of definition.colors) {
+    if (color.char.length !== 1 || color.char === '.' || colors[color.char] || colors[color.name] || used.has(color.hex)) throw new Error('duplicate palette color');
+    if (rgba(color.hex)[3] !== 255) throw new Error('palette alpha must be opaque');
+    colors[color.char] = color.hex; colors[color.name] = color.hex; used.add(color.hex);
+  }
+  return { definition, colors };
+}
+
+export function validateMeta(meta) {
+  if (!/^[a-z][a-z0-9]*(\.[a-z0-9_]+)+$/.test(meta.id)) throw new Error(`invalid asset id ${meta.id}`);
+  if (!Array.isArray(meta.size) || meta.size.length !== 2 || meta.size.some(n => !Number.isInteger(n) || n < 1 || n > 480)) throw new Error(`${meta.id}: invalid frame size`);
+  if (!Number.isInteger(meta.frames) || meta.frames < 1 || meta.frames > 256) throw new Error(`${meta.id}: invalid frames`);
+  if (!Array.isArray(meta.anchor) || meta.anchor.length !== 2 || meta.anchor.some((n, i) => !Number.isInteger(n) || n < 0 || n > meta.size[i])) throw new Error(`${meta.id}: invalid anchor`);
+  if (!meta.animations || Object.keys(meta.animations).length === 0) throw new Error(`${meta.id}: missing animations`);
+  for (const [name, animation] of Object.entries(meta.animations)) {
+    if (!Array.isArray(animation.frames) || !animation.frames.length || animation.frames.some(n => !Number.isInteger(n) || n < 0 || n >= meta.frames)) throw new Error(`${meta.id}/${name}: invalid animation frame`);
+    if (!Number.isFinite(animation.fps) || animation.fps <= 0 || animation.fps > 60 || typeof animation.loop !== 'boolean') throw new Error(`${meta.id}/${name}: invalid animation timing`);
+  }
+  if (meta.nineSlice && (meta.nineSlice.length !== 4 || meta.nineSlice.some(n => !Number.isInteger(n) || n < 0) || meta.nineSlice[0] + meta.nineSlice[2] >= meta.size[0] || meta.nineSlice[1] + meta.nineSlice[3] >= meta.size[1])) throw new Error(`${meta.id}: invalid nineSlice`);
+}
+
+export function validatePixels(image, colors) {
+  if (image.data.length !== image.width * image.height * 4) throw new Error('invalid pixel size');
+  const allowed = new Set(Object.values(colors).map(rgba).filter(color => color[3] === 255).map(color => color.slice(0, 3).join(',')));
+  for (let i = 0; i < image.data.length; i += 4) {
+    const alpha = image.data[i + 3];
+    if (alpha !== 0 && alpha !== 255) throw new Error(`pixel ${i / 4}: alpha must be 0 or 255`);
+    if (alpha && !allowed.has([...image.data.subarray(i, i + 3)].join(','))) throw new Error(`pixel ${i / 4}: color outside palette`);
+    if (!alpha && image.data.subarray(i, i + 3).some(Boolean)) throw new Error(`pixel ${i / 4}: transparent pixel must be canonical zero`);
+  }
+}
+
+export function renderPixelSource(source, colors) {
+  const meta = { ...source, frames: source.frames.length };
+  validateMeta(meta);
+  const [width, height] = source.size, output = new PixelCanvas(width * meta.frames, height, colors);
+  source.frames.forEach((frame, index) => {
+    if (frame.length !== height || frame.some(row => row.length !== width)) throw new Error(`${source.id}: pixel frame width/height differs from size`);
+    frame.forEach((row, y) => [...row].forEach((color, x) => output.px(index * width + x, y, color)));
+  });
+  return output;
+}
+
+async function sources(directory) {
+  const files = [];
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const file = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...await sources(file));
+    else if (/\.(json|mjs)$/.test(entry.name)) files.push(file);
+  }
+  return files.sort();
+}
+
+export async function renderAll() {
+  const { definition, colors } = await loadPalette(), rendered = [], ids = new Set();
+  for (const file of await sources(path.join(root, 'art/source'))) {
+    let assets;
+    if (file.endsWith('.json')) {
+      const source = JSON.parse(await readFile(file, 'utf8'));
+      assets = [{ meta: { ...source, frames: source.frames.length }, image: renderPixelSource(source, colors) }];
+    } else {
+      const source = await import(pathToFileURL(file).href);
+      assets = source.assets.map(asset => {
+        validateMeta(asset.meta);
+        const [width, height] = asset.meta.size, image = new PixelCanvas(width * asset.meta.frames, height, colors);
+        for (let frame = 0; frame < asset.meta.frames; frame++) {
+          const canvas = new PixelCanvas(width, height, colors);
+          asset.draw(canvas, { frame, seed: 71025 + frame });
+          validatePixels(canvas, colors); image.stamp(canvas, frame * width, 0);
+        }
+        return { meta: asset.meta, image };
+      });
+    }
+    for (const asset of assets) {
+      validateMeta(asset.meta); validatePixels(asset.image, colors);
+      if (ids.has(asset.meta.id)) throw new Error(`duplicate id ${asset.meta.id}`);
+      ids.add(asset.meta.id);
+      const bytes = encodePNG(asset.image);
+      if (bytes.length >= 2_000_000) throw new Error(`${asset.meta.id}: PNG exceeds size budget`);
+      rendered.push({ ...asset, bytes });
+    }
+  }
+  rendered.sort((a, b) => a.meta.id.localeCompare(b.meta.id, 'en'));
+  return { rendered, colors, definition };
+}
+
+function manifestFor(rendered) {
+  return { format: 'astra.art/1', assets: rendered.map(({ meta, bytes }) => ({
+    id: meta.id, file: `${meta.id}.png`, category: meta.category ?? meta.id.split('.')[0], kind: meta.kind ?? 'procedural',
+    size: meta.size, anchor: meta.anchor, frames: meta.frames, animations: meta.animations,
+    ...(meta.nineSlice ? { nineSlice: meta.nineSlice } : {}), hash: hash(bytes),
+  })) };
+}
+
+export async function build({ outDir = defaultOutput } = {}) {
+  const { rendered } = await renderAll(), manifest = manifestFor(rendered);
+  await mkdir(outDir, { recursive: true });
+  for (const asset of rendered) await writeFile(path.join(outDir, `${asset.meta.id}.png`), asset.bytes);
+  await writeFile(path.join(outDir, 'manifest.json'), json(manifest));
+  return manifest;
+}
+
+export async function verify({ outDir = defaultOutput } = {}) {
+  const { rendered, colors } = await renderAll(), expected = manifestFor(rendered);
+  const manifest = JSON.parse(await readFile(path.join(outDir, 'manifest.json'), 'utf8'));
+  if (json(manifest) !== json(expected)) throw new Error('manifest mismatch with source metadata');
+  for (const asset of rendered) {
+    const bytes = await readFile(path.join(outDir, `${asset.meta.id}.png`));
+    const image = decodePNG(bytes); validatePixels(image, colors);
+    if (image.width !== asset.meta.size[0] * asset.meta.frames || image.height !== asset.meta.size[1]) throw new Error(`${asset.meta.id}: PNG dimension mismatch`);
+    if (!bytes.equals(asset.bytes)) throw new Error(`${asset.meta.id}: PNG mismatch with deterministic source`);
+  }
+  return { assets: rendered.length, frames: rendered.reduce((sum, asset) => sum + asset.meta.frames, 0) };
+}
+
+// A tiny original 3x5 audit-label alphabet; no platform fonts enter the PNG build.
+const glyphs = Object.fromEntries(Object.entries({
+  A:'010101111101101', B:'110101110101110', C:'011100100100011', D:'110101101101110',
+  E:'111100110100111', F:'111100110100100', G:'011100101101011', H:'101101111101101',
+  I:'111010010010111', J:'001001001101010', K:'101101110101101', L:'100100100100111',
+  M:'101111111101101', N:'101111111111101', O:'010101101101010', P:'110101110100100',
+  Q:'010101101111011', R:'110101110101101', S:'011100010001110', T:'111010010010010',
+  U:'101101101101111', V:'101101101101010', W:'101101111111101', X:'101101010101101',
+  Y:'101101010010010', Z:'111001010100111', 0:'111101101101111', 1:'010110010010111',
+  2:'110001010100111', 3:'110001010001110', 4:'101101111001001', 5:'111100110001110',
+  6:'011100111101111', 7:'111001010010010', 8:'111101111101111', 9:'111101111001110',
+  '.':'000000000000010', '-':'000000111000000', ' ':'000000000000000',
+}).map(([key, bits]) => [key, bits]));
+function label(g, text, x, y) {
+  [...text.toUpperCase()].forEach((letter, index) => {
+    const glyph = glyphs[letter] ?? glyphs[' '];
+    [...glyph].forEach((value, i) => { if (value === '1') g.px(x + index * 4 + i % 3, y + Math.floor(i / 3), 'inkWarm'); });
+  });
+}
+function paintFrame(canvas, asset, frame, x, y, silhouette = false) {
+  const [width, height] = asset.meta.size;
+  for (let py = 0; py < height; py++) for (let px = 0; px < width; px++) {
+    const source = (py * asset.image.width + frame * width + px) * 4;
+    if (!asset.image.data[source + 3]) continue;
+    if (silhouette) canvas.px(x + px, y + py, 'ink');
+    else canvas.data.set(asset.image.data.subarray(source, source + 4), ((y + py) * canvas.width + x + px) * 4);
+  }
+}
+function upscale(canvas, scale, colors) {
+  const large = new PixelCanvas(canvas.width * scale, canvas.height * scale, colors);
+  for (let y = 0; y < large.height; y++) for (let x = 0; x < large.width; x++) {
+    const source = (Math.floor(y / scale) * canvas.width + Math.floor(x / scale)) * 4;
+    large.data.set(canvas.data.subarray(source, source + 4), (y * large.width + x) * 4);
+  }
+  return large;
+}
+
+export async function sheet({ outDir = defaultOutput } = {}) {
+  const { rendered, colors, definition } = await renderAll();
+  const width = 480, rowHeight = 112, height = 24 + Math.ceil(rendered.length / 4) * rowHeight;
+  const canvas = new PixelCanvas(width, height, colors).fill('stone4');
+  definition.colors.forEach((color, i) => canvas.rect(8 + i * 9, 6, 8, 10, color.char));
+  const labels = [];
+  rendered.forEach((asset, index) => {
+    const cellX = (index % 4) * 120, cellY = 24 + Math.floor(index / 4) * rowHeight;
+    canvas.rect(cellX + 4, cellY + 4, 112, 104, 'stone3');
+    const [w, h] = asset.meta.size;
+    const shown = Math.min(asset.meta.frames, w <= 16 ? 4 : 1);
+    const offsetX = cellX + Math.floor((120 - shown * w) / 2), offsetY = cellY + 10;
+    for (let frame = 0; frame < shown; frame++) paintFrame(canvas, asset, frame, offsetX + frame * w, offsetY);
+    label(canvas, asset.meta.id, cellX + 9, cellY + 96);
+    label(canvas, `${w}X${h} - ${asset.meta.frames}F`, cellX + 9, cellY + 103);
+    labels.push({ id: asset.meta.id, cell: [cellX, cellY, 120, rowHeight], frames: asset.meta.frames });
+  });
+  const scale = 3, large = upscale(canvas, scale, colors);
+  await mkdir(path.join(outDir, 'sheets'), { recursive: true });
+  await writeFile(path.join(outDir, 'sheets/m0.png'), encodePNG(large));
+  await writeFile(path.join(outDir, 'sheets/m0.json'), json({ image: 'm0.png', scale, labels }));
+  const characters = new PixelCanvas(288, 200, colors).fill('stone4');
+  const finn = rendered.find(asset => asset.meta.id === 'char.finn');
+  ['down', 'up', 'left', 'right'].forEach((direction, index) => {
+    const y = index * 40;
+    label(characters, `FINN ${direction}`, 5, y + 3);
+    characters.rect(4, y + 11, 212, 27, 'leaf2').rect(220, y + 11, 64, 27, 'earth3');
+    for (let frame = 0; frame < 6; frame++) paintFrame(characters, finn, index * 6 + frame, 9 + frame * 34, y + 13);
+    paintFrame(characters, finn, index * 6, 230, y + 13, true);
+    paintFrame(characters, finn, index * 6 + 3, 258, y + 13, true);
+  });
+  const hob = rendered.find(asset => asset.meta.id === 'char.hob');
+  label(characters, 'HOB - IDLE AND SILHOUETTE', 5, 163);
+  characters.rect(4, 171, 212, 27, 'leaf2').rect(220, 171, 64, 27, 'earth3');
+  paintFrame(characters, hob, 0, 9, 173); paintFrame(characters, hob, 1, 43, 173);
+  paintFrame(characters, hob, 0, 230, 173, true);
+  await writeFile(path.join(outDir, 'sheets/m0-characters.png'), encodePNG(upscale(characters, 3, colors)));
+  return path.join(outDir, 'sheets/m0.png');
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const command = process.argv[2];
+  if (!['build', 'verify', 'sheet'].includes(command)) { console.error('Usage: node tools/art.mjs build|verify|sheet'); process.exitCode = 1; }
+  else {
+    try { const result = await ({ build, verify, sheet })[command](); console.log(`art ${command}:`, command === 'build' ? `${result.assets.length} assets` : result); }
+    catch (error) { console.error(error.message); process.exitCode = 1; }
+  }
+}

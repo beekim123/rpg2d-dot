@@ -9,11 +9,11 @@
 - [x] 选定技术栈，搭建项目脚手架（package.json、tsconfig、vite、目录结构），README 写运行方法（提交号见进度日志“工程与字体”）
 - [x] .gitignore（node_modules、dist、缓存、`.local/`）（提交号见进度日志“工程与字体”）
 - [x] CI：GitHub Actions 跑类型检查、测试、构建（提交号见进度日志“工程与字体”）
-- [ ] 调色板 `art/palette.json`（起步调色板见 art-direction.md 第 3 节）
-- [ ] PNG 编码器（可参考 ele-pushbox-arts 的 `tools/lib/png.mjs`，保留 MIT 署名）
-- [ ] 绘图工具库 v0：点、线、矩形、椭圆、填充、描边、镜像、换色、带种子的随机数
-- [ ] `tools/art.mjs build / verify / sheet`
-- [ ] 第一批测试素材：一个 16×24 人物（4 方向行走）、草地和土路图块、一个灯柱
+- [x] 调色板 `art/palette.json`（起步调色板见 art-direction.md 第 3 节）（见进度日志“原创美术管线 v0”）
+- [x] PNG 编码器（可参考 ele-pushbox-arts 的 `tools/lib/png.mjs`，保留 MIT 署名）（见进度日志“原创美术管线 v0”）
+- [x] 绘图工具库 v0：点、线、矩形、椭圆、填充、描边、镜像、换色、带种子的随机数（见进度日志“原创美术管线 v0”）
+- [x] `tools/art.mjs build / verify / sheet`（见进度日志“原创美术管线 v0”）
+- [x] 第一批测试素材：一个 16×24 人物（4 方向行走）、草地和土路图块、一个灯柱（见进度日志“原创美术管线 v0”）
 - [ ] 工作台 v0：素材库、动画预览
 - [x] 拷贝 Fusion Pixel 字体和许可证到 `third_party/fonts/`（提交号见进度日志“工程与字体”）
 - [ ] 游戏外壳：主循环、整数放大、输入抽象、场景栈

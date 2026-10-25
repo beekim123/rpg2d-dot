@@ -1,0 +1,166 @@
+{
+  "image": "m0.png",
+  "scale": 3,
+  "labels": [
+    {
+      "id": "char.finn",
+      "cell": [
+        0,
+        24,
+        120,
+        112
+      ],
+      "frames": 24
+    },
+    {
+      "id": "char.hob",
+      "cell": [
+        120,
+        24,
+        120,
+        112
+      ],
+      "frames": 2
+    },
+    {
+      "id": "portrait.finn",
+      "cell": [
+        240,
+        24,
+        120,
+        112
+      ],
+      "frames": 1
+    },
+    {
+      "id": "portrait.hob",
+      "cell": [
+        360,
+        24,
+        120,
+        112
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.flower",
+      "cell": [
+        0,
+        136,
+        120,
+        112
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.hedge",
+      "cell": [
+        120,
+        136,
+        120,
+        112
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.house",
+      "cell": [
+        240,
+        136,
+        120,
+        112
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.lamp",
+      "cell": [
+        360,
+        136,
+        120,
+        112
+      ],
+      "frames": 3
+    },
+    {
+      "id": "prop.shadow",
+      "cell": [
+        0,
+        248,
+        120,
+        112
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.tree",
+      "cell": [
+        120,
+        248,
+        120,
+        112
+      ],
+      "frames": 1
+    },
+    {
+      "id": "tile.bridge",
+      "cell": [
+        240,
+        248,
+        120,
+        112
+      ],
+      "frames": 1
+    },
+    {
+      "id": "tile.edge",
+      "cell": [
+        360,
+        248,
+        120,
+        112
+      ],
+      "frames": 16
+    },
+    {
+      "id": "tile.grass",
+      "cell": [
+        0,
+        360,
+        120,
+        112
+      ],
+      "frames": 4
+    },
+    {
+      "id": "tile.path",
+      "cell": [
+        120,
+        360,
+        120,
+        112
+      ],
+      "frames": 4
+    },
+    {
+      "id": "tile.water",
+      "cell": [
+        240,
+        360,
+        120,
+        112
+      ],
+      "frames": 2
+    },
+    {
+      "id": "ui.panel",
+      "cell": [
+        360,
+        360,
+        120,
+        112
+      ],
+      "frames": 1
+    }
+  ]
+}
