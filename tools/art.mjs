@@ -187,22 +187,61 @@ export async function sheet({ outDir = defaultOutput } = {}) {
   await mkdir(path.join(outDir, 'sheets'), { recursive: true });
   await writeFile(path.join(outDir, 'sheets/m0.png'), encodePNG(large));
   await writeFile(path.join(outDir, 'sheets/m0.json'), json({ image: 'm0.png', scale, labels }));
-  const characters = new PixelCanvas(288, 200, colors).fill('stone4');
+  const characters = new PixelCanvas(336, 200, colors).fill('stone4');
   const finn = rendered.find(asset => asset.meta.id === 'char.finn');
   ['down', 'up', 'left', 'right'].forEach((direction, index) => {
     const y = index * 40;
-    label(characters, `FINN ${direction}`, 5, y + 3);
-    characters.rect(4, y + 11, 212, 27, 'leaf2').rect(220, y + 11, 64, 27, 'earth3');
-    for (let frame = 0; frame < 6; frame++) paintFrame(characters, finn, index * 6 + frame, 9 + frame * 34, y + 13);
-    paintFrame(characters, finn, index * 6, 230, y + 13, true);
-    paintFrame(characters, finn, index * 6 + 3, 258, y + 13, true);
+    label(characters, `FINN ${direction} IDLE`, 5, y + 3);
+    label(characters, 'WALK', 125, y + 3); label(characters, 'SILHOUETTE', 251, y + 3);
+    characters.rect(4, y + 11, 230, 27, 'leaf2').rect(244, y + 11, 88, 27, 'earth3');
+    const idleFrames = [...new Set(finn.meta.animations[`idle_${direction}`].frames)];
+    idleFrames.forEach((frame, pose) => paintFrame(characters, finn, frame, 9 + pose * 24, y + 13));
+    finn.meta.animations[`walk_${direction}`].frames.forEach((frame, pose) => paintFrame(characters, finn, frame, 125 + pose * 24, y + 13));
+    paintFrame(characters, finn, idleFrames[0], 260, y + 13, true);
+    paintFrame(characters, finn, idleFrames[1], 300, y + 13, true);
   });
   const hob = rendered.find(asset => asset.meta.id === 'char.hob');
   label(characters, 'HOB - IDLE AND SILHOUETTE', 5, 163);
-  characters.rect(4, 171, 212, 27, 'leaf2').rect(220, 171, 64, 27, 'earth3');
-  paintFrame(characters, hob, 0, 9, 173); paintFrame(characters, hob, 1, 43, 173);
-  paintFrame(characters, hob, 0, 230, 173, true);
+  characters.rect(4, 171, 230, 27, 'leaf2').rect(244, 171, 88, 27, 'earth3');
+  [...new Set(hob.meta.animations.idle.frames)].forEach((frame, pose) => paintFrame(characters, hob, frame, 9 + pose * 24, 173));
+  paintFrame(characters, hob, 0, 260, 173, true); paintFrame(characters, hob, 1, 300, 173, true);
   await writeFile(path.join(outDir, 'sheets/m0-characters.png'), encodePNG(upscale(characters, 3, colors)));
+  const wind = new PixelCanvas(288, 216, colors).fill('stone4');
+  for (const [id, y, rowHeight] of [['prop.tree', 0, 72], ['prop.hedge', 72, 40], ['prop.flower', 112, 40], ['prop.lamp', 152, 56]]) {
+    const asset = rendered.find(item => item.meta.id === id);
+    label(wind, `${id} - ALL POSES`, 5, y + 3);
+    wind.rect(4, y + 12, 280, rowHeight - 14, 'leaf2');
+    for (let frame = 0; frame < asset.meta.frames; frame++) paintFrame(wind, asset, frame, 14 + frame * 68, y + rowHeight - asset.meta.size[1] - 3);
+  }
+  await writeFile(path.join(outDir, 'sheets/idle-environment.png'), encodePNG(upscale(wind, 3, colors)));
+  // Same native-pixel garden at four times, with deterministic per-object phase offsets.
+  const composite = new PixelCanvas(480, 272, colors).fill('stone4');
+  const byId = Object.fromEntries(rendered.map(asset => [asset.meta.id, asset]));
+  const sampleTimes = [0, 0.75, 1.5, 2.75];
+  sampleTimes.forEach((time, sample) => {
+    const garden = new PixelCanvas(240, 128, colors);
+    for (let y = 0; y < 8; y++) for (let x = 0; x < 15; x++) {
+      const coordinate = (x * 17 + y * 31) % 10;
+      paintFrame(garden, byId['tile.grass'], coordinate < 7 ? 0 : coordinate - 6, x * 16, y * 16);
+      if (y === 7 || (x > 8 && y === 6)) paintFrame(garden, byId['tile.path'], (x + y) % 4, x * 16, y * 16);
+    }
+    const place = (id, x, y, animation = 'idle') => {
+      const asset = byId[id], clip = asset.meta.animations[animation];
+      const phase = (x * 7 + y * 11) % clip.frames.length;
+      const frame = clip.frames[(Math.floor(time * clip.fps) + phase) % clip.frames.length];
+      paintFrame(garden, asset, frame, x - asset.meta.anchor[0], y - asset.meta.anchor[1]);
+    };
+    for (let x = 8; x < 240; x += 16) place('prop.hedge', x, 16);
+    place('prop.tree', 24, 83); place('prop.tree', 64, 74); place('prop.house', 192, 96);
+    place('prop.flower', 80, 96); place('prop.flower', 56, 117); place('prop.flower', 144, 76);
+    place('prop.lamp', 128, 112, 'lit');
+    place('prop.shadow', 101, 114); place('char.finn', 101, 114, 'idle_down');
+    place('prop.shadow', 150, 116); place('char.hob', 150, 116);
+    const x = sample % 2 * 240, y = Math.floor(sample / 2) * 136;
+    label(composite, `IDLE GARDEN T ${String(time).replace('.', '-')} SEC`, x + 4, y + 1);
+    composite.stamp(garden, x, y + 8);
+  });
+  await writeFile(path.join(outDir, 'sheets/idle-garden.png'), encodePNG(upscale(composite, 3, colors)));
   return path.join(outDir, 'sheets/m0.png');
 }
 

@@ -11,7 +11,7 @@
 
 ## 当前状态
 
-**M0 地基已可玩**：标题、灯谷测试地图、四向移动、对话、点灯、三手动存档位与自动存档、文件导入导出、调试菜单、原创合成声音和美术工作台。当前是制作基础，尚未包含战斗或正式序章。
+**M0 地基已可玩**：标题、灯谷测试地图、四向移动、对话、点灯、三手动存档位与自动存档、文件导入导出、调试菜单、原创合成声音和美术工作台。人物有呼吸/眨眼/围巾轻摆，树木、花和灌木随风轻摆，灯火跳动。当前是制作基础，尚未包含战斗或正式序章。
 
 设计文档见 [`docs/`](docs/README.md)，规则见 [`AGENTS.md`](AGENTS.md)，进度与下一步见 [`docs/plan/progress.md`](docs/plan/progress.md)、[`docs/v2/status.md`](docs/v2/status.md)。
 
@@ -50,3 +50,5 @@ npm run test:e2e
 截图在 [`docs/plan/screenshots/`](docs/plan/screenshots/)，美术表在 [`art/export/sheets/`](art/export/sheets/)。当前声音只完成技术检验，正式乐曲和主观听审属于后续制作。
 
 GitHub Actions 检查代码并保留静态构建产物；在线 Pages 尚未开启，不将仓库地址当成已上线试玩地址。
+
+场景待机动态预览见 [`scene-idle.gif`](docs/plan/screenshots/scene-idle.gif)。重录预览：`ASTRA_CAPTURE_IDLE=1 npm run test:e2e`，再用可选的Pillow运行 `python3 tools/idle-preview.py`；这只处理本项目实景QA帧，不引入外部素材。

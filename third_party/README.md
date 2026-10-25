@@ -9,6 +9,7 @@
 | Vitest | 逻辑单元测试 | MIT |
 | Playwright | 浏览器操作和截图测试 | Apache-2.0 |
 | @types/node | Node 类型 | MIT |
+| Pillow（可选开发工具） | 将本项目浏览器QA帧导出GIF预览，不进入游戏运行时 | HPND |
 | Fusion Pixel 12px proportional zh-Hans | 中文像素字体 | OFL-1.1；完整许可证在 `fonts/fusion-pixel-12px/` |
 
 字体来自作者本机 ele-pushbox 工程中合法保留的 Fusion Pixel 字体包；上游 https://github.com/TakWolf/fusion-pixel-font 。仅复制字体及其许可证与说明，没有使用该工程任何角色、美术或声音素材。包内保留 Ark Pixel、Cubic 11 等组成字库的许可证。

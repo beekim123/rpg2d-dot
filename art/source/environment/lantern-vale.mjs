@@ -2,6 +2,7 @@
 import { seededRandom } from '../../lib/pixel.mjs';
 
 const idle = { idle: { frames: [0], fps: 4, loop: true } };
+const windIdle = { idle: { frames: [0, 0, 1, 1, 2, 2, 0, 0, 3, 3, 0, 0], fps: 3, loop: true } };
 function asset(id, size, frames, draw, animations = idle, extras = {}) {
   return { meta: { id, size, anchor: [size[0] / 2, size[1]], frames, animations, kind: 'procedural', ...extras }, draw };
 }
@@ -57,36 +58,45 @@ function lamp(g, { frame }) {
   g.rect(7, 11, 3, 17, 'ink').rect(8, 11, 1, 16, 'earth2');
   g.rect(3, 3, 10, 10, 'ink').rect(4, 4, 8, 8, 'earth0');
   g.rect(5, 5, 6, 6, frame ? 'gold2' : 'water0');
-  if (frame) g.rect(6, 5, 3, 4, 'gold3').px(6, 5, 'gold4').px(9, frame === 2 ? 6 : 8, 'gold4');
+  if (frame) {
+    g.rect(6, 5, 3, 4, 'gold3').px(6, 5, 'gold4').px(9, frame === 2 ? 6 : 8, 'gold4');
+    if (frame === 3) g.px(8, 6, 'gold4').px(6, 8, 'gold2');
+  }
   else g.line(5, 5, 5, 8, 'water1').px(6, 5, 'metal1');
   g.line(7, 4, 7, 11, 'earth0').line(4, 9, 11, 9, 'earth0');
   g.polygon([[2, 4], [5, 1], [10, 1], [13, 4]], 'ink');
   g.line(4, 3, 11, 3, 'earth2').line(5, 2, 9, 2, 'gold2');
   g.rect(4, 12, 8, 2, 'ink').line(5, 12, 10, 12, 'earth2').px(7, 0, 'ink');
 }
-function tree(g) {
+function tree(g, { frame }) {
   g.ellipse(3, 40, 27, 7, 'leaf1');
   g.polygon([[13, 22], [20, 22], [21, 42], [25, 45], [10, 45], [13, 40]], 'ink');
   g.polygon([[14, 25], [19, 25], [19, 42], [22, 44], [12, 44], [15, 39]], 'earth0');
   g.line(15, 30, 15, 40, 'earth2').line(16, 39, 14, 43, 'earth1');
   g.line(18, 34, 18, 43, 'inkWarm');
   g.line(15, 32, 9, 25, 'earth0').line(19, 34, 25, 27, 'earth0');
-  for (const [x, y, w, h] of [[2, 15, 18, 18], [13, 15, 18, 18], [1, 6, 20, 21], [12, 5, 19, 21], [7, 1, 20, 22]]) {
+  const sway = [0, 1, 0, -1][frame];
+  const crown = [[3, 15, 17, 18], [12, 15, 18, 18], [2, 6, 19, 21], [11, 5, 19, 21], [7, 2, 19, 21]];
+  for (const [index, leaf] of crown.entries()) {
+    const [baseX, y, w, h] = leaf;
+    const x = baseX + (index < 2 && frame === 2 ? 1 : sway);
     g.ellipse(x, y, w, h, 'ink');
     g.ellipse(x + 1, y + 1, w - 2, h - 2, 'leaf1');
     g.ellipse(x + 1, y + 1, w - 4, h - 5, 'leaf2');
     g.ellipse(x + 2, y + 2, w - 7, h - 9, 'leaf3');
   }
-  for (const [x, y] of [[10, 5], [17, 5], [5, 11], [22, 11], [4, 21], [17, 23]]) g.line(x, y, x + 2, y, 'leaf4');
-  g.line(10, 29, 13, 29, 'leaf0').line(22, 27, 25, 27, 'leaf0');
+  for (const [x, y] of [[10, 5], [17, 5], [5, 11], [22, 11], [4, 21], [17, 23]]) g.line(x + sway, y, x + 2 + sway, y, 'leaf4');
+  g.line(10 + sway, 29, 13 + sway, 29, 'leaf0').line(22 + sway, 27, 25 + sway, 27, 'leaf0');
 }
-function hedge(g) {
+function hedge(g, { frame }) {
   // A low, uneven hedge fits one map cell; no tall overlapping tree crowns.
   g.ellipse(0, 12, 16, 4, 'leaf1');
-  g.polygon([[0, 7], [1, 7], [1, 5], [3, 5], [3, 3], [6, 3], [6, 4], [8, 4], [8, 2], [11, 2], [11, 4], [14, 4], [14, 6], [15, 6], [15, 13], [13, 14], [2, 14], [0, 12]], 'ink');
-  g.polygon([[1, 8], [2, 6], [4, 6], [4, 4], [5, 4], [7, 6], [9, 5], [9, 3], [10, 3], [12, 5], [13, 5], [14, 7], [14, 12], [12, 13], [2, 13], [1, 11]], 'leaf0');
-  g.ellipse(2, 5, 6, 6, 'leaf1').ellipse(7, 4, 6, 7, 'leaf1').ellipse(10, 7, 5, 5, 'leaf1');
-  g.line(4, 5, 5, 5, 'leaf2').line(9, 4, 10, 4, 'leaf2').line(12, 7, 13, 7, 'leaf2');
+  const sway = [0, 1, 0, -1][frame];
+  const leftTop = frame === 2 ? 1 : 0;
+  g.polygon([[0, 7], [1, 7], [1, 5], [3 + leftTop, 5], [3 + leftTop, 3], [6 + leftTop, 3], [6 + leftTop, 4], [8 + sway, 4], [8 + sway, 2], [11 + sway, 2], [11 + sway, 4], [14, 4], [14, 6], [15, 6], [15, 13], [13, 14], [2, 14], [0, 12]], 'ink');
+  g.polygon([[1, 8], [2, 6], [4 + leftTop, 6], [4 + leftTop, 4], [5 + leftTop, 4], [7, 6], [9 + sway, 5], [9 + sway, 3], [10 + sway, 3], [12, 5], [13, 5], [14, 7], [14, 12], [12, 13], [2, 13], [1, 11]], 'leaf0');
+  g.ellipse(2 + leftTop, 5, 6, 6, 'leaf1').ellipse(7 + sway, 4, 6, 7, 'leaf1').ellipse(10, 7, 5, 5, 'leaf1');
+  g.line(4 + leftTop, 5, 5 + leftTop, 5, 'leaf2').line(9 + sway, 4, 10 + sway, 4, 'leaf2').line(12, 7, 13, 7, 'leaf2');
   g.line(3, 11, 5, 12, 'leaf0').line(8, 10, 8, 12, 'leaf0').px(12, 12, 'leaf0');
 }
 function house(g) {
@@ -132,11 +142,12 @@ function house(g) {
   }
   g.rect(20, 63, 8, 3, 'leaf1').px(21, 62, 'red3').px(25, 62, 'gold3');
 }
-function flower(g) {
-  g.ellipse(3, 12, 11, 3, 'leaf1').line(8, 5, 8, 13, 'leaf0');
-  g.line(8, 11, 5, 8, 'leaf2').px(5, 9, 'leaf3').line(8, 12, 12, 9, 'leaf2');
-  for (const [x, y] of [[6, 3], [9, 3], [5, 6], [10, 6], [7, 8]]) g.rect(x, y, 2, 2, 'stone4');
-  g.rect(7, 5, 3, 3, 'gold2').px(7, 5, 'gold4');
+function flower(g, { frame }) {
+  const sway = [0, 1, 0, -1][frame], dip = frame === 2 ? 1 : 0;
+  g.ellipse(3, 12, 11, 3, 'leaf1').line(8, 9, 8, 13, 'leaf0').line(8 + sway, 5 + dip, 8, 10, 'leaf0');
+  g.line(8, 11, 5 + sway, 8, 'leaf2').px(5 + sway, 9, 'leaf3').line(8, 12, 12, 9, 'leaf2');
+  for (const [x, y] of [[6, 3], [9, 3], [5, 6], [10, 6], [7, 8]]) g.rect(x + sway, y + dip, 2, 2, 'stone4');
+  g.rect(7 + sway, 5 + dip, 3, 3, 'gold2').px(7 + sway, 5 + dip, 'gold4');
 }
 function panel(g) {
   g.rect(1, 0, 14, 16, 'ink').rect(0, 1, 16, 14, 'ink');
@@ -154,11 +165,11 @@ export const assets = [
   asset('tile.water', [16, 16], 2, water, { idle: { frames: [0, 1], fps: 4, loop: true } }),
   asset('tile.bridge', [16, 16], 1, bridge),
   asset('tile.edge', [16, 16], 16, edge),
-  asset('prop.lamp', [16, 32], 3, lamp, { unlit: { frames: [0], fps: 4, loop: true }, lit: { frames: [1, 2], fps: 4, loop: true }, idle: { frames: [0], fps: 4, loop: true } }),
-  asset('prop.tree', [32, 48], 1, tree),
-  asset('prop.hedge', [16, 16], 1, hedge),
+  asset('prop.lamp', [16, 32], 4, lamp, { unlit: { frames: [0], fps: 4, loop: true }, lit: { frames: [1, 1, 2, 1, 3, 1], fps: 4, loop: true }, idle: { frames: [0], fps: 4, loop: true } }),
+  asset('prop.tree', [32, 48], 4, tree, windIdle),
+  asset('prop.hedge', [16, 16], 4, hedge, windIdle),
   asset('prop.house', [80, 80], 1, house),
-  asset('prop.flower', [16, 16], 1, flower),
+  asset('prop.flower', [16, 16], 4, flower, windIdle),
   asset('prop.shadow', [16, 8], 1, g => g.ellipse(1, 3, 14, 5, 'leaf1')),
   asset('ui.panel', [16, 16], 1, panel, idle, { nineSlice: [4, 4, 4, 4] }),
 ];

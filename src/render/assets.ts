@@ -1,4 +1,5 @@
-export interface Animation { frames: number[]; fps: number; loop: boolean }
+import {frameAt,type Animation} from './animation.ts';
+export type {Animation} from './animation.ts';
 export interface Asset { id: string; file: string; size: [number, number]; anchor: [number, number]; frames: number; animations: Record<string, Animation>; hash: string; category?: string; nineSlice?: number[] }
 export interface Manifest { format: string; assets: Asset[] }
 export class Assets {
@@ -21,11 +22,8 @@ export class Assets {
     const [w, h] = a.size; const [ax, ay] = anchored ? a.anchor : [0, 0];
     ctx.drawImage(img, (frame % a.frames) * w, 0, w, h, Math.round(x - ax!), Math.round(y - ay!), w, h);
   }
-  frame(id: string, animation: string, tick: number): number {
-    const a = this.definitions.get(id)?.animations[animation];
-    if (!a) return 0;
-    const index = Math.floor(tick * a.fps / 60);
-    return a.frames[a.loop ? index % a.frames.length : Math.min(index, a.frames.length - 1)] ?? 0;
+  frame(id:string,animation:string,tick:number,phase=0):number {
+    return frameAt(this.definitions.get(id)?.animations[animation],tick,phase);
   }
   panel(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number): void {
     const asset = this.definitions.get('ui.panel')!; const image = this.images.get('ui.panel')!;

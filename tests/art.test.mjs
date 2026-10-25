@@ -119,3 +119,76 @@ test('grass transition masks are transparent at zero and cover only selected edg
   assert.equal(alphaAt(2, 15, 8), 255); assert.equal(alphaAt(2, 0, 8), 0);
   assert.equal(alphaAt(4, 8, 15), 255); assert.equal(alphaAt(8, 0, 8), 255);
 });
+
+function framePixels(asset, frame, region = [0, 0, ...asset.meta.size]) {
+  const [x, y, width, height] = region, bytes = [];
+  for (let py = y; py < y + height; py++) for (let px = x; px < x + width; px++) {
+    const offset = (py * asset.image.width + frame * asset.meta.size[0] + px) * 4;
+    bytes.push(...asset.image.data.subarray(offset, offset + 4));
+  }
+  return bytes;
+}
+
+test('characters and foliage have visible held idle poses with fixed feet and roots', async () => {
+  const { rendered } = await art.renderAll();
+  for (const id of ['char.finn', 'char.hob', 'prop.tree', 'prop.flower', 'prop.hedge']) {
+    const asset = rendered.find(asset => asset.meta.id === id);
+    const idleNames = id === 'char.finn' ? ['idle_down', 'idle_up', 'idle_left', 'idle_right'] : ['idle'];
+    for (const name of idleNames) {
+      const animation = asset.meta.animations[name];
+      const poses = [...new Set(animation.frames)];
+      const uniqueImages = new Set(poses.map(frame => framePixels(asset, frame).join(',')));
+      assert.ok(uniqueImages.size >= 2, `${id}/${name} must actually move`);
+      assert.ok(animation.fps >= 2 && animation.fps <= 4, `${id}/${name} has a calm idle cadence`);
+      assert.equal(animation.loop, true);
+      assert.ok(animation.frames.length / animation.fps >= 2, `${id}/${name} holds its poses`);
+      assert.equal(animation.frames[0], animation.frames.at(-1), `${id}/${name} returns to its rest pose`);
+      const fixedRegion = id === 'prop.tree' ? [0, 34, 32, 14] : id === 'prop.flower' ? [0, 12, 16, 4] : id === 'prop.hedge' ? [0, 12, 16, 4] : [0, 19, 16, 5];
+      for (const frame of poses) assert.deepEqual(framePixels(asset, frame, fixedRegion), framePixels(asset, poses[0], fixedRegion), `${id}/${name} keeps its ground contact fixed`);
+    }
+  }
+});
+
+test('Finn keeps his lamp pole fixed and only blinks briefly every several seconds', async () => {
+  const { rendered } = await art.renderAll();
+  const finn = rendered.find(asset => asset.meta.id === 'char.finn');
+  for (const direction of ['down', 'up', 'left', 'right']) {
+    const animation = finn.meta.animations[`idle_${direction}`];
+    const pole = direction === 'right' ? [1, 0, 2, 21] : [13, 0, 2, 21];
+    for (const frame of animation.frames) assert.deepEqual(framePixels(finn, frame, pole), framePixels(finn, animation.frames[0], pole), `lamp pole ${direction} must not drift`);
+    assert.ok(animation.frames.length / animation.fps >= 5, `Finn ${direction} breathing/blink cycle is at least five seconds`);
+    if (direction === 'up') continue;
+    const blinkTicks = animation.frames.filter(frame => {
+      const face = framePixels(finn, frame, [2, 6, 11, 4]);
+      for (let i = 0; i < face.length; i += 4) if (face[i] === 138 && face[i + 1] === 74 && face[i + 2] === 58 && face[i + 3] === 255) return true;
+      return false;
+    });
+    assert.ok(blinkTicks.length > 0, `${direction} includes a closed eyelid pose`);
+    assert.ok(blinkTicks.length / animation.frames.length <= 0.1, `${direction} keeps eyes open at least 90% of the time`);
+  }
+  const hob = rendered.find(asset => asset.meta.id === 'char.hob');
+  assert.ok(hob.meta.animations.idle.frames.length / hob.meta.animations.idle.fps >= 5, 'Hob does not blink twice a second');
+  const hobBlinkTicks = hob.meta.animations.idle.frames.filter(frame => {
+    const face = framePixels(hob, frame, [2, 3, 11, 3]);
+    for (let i = 0; i < face.length; i += 4) if (face[i] === 138 && face[i + 1] === 74 && face[i + 2] === 58 && face[i + 3] === 255) return true;
+    return false;
+  });
+  assert.ok(hobBlinkTicks.length > 0 && hobBlinkTicks.length / hob.meta.animations.idle.frames.length <= 0.1, 'Hob briefly closes both eyelids');
+});
+
+test('wind poses fit inside the tree canvas and keep all palette pixels binary alpha', async () => {
+  const { rendered, colors: palette } = await art.renderAll();
+  for (const asset of rendered.filter(asset => ['prop.tree', 'prop.flower', 'prop.hedge'].includes(asset.meta.id))) {
+    art.validatePixels(asset.image, palette);
+    assert.ok(asset.meta.frames >= 3, `${asset.meta.id} has multiple wind poses`);
+    assert.deepEqual(asset.meta.anchor, [asset.meta.size[0] / 2, asset.meta.size[1]]);
+  }
+  const tree = rendered.find(asset => asset.meta.id === 'prop.tree');
+  const restingSilhouette = framePixels(tree, 0).filter((_, index) => index % 4 === 3);
+  assert.notDeepEqual(framePixels(tree, 1).filter((_, index) => index % 4 === 3), restingSilhouette, 'wind changes the canopy silhouette, not just its colors');
+  for (let frame = 0; frame < tree.meta.frames; frame++) {
+    for (const region of [[0, 0, 32, 1], [0, 0, 1, 34], [31, 0, 1, 34]]) {
+      assert.ok(framePixels(tree, frame, region).every((value, index) => index % 4 !== 3 || value === 0), `tree ${frame} has a transparent safety border`);
+    }
+  }
+});

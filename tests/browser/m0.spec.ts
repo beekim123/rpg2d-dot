@@ -1,4 +1,5 @@
 import {test,expect,type Page} from '@playwright/test';
+import {mkdirSync,writeFileSync} from 'node:fs';
 import manifest from '../../art/export/manifest.json' with {type:'json'};
 const screenshot=async(page:Page,name:string)=>{await page.screenshot({path:`docs/plan/screenshots/m0-${name}.png`});};
 async function step(page:Page,key:string,position:string):Promise<void>{await page.keyboard.down(key);await expect(page.locator('#game')).toHaveAttribute('data-position',position);await page.keyboard.up(key);await page.waitForTimeout(190);}
@@ -56,4 +57,23 @@ test('menu horizontal navigation is reversible and its bottom padding cannot loa
   await page.keyboard.press('Escape');await step(page,'ArrowRight','16,12');await page.keyboard.press('KeyC');
   await canvas.click({position:{x:96,y:432}});await page.waitForTimeout(60);
   await expect(canvas).toHaveAttribute('data-scene','menu');await expect(canvas).toHaveAttribute('data-position','16,12');
+});
+
+test('idle art animates in the real scene while feet and tree roots stay planted',async({page})=>{
+  await page.goto('./?map=lantern.test');const canvas=page.locator('#game');await expect(canvas).toHaveAttribute('data-position','8,12');
+  const record=process.env.ASTRA_CAPTURE_IDLE==='1';if(record)mkdirSync('test-results/idle-frames',{recursive:true});
+  const samples:{finn:number;hob:number;tree:number;flower:number;feet:number;roots:number}[]=[];
+  for(let n=0;n<25;n++){
+    const snapshot=await canvas.evaluate((element,recording)=>{
+      const c=element as HTMLCanvasElement;const ctx=c.getContext('2d')!;
+      function hash(x:number,y:number,w:number,h:number):number{let value=2166136261;for(const byte of ctx.getImageData(x,y,w,h).data)value=Math.imul(value^byte,16777619)>>>0;return value;}
+      return {checks:{finn:hash(128,119,16,24),hob:hash(160,103,16,24),tree:hash(408,31,32,32),flower:hash(176,79,16,16),feet:hash(128,139,16,4),roots:hash(408,71,32,8)},png:recording?c.toDataURL('image/png'):''};
+    },record);
+    samples.push(snapshot.checks);
+    if(record)writeFileSync(`test-results/idle-frames/frame-${String(n).padStart(2,'0')}.png`,Buffer.from(snapshot.png.split(',')[1]!,'base64'));
+    await page.waitForTimeout(250);
+  }
+  for(const animated of ['finn','hob','tree','flower'] as const)expect(new Set(samples.map(s=>s[animated])).size,`${animated} must visibly animate`).toBeGreaterThan(1);
+  expect(new Set(samples.map(s=>s.feet)).size).toBe(1);expect(new Set(samples.map(s=>s.roots)).size).toBe(1);
+  await expect(canvas).toHaveAttribute('data-position','8,12');await screenshot(page,'idle');
 });
