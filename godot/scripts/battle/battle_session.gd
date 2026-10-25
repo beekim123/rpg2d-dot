@@ -5,6 +5,8 @@ const Encounters = preload("res://scripts/battle/battle_encounter.gd")
 var _api: Encounters
 var _seed: Dictionary = {}
 var _current: Dictionary = {}
+var _revision: int = 0
+var _configuration: Dictionary = {}
 
 func configure(balance: Variant, skills: Variant) -> String:
 	var candidate: Encounters = Encounters.new()
@@ -12,6 +14,8 @@ func configure(balance: Variant, skills: Variant) -> String:
 	if not error.is_empty():
 		return error
 	_api = candidate
+	_revision += 1
+	_configuration = {"balance":balance.duplicate(true),"skills":skills.duplicate(true)}
 	_seed = {}
 	_current = {}
 	return ""
@@ -23,6 +27,7 @@ func start(definition: Variant) -> Dictionary:
 	if not result["ok"]:
 		return result
 	_seed = definition.duplicate(true)
+	_revision += 1
 	_current = result["encounter"]
 	return {"ok": true, "encounter": snapshot()}
 
@@ -37,6 +42,12 @@ func retry() -> Dictionary:
 
 func snapshot() -> Dictionary:
 	return _current.duplicate(true)
+
+func starting_inventory() -> Dictionary:
+	return (_seed.get("inventory", {}) as Dictionary).duplicate(true)
+
+func provenance() -> Dictionary:
+	return {"revision":_revision,"definition":_seed.duplicate(true),"configuration":_configuration.duplicate(true)}
 
 func command(input: Variant) -> Dictionary:
 	if _api == null:

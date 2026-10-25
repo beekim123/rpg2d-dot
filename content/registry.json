@@ -26,7 +26,8 @@
     "battle.extensions": "data/battle-native-extensions.json",
     "battle.presentation": "data/battle-presentation.json",
     "battle.prologue_ella": "data/battles/prologue_ella.json",
-    "battle.prologue_shade": "data/battles/prologue_shade.json"
+    "battle.prologue_shade": "data/battles/prologue_shade.json",
+    "prologue.flow": "data/prologue-flow.json"
   },
   "cinematics": {
     "prologue": "story/prologue-scenes.json"

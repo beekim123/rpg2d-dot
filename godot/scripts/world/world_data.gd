@@ -42,6 +42,14 @@ func anchor_point(map_id: String, anchor_id: String) -> Dictionary:
 		return {}
 	return anchors[anchor_id].duplicate(true)
 
+func has_authored_entity(map_id: String, entity_id: String) -> bool:
+	if not _maps.has(map_id):
+		return false
+	for entity: Dictionary in _maps[map_id]["entities"]:
+		if entity["id"] == entity_id:
+			return true
+	return false
+
 ## Validate the exact authored cell; never replace it with a nearby free tile.
 func safe_anchor(map_id: String, anchor_id: String, flags: Dictionary = {}) -> Dictionary:
 	var failure: Dictionary = {"ok": false, "map_id": map_id, "position": Vector2i(-1, -1), "reason": "invalid_map_or_flags"}

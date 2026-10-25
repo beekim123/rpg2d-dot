@@ -1,0 +1,929 @@
+{
+  "format": "astra.prologue-flow/1",
+  "uniqueItems": [
+    "lamp_rod",
+    "hob_travel_lamp",
+    "item.star_pendant",
+    "festival_cookie"
+  ],
+  "start": {
+    "mapId": "lv.finn_house",
+    "anchor": "bedside"
+  },
+  "steps": [
+    {
+      "id": "legend",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.finn_house"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true
+        }
+      },
+      "done": "p.s01_done",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.01.legend",
+        "segment": "main"
+      }
+    },
+    {
+      "id": "wake",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.finn_house"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s01_done": true
+        }
+      },
+      "done": "p.woken",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.02.lamps",
+        "segment": "wake"
+      }
+    },
+    {
+      "id": "take_rod",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.finn_house",
+        "anchor": "door",
+        "radius": 1
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.woken": true
+        }
+      },
+      "done": "p.rod_taken",
+      "inventory": {
+        "lamp_rod": 1
+      },
+      "presentation": {
+        "kind": "notice",
+        "prompt": "prologue.ui.action.take_rod"
+      }
+    },
+    {
+      "id": "borrow",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "entityIds": [
+          "lv.town.hob"
+        ]
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.rod_taken": true
+        },
+        "items": {
+          "lamp_rod": 1
+        }
+      },
+      "done": "p.s02_started",
+      "inventory": {
+        "hob_travel_lamp": 1
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.02.lamps",
+        "segment": "borrow"
+      }
+    },
+    {
+      "id": "first_lamp",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s02_started": true
+        },
+        "lamps": [
+          "lv.lamp.bakery"
+        ],
+        "items": {
+          "hob_travel_lamp": 1
+        }
+      },
+      "done": "p.first_lamp_heard",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.02.lamps",
+        "segment": "first_lamp"
+      }
+    },
+    {
+      "id": "daily",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "entityIds": [
+          "lv.town.brio",
+          "lv.town.bread_counter"
+        ]
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.first_lamp_heard": true
+        }
+      },
+      "done": "p.s03_done",
+      "inventory": {
+        "festival_cookie": 1
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.03.daily",
+        "segment": "main"
+      }
+    },
+    {
+      "id": "lamps_complete",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.first_lamp_heard": true
+        },
+        "lamps": [
+          "lv.lamp.bakery",
+          "lv.lamp.bridge",
+          "lv.lamp.square"
+        ]
+      },
+      "done": "p.s02_done",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.02.lamps",
+        "segment": "complete"
+      }
+    },
+    {
+      "id": "ella_returns",
+      "trigger": {
+        "kind": "near",
+        "mapId": "lv.town",
+        "anchor": "creek_bridge",
+        "radius": 2
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s02_done": true,
+          "p.s03_done": true
+        }
+      },
+      "done": "p.s04_done",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.04.ella_returns",
+        "segment": "main"
+      }
+    },
+    {
+      "id": "return_lamp",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "entityIds": [
+          "lv.town.hob"
+        ]
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s04_done": true
+        },
+        "items": {
+          "hob_travel_lamp": 1
+        }
+      },
+      "done": "p.borrowed_lamp_returned",
+      "inventory": {
+        "hob_travel_lamp": -1
+      },
+      "presentation": {
+        "kind": "notice",
+        "prompt": "prologue.ui.action.return_lamp"
+      }
+    },
+    {
+      "id": "festival_start",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "anchor": "festival_square",
+        "radius": 1
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.borrowed_lamp_returned": true
+        }
+      },
+      "done": "p.festival_started",
+      "presentation": {
+        "kind": "choice",
+        "prompt": "prologue.ui.choice.festival.prompt",
+        "choices": [
+          {
+            "id": "start",
+            "label": "prologue.ui.choice.festival.start"
+          }
+        ]
+      }
+    },
+    {
+      "id": "introduction",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.festival_started": true
+        }
+      },
+      "done": "p.festival_introduction_heard",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.05.festival",
+        "segment": "introduction"
+      }
+    },
+    {
+      "id": "fold_share",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "anchor": "festival_square",
+        "radius": 1
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.festival_introduction_heard": true
+        },
+        "items": {
+          "festival_cookie": 1
+        }
+      },
+      "done": "p.festival_shared",
+      "inventory": {
+        "festival_cookie": -1
+      },
+      "presentation": {
+        "kind": "choice",
+        "prompt": "prologue.ui.choice.fold.prompt",
+        "choices": [
+          {
+            "id": "star",
+            "label": "prologue.ui.choice.fold.star",
+            "set": {
+              "p.paper_fold_star": true,
+              "p.paper_fold_leaf": false
+            }
+          },
+          {
+            "id": "leaf",
+            "label": "prologue.ui.choice.fold.leaf",
+            "set": {
+              "p.paper_fold_star": false,
+              "p.paper_fold_leaf": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pendant",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.festival_shared": true
+        }
+      },
+      "done": "p.pendant_received",
+      "inventory": {
+        "item.star_pendant": 1
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.05.festival",
+        "segment": "pendant"
+      }
+    },
+    {
+      "id": "release_instruction",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.pendant_received": true
+        }
+      },
+      "done": "p.release_instruction_heard",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.05.festival",
+        "segment": "release"
+      }
+    },
+    {
+      "id": "release",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "anchor": "release_platform",
+        "radius": 1
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.release_instruction_heard": true
+        },
+        "items": {
+          "item.star_pendant": 1
+        }
+      },
+      "done": "p.s05_done",
+      "set": {
+        "p.attack_started": true
+      },
+      "presentation": {
+        "kind": "notice",
+        "prompt": "prologue.ui.action.release_lantern"
+      }
+    },
+    {
+      "id": "ella_intro",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s05_done": true,
+          "p.attack_started": true
+        }
+      },
+      "done": "p.ella_intro_heard",
+      "relocate": {
+        "mapId": "lv.town",
+        "anchor": "festival_square"
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.06.ella_battle",
+        "segment": "intro"
+      }
+    },
+    {
+      "id": "ella_battle",
+      "trigger": {
+        "kind": "near",
+        "mapId": "lv.town",
+        "anchor": "festival_square",
+        "radius": 4
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.ella_intro_heard": true,
+          "p.attack_started": true
+        }
+      },
+      "done": "p.ella_battle_won",
+      "presentation": {
+        "kind": "battle",
+        "battleId": "prologue_ella"
+      }
+    },
+    {
+      "id": "ella_victory",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.ella_battle_won": true
+        }
+      },
+      "done": "p.s06_done",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.06.ella_battle",
+        "segment": "victory"
+      }
+    },
+    {
+      "id": "starpluck",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "anchor": "ella_fall",
+        "radius": 1
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s06_done": true
+        }
+      },
+      "done": "p.s07_done",
+      "set": {
+        "p.ella_starplucked": true
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.07.starpluck",
+        "segment": "main"
+      }
+    },
+    {
+      "id": "awakening_inner",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "anchor": "ella_fall",
+        "radius": 1
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s07_done": true,
+          "p.ella_starplucked": true
+        }
+      },
+      "done": "p.awakening_inner_heard",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.08.awakening",
+        "segment": "inner"
+      }
+    },
+    {
+      "id": "steady_resolve",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "anchor": "ella_fall",
+        "radius": 1
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.awakening_inner_heard": true
+        }
+      },
+      "done": "p.awakening_resolved",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.08.awakening",
+        "segment": "resolve"
+      }
+    },
+    {
+      "id": "card",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.awakening_resolved": true
+        }
+      },
+      "done": "p.s08_done",
+      "set": {
+        "p.awakened": true
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.08.awakening",
+        "segment": "card"
+      }
+    },
+    {
+      "id": "shade_intro",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s08_done": true,
+          "p.awakened": true
+        }
+      },
+      "done": "p.shade_intro_heard",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.09.shade_battle",
+        "segment": "intro"
+      }
+    },
+    {
+      "id": "shade_battle",
+      "trigger": {
+        "kind": "near",
+        "mapId": "lv.town",
+        "anchor": "festival_square",
+        "radius": 4
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.shade_intro_heard": true,
+          "p.awakened": true,
+          "p.attack_started": true
+        }
+      },
+      "done": "p.shade_battle_won",
+      "presentation": {
+        "kind": "battle",
+        "battleId": "prologue_shade"
+      }
+    },
+    {
+      "id": "shade_victory",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.town"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.shade_battle_won": true,
+          "p.attack_started": true
+        }
+      },
+      "done": "p.s09_done",
+      "set": {
+        "p.attack_started": true
+      },
+      "relocate": {
+        "mapId": "lv.finn_house",
+        "anchor": "ella_bedside"
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.09.shade_battle",
+        "segment": "victory"
+      }
+    },
+    {
+      "id": "home",
+      "trigger": {
+        "kind": "automatic",
+        "mapId": "lv.finn_house"
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s09_done": true,
+          "p.attack_started": true
+        }
+      },
+      "done": "p.aftermath_heard",
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.10.aftermath",
+        "segment": "home"
+      }
+    },
+    {
+      "id": "handover",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.lamp_shop",
+        "entityIds": [
+          "lv.shop.hob"
+        ]
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.aftermath_heard": true,
+          "p.borrowed_lamp_returned": true
+        }
+      },
+      "done": "p.s10_done",
+      "set": {
+        "p.travel_lamp_owned": true
+      },
+      "inventory": {
+        "hob_travel_lamp": 1
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.10.aftermath",
+        "segment": "handover"
+      }
+    },
+    {
+      "id": "departure_gate",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "entityIds": [
+          "lv.town.sign"
+        ]
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s10_done": true,
+          "p.travel_lamp_owned": true
+        },
+        "items": {
+          "hob_travel_lamp": 1
+        }
+      },
+      "done": "p.departure_goodbyes_heard",
+      "inventory": {
+        "bread": 3
+      },
+      "presentation": {
+        "kind": "dialogue",
+        "scene": "prologue.11.departure",
+        "segment": "gate"
+      }
+    },
+    {
+      "id": "departure_choice",
+      "trigger": {
+        "kind": "interact",
+        "mapId": "lv.town",
+        "entityIds": [
+          "lv.town.sign"
+        ]
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.departure_goodbyes_heard": true
+        }
+      },
+      "done": "p.departure_confirmed",
+      "presentation": {
+        "kind": "choice",
+        "prompt": "prologue.ui.choice.depart.prompt",
+        "choices": [
+          {
+            "id": "depart",
+            "label": "prologue.ui.choice.depart.start"
+          }
+        ]
+      }
+    },
+    {
+      "id": "departure_end",
+      "trigger": {
+        "kind": "near",
+        "mapId": "lv.wheat_road",
+        "anchor": "overlook",
+        "radius": 2
+      },
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.departure_confirmed": true,
+          "p.s10_done": true
+        },
+        "items": {
+          "hob_travel_lamp": 1,
+          "item.star_pendant": 1
+        }
+      },
+      "done": "p.s11_done",
+      "set": {
+        "p.departed": true
+      },
+      "presentation": {
+        "kind": "ending",
+        "scene": "prologue.11.departure",
+        "segment": "ending",
+        "prompt": "prologue.ui.ending.title"
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.departure_confirmed": true,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.depart"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s10_done": true,
+          "p.departure_confirmed": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.go_south_gate"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.aftermath_heard": true,
+          "p.s10_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.go_lamp_shop"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s09_done": true,
+          "p.aftermath_heard": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.go_home"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s08_done": true,
+          "p.s09_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.shade_survive"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s07_done": true,
+          "p.s08_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.steady_lamp"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s06_done": true,
+          "p.s07_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.reach_ella"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s05_done": true,
+          "p.s06_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.ella_battle"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.pendant_received": true,
+          "p.s05_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.release_lantern"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.festival_started": true,
+          "p.pendant_received": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.fold_lantern"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.borrowed_lamp_returned": true,
+          "p.festival_started": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.festival"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s04_done": true,
+          "p.borrowed_lamp_returned": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.return_lamp"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s02_done": true,
+          "p.s03_done": true,
+          "p.s04_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.meet_ella"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.first_lamp_heard": true,
+          "p.s03_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.meet_brio"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s03_done": true,
+          "p.s02_done": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.lamps"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s02_started": true,
+          "p.first_lamp_heard": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.first_lamp"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s01_done": true,
+          "p.s02_started": false,
+          "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.wake"
+    }
+  ]
+}

@@ -28,7 +28,7 @@
     "godot:sync": "node tools/resources/sync-godot-assets.mjs",
     "godot:verify": "node tools/resources/sync-godot-assets.mjs --verify",
     "godot:import": "node tools/godot/cli.mjs import",
-    "godot:test": "node tools/godot/cli.mjs test && node tools/godot/cli.mjs test-world && node tools/godot/cli.mjs test-travel && node tools/godot/cli.mjs test-story && node tools/godot/cli.mjs test-ui && node tools/godot/cli.mjs test-story-content && node tools/godot/cli.mjs test-interaction && node tools/godot/cli.mjs test-save && node tools/godot/cli.mjs test-save-ui && node tools/godot/cli.mjs test-persistence && npm run godot:test:battle && npm run godot:test:audio && node tools/godot/cli.mjs test-prologue-content",
+    "godot:test": "node tools/godot/cli.mjs test && node tools/godot/cli.mjs test-world && node tools/godot/cli.mjs test-travel && node tools/godot/cli.mjs test-story && node tools/godot/cli.mjs test-ui && node tools/godot/cli.mjs test-story-content && node tools/godot/cli.mjs test-interaction && node tools/godot/cli.mjs test-save && node tools/godot/cli.mjs test-save-ui && node tools/godot/cli.mjs test-persistence && npm run godot:test:battle && npm run godot:test:audio && node tools/godot/cli.mjs test-prologue-content && node tools/godot/cli.mjs test-prologue-progress && node tools/godot/cli.mjs test-prologue-save",
     "godot:export:web": "npm run godot:verify && node tools/godot/cli.mjs export",
     "godot:serve": "node tools/godot/serve.mjs",
     "godot:run": "node tools/godot/cli.mjs run",

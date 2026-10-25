@@ -25,7 +25,8 @@
     "battle.prologue_ella": "res://data/tables/battles/prologue_ella.json",
     "battle.prologue_shade": "res://data/tables/battles/prologue_shade.json",
     "battle.skills": "res://data/tables/battle-skills.json",
-    "battle.support": "res://data/tables/battle-support.json"
+    "battle.support": "res://data/tables/battle-support.json",
+    "prologue.flow": "res://data/tables/prologue-flow.json"
   },
   "cinematics": {
     "prologue": "res://data/story/prologue-scenes.json"
@@ -172,10 +173,16 @@
       "bytes": 1567
     },
     {
+      "source": "content/data/prologue-flow.json",
+      "path": "res://data/tables/prologue-flow.json",
+      "sha256": "ad88c50ea344cc7b8a8c1a120f2ae0a4dc35459ebc15c8dd226f98bc223c0c6f",
+      "bytes": 20494
+    },
+    {
       "source": "content/i18n/zh-Hans/prologue.json",
       "path": "res://data/i18n/zh-Hans/prologue.json",
-      "sha256": "5e8143f464649a1da1180bba894bb0e01111c663a7e159bfd3c32a3a97425e21",
-      "bytes": 14199
+      "sha256": "21a9ce06a4187f2b08dcc99f8abd0f5486e27d29e3302c1b5c1c081785c3a691",
+      "bytes": 14439
     },
     {
       "source": "content/i18n/zh-Hans/ui.json",

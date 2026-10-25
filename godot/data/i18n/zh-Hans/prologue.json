@@ -137,7 +137,7 @@
   "prologue.ui.objective.lamps": "点亮面包房、溪桥、广场的灯柱（{count}/3）",
   "prologue.ui.objective.meet_brio": "去面包房前向布丽欧打个招呼",
   "prologue.ui.objective.meet_ella": "去溪桥接艾拉",
-  "prologue.ui.objective.return_lamp": "去广场找霍伯，交还旅灯",
+  "prologue.ui.objective.return_lamp": "回灯铺前找霍伯，交还旅灯",
   "prologue.ui.objective.festival": "准备好后，开始星落祭",
   "prologue.ui.objective.fold_lantern": "和艾拉一起折好纸灯、分甜饼",
   "prologue.ui.objective.release_lantern": "去放灯台放出纸灯",
@@ -171,5 +171,8 @@
   "prologue.ui.ending.title": "序章结束",
   "prologue.ui.ending.description": "芬恩已在黎明离开灯谷。\n这段旅程暂时停在这里。",
   "prologue.ui.ending.return_title": "返回标题",
-  "prologue.ui.ending.explore": "继续在灯谷查看"
+  "prologue.ui.ending.explore": "继续在灯谷查看",
+  "prologue.ui.item.lamp_rod.name": "点灯杆",
+  "prologue.ui.item.lamp_rod.description": "学徒用的长柄点灯杆。\n先把脚边的灯点稳。",
+  "prologue.ui.hint.need_travel_lamp": "先拿点灯杆，向霍伯借旅灯。"
 }

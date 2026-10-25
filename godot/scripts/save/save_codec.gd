@@ -13,6 +13,13 @@ var _world: Worlds
 var _maps: Dictionary = {}
 var _lamp_ids: Dictionary = {}
 var _geometry_cache: Dictionary = {}
+var _story_validator: Callable
+
+func set_story_validator(validator: Callable) -> void:
+	_story_validator = validator
+
+func has_lamp_id(id: String) -> bool:
+	return _lamp_ids.has(id)
 
 ## Invalid replacement definitions leave the previous codec usable.
 func configure(maps: Dictionary) -> Array[String]:
@@ -122,6 +129,11 @@ func validate(state: Dictionary) -> Dictionary:
 		return _failure("save.too_large")
 	if not _position_is_safe(map_id,Vector2i(player["x"],player["y"]),flags):
 		return _failure("save.bad_position")
+	if _story_validator.is_valid():
+		# Story checks are optional and receive a detached, normalized v3 snapshot.
+		var story_error: Variant = _story_validator.call(candidate.duplicate(true))
+		if not story_error is String or not String(story_error).is_empty():
+			return _failure("save.invalid")
 	return {"ok":true,"error":"","state":candidate,"migrated":source_version != VERSION}
 
 ## Cache only the expensive world traversal; all snapshot checks run before this.
