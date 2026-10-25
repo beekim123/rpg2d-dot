@@ -12,10 +12,10 @@
 
 ## G2a · 数学、星距、共享HP与回放基础
 
-- [ ] 在 `tools/qa/battle-fixtures.ts` 建立可重复导出/只读校验；`tests/reference/battle-fixtures.test.ts` 对手算伤害、护盾、致死案例与夹具来源做断言。
-- [ ] `godot/tests/battle/run_battle_math.gd` 先写失败断言，随后实现 `godot/scripts/battle/battle_math.gd`：rating、manhattan、tether_factor、calculate_damage、validate_actor、apply_shared_damage、action_interval、order_timeline、reschedule_actor。
-- [ ] 共享HP使用同一初态连续结算；验证护盾先扣、伤害不重乘本体倍率、致死熄灭、重复伤害、返回值深拷贝、非法输入不修改原状态。安全整数、NaN/Infinity、未知类型、溢出另测。
-- [ ] 把 `battle:fixtures:verify`、`godot:test:battle` 接入 `npm run check`；完整本机验证后提交并推送，再核对远端CI。
+- [x] 在 `tools/qa/battle-fixtures.ts` 建立可重复导出/只读校验；`tests/reference/battle-fixtures.test.ts` 对手算伤害、护盾、致死案例与夹具来源做断言。
+- [x] `godot/tests/battle/run_battle_math.gd` 先写失败断言，随后实现 `godot/scripts/battle/battle_math.gd`：rating、manhattan、tether_factor、calculate_damage、validate_actor、apply_shared_damage、action_interval、order_timeline、reschedule_actor。
+- [x] 共享HP使用同一初态连续结算；验证护盾先扣、伤害不重乘本体倍率、致死熄灭、重复伤害、返回值深拷贝、非法输入不修改原状态。安全整数、NaN/Infinity、未知类型、溢出另测。
+- [x] 把 `battle:fixtures:verify`、`godot:test:battle` 接入 `npm run check`；完整本机验证通过；提交推送与远端CI登记见progress/status。
 
 接口示例：`calculate_damage({power:100,attackerPower:40,defenderEndurance:50,distance:1,reach:5,target:"body"})` 返回120；相同初态的伴星目标返回80，收回本体返回56。连续伤害初态HP20/盾15，先打伴星10，再打本体100：第一次HP20/盾5，第二次HP0/盾0/熄灭。
 

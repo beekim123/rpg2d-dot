@@ -26,3 +26,5 @@ npm run dev
 制作资源请回到 [`resources/`](../resources/README.md)，改地图与文本请回到 [`content/`](../content/README.md)。规则层应只处理状态和内容 ID；素材物理路径集中在资源服务，应用图标等引擎启动配置属于记录在案的入口例外。
 
 G1a已接入家、镇、灯铺、面包房、麦田路的双向出口；默认从芬恩家开始。`scripts/world/world_data.gd`只处理地图、碰撞、显隐和旅行规则，不依赖Node或资源路径；`world.gd`负责表现，`AssetCatalog`负责资源。`tests/world/`覆盖规则和真实场景完整旅行。
+
+G2a的 `scripts/battle/battle_math.gd` 以RefCounted实现伤害、星距、共享HP及时间轴数学。先用 `configure(balance)` 注入内容数值，调用返回 `{ok,value}` 或 `{ok:false,error}`；失败不修改输入。共享测试数据在根目录 `tests/fixtures/battle/`，不复制进游戏资源包；运行 `npm run godot:test:battle`。G2后续移动/技能/意图尚在迁移中，战斗UI在G3接入。

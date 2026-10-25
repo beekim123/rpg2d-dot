@@ -1,0 +1,5848 @@
+{
+  "format": "astra.battle-math/1",
+  "sources": {
+    "reference/web/src/battle/math.ts": "4a42681377231e24eebb1d06194aef5c132fe47a947d8d546085e052312be6d9",
+    "reference/web/src/battle/model.ts": "ea07283f7a94d4ec9bed6593c2fbbb0c7277c7b4b1bc12ca0ad9692cbc568c74",
+    "content/data/battle-balance.json": "0cddb0e79f3d85207cc6dae7788ba155a12e668ef9ccb8ef022fa1271804748d"
+  },
+  "balance": {
+    "chart": {
+      "minimum": 0,
+      "maximum": 100,
+      "ratingMinimums": {
+        "E": 0,
+        "D": 20,
+        "C": 40,
+        "B": 60,
+        "A": 75,
+        "S": 90
+      }
+    },
+    "damage": {
+      "basePowerFactor": 0.6,
+      "powerDivisor": 100,
+      "tetherLoss": 0.4,
+      "enduranceDivisor": 250,
+      "bodyMultiplier": 1.5,
+      "recalledBodyMultiplier": 0.7,
+      "astralMultiplier": 1,
+      "defaultOpeningMultiplier": 1
+    },
+    "timeline": {
+      "baseInterval": 100,
+      "speedFactors": {
+        "E": 1.4,
+        "D": 1.25,
+        "C": 1.1,
+        "B": 1,
+        "A": 0.9,
+        "S": 0.8
+      },
+      "actionWeights": {
+        "light": 0.7,
+        "normal": 1,
+        "heavy": 1.3
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "rating_0",
+      "op": "rating",
+      "args": [
+        0
+      ],
+      "expected": {
+        "ok": true,
+        "value": "E"
+      }
+    },
+    {
+      "id": "rating_19",
+      "op": "rating",
+      "args": [
+        19
+      ],
+      "expected": {
+        "ok": true,
+        "value": "E"
+      }
+    },
+    {
+      "id": "rating_20",
+      "op": "rating",
+      "args": [
+        20
+      ],
+      "expected": {
+        "ok": true,
+        "value": "D"
+      }
+    },
+    {
+      "id": "rating_39",
+      "op": "rating",
+      "args": [
+        39
+      ],
+      "expected": {
+        "ok": true,
+        "value": "D"
+      }
+    },
+    {
+      "id": "rating_40",
+      "op": "rating",
+      "args": [
+        40
+      ],
+      "expected": {
+        "ok": true,
+        "value": "C"
+      }
+    },
+    {
+      "id": "rating_59",
+      "op": "rating",
+      "args": [
+        59
+      ],
+      "expected": {
+        "ok": true,
+        "value": "C"
+      }
+    },
+    {
+      "id": "rating_60",
+      "op": "rating",
+      "args": [
+        60
+      ],
+      "expected": {
+        "ok": true,
+        "value": "B"
+      }
+    },
+    {
+      "id": "rating_74",
+      "op": "rating",
+      "args": [
+        74
+      ],
+      "expected": {
+        "ok": true,
+        "value": "B"
+      }
+    },
+    {
+      "id": "rating_75",
+      "op": "rating",
+      "args": [
+        75
+      ],
+      "expected": {
+        "ok": true,
+        "value": "A"
+      }
+    },
+    {
+      "id": "rating_89",
+      "op": "rating",
+      "args": [
+        89
+      ],
+      "expected": {
+        "ok": true,
+        "value": "A"
+      }
+    },
+    {
+      "id": "rating_90",
+      "op": "rating",
+      "args": [
+        90
+      ],
+      "expected": {
+        "ok": true,
+        "value": "S"
+      }
+    },
+    {
+      "id": "rating_100",
+      "op": "rating",
+      "args": [
+        100
+      ],
+      "expected": {
+        "ok": true,
+        "value": "S"
+      }
+    },
+    {
+      "id": "rating_-1",
+      "op": "rating",
+      "args": [
+        -1
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "rating_101",
+      "op": "rating",
+      "args": [
+        101
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "rating_40.5",
+      "op": "rating",
+      "args": [
+        40.5
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "rating_null",
+      "op": "rating",
+      "args": [
+        null
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "rating_60",
+      "op": "rating",
+      "args": [
+        "60"
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "rating_true",
+      "op": "rating",
+      "args": [
+        true
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "rating_9007199254740992",
+      "op": "rating",
+      "args": [
+        9007199254740992
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "distance_cardinal",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": 2,
+          "y": 3
+        },
+        {
+          "x": 7,
+          "y": 1
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 7
+      }
+    },
+    {
+      "id": "distance_reverse",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": 7,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 3
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 7
+      }
+    },
+    {
+      "id": "distance_same",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": 2,
+          "y": 3
+        },
+        {
+          "x": 2,
+          "y": 3
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0
+      }
+    },
+    {
+      "id": "distance_overflow",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 9007199254740991,
+          "y": 1
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "distance_invalid_-1",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": -1,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "distance_invalid_0.5",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": 0.5,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "distance_invalid_null",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": null,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "distance_invalid_1",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": "1",
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "distance_invalid_true",
+      "op": "manhattan",
+      "args": [
+        {
+          "x": true,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "tether_0_1",
+      "op": "tether_factor",
+      "args": [
+        0,
+        1
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_1_1",
+      "op": "tether_factor",
+      "args": [
+        1,
+        1
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_2_1",
+      "op": "tether_factor",
+      "args": [
+        2,
+        1
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "tether_0_2",
+      "op": "tether_factor",
+      "args": [
+        0,
+        2
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_1_2",
+      "op": "tether_factor",
+      "args": [
+        1,
+        2
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_2_2",
+      "op": "tether_factor",
+      "args": [
+        2,
+        2
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.6
+      }
+    },
+    {
+      "id": "tether_3_2",
+      "op": "tether_factor",
+      "args": [
+        3,
+        2
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "tether_0_3",
+      "op": "tether_factor",
+      "args": [
+        0,
+        3
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_1_3",
+      "op": "tether_factor",
+      "args": [
+        1,
+        3
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_2_3",
+      "op": "tether_factor",
+      "args": [
+        2,
+        3
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_3_3",
+      "op": "tether_factor",
+      "args": [
+        3,
+        3
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.6
+      }
+    },
+    {
+      "id": "tether_4_3",
+      "op": "tether_factor",
+      "args": [
+        4,
+        3
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "tether_0_4",
+      "op": "tether_factor",
+      "args": [
+        0,
+        4
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_1_4",
+      "op": "tether_factor",
+      "args": [
+        1,
+        4
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_2_4",
+      "op": "tether_factor",
+      "args": [
+        2,
+        4
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_3_4",
+      "op": "tether_factor",
+      "args": [
+        3,
+        4
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.8
+      }
+    },
+    {
+      "id": "tether_4_4",
+      "op": "tether_factor",
+      "args": [
+        4,
+        4
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.6
+      }
+    },
+    {
+      "id": "tether_5_4",
+      "op": "tether_factor",
+      "args": [
+        5,
+        4
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "tether_0_5",
+      "op": "tether_factor",
+      "args": [
+        0,
+        5
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_1_5",
+      "op": "tether_factor",
+      "args": [
+        1,
+        5
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_2_5",
+      "op": "tether_factor",
+      "args": [
+        2,
+        5
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_3_5",
+      "op": "tether_factor",
+      "args": [
+        3,
+        5
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_4_5",
+      "op": "tether_factor",
+      "args": [
+        4,
+        5
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.8
+      }
+    },
+    {
+      "id": "tether_5_5",
+      "op": "tether_factor",
+      "args": [
+        5,
+        5
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.6
+      }
+    },
+    {
+      "id": "tether_6_5",
+      "op": "tether_factor",
+      "args": [
+        6,
+        5
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "tether_0_6",
+      "op": "tether_factor",
+      "args": [
+        0,
+        6
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_1_6",
+      "op": "tether_factor",
+      "args": [
+        1,
+        6
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_2_6",
+      "op": "tether_factor",
+      "args": [
+        2,
+        6
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_3_6",
+      "op": "tether_factor",
+      "args": [
+        3,
+        6
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_4_6",
+      "op": "tether_factor",
+      "args": [
+        4,
+        6
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.8666666666666667
+      }
+    },
+    {
+      "id": "tether_5_6",
+      "op": "tether_factor",
+      "args": [
+        5,
+        6
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.7333333333333334
+      }
+    },
+    {
+      "id": "tether_6_6",
+      "op": "tether_factor",
+      "args": [
+        6,
+        6
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.5999999999999999
+      }
+    },
+    {
+      "id": "tether_7_6",
+      "op": "tether_factor",
+      "args": [
+        7,
+        6
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "tether_0_7",
+      "op": "tether_factor",
+      "args": [
+        0,
+        7
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_1_7",
+      "op": "tether_factor",
+      "args": [
+        1,
+        7
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_2_7",
+      "op": "tether_factor",
+      "args": [
+        2,
+        7
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_3_7",
+      "op": "tether_factor",
+      "args": [
+        3,
+        7
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_4_7",
+      "op": "tether_factor",
+      "args": [
+        4,
+        7
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_5_7",
+      "op": "tether_factor",
+      "args": [
+        5,
+        7
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.8666666666666667
+      }
+    },
+    {
+      "id": "tether_6_7",
+      "op": "tether_factor",
+      "args": [
+        6,
+        7
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.7333333333333334
+      }
+    },
+    {
+      "id": "tether_7_7",
+      "op": "tether_factor",
+      "args": [
+        7,
+        7
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.5999999999999999
+      }
+    },
+    {
+      "id": "tether_8_7",
+      "op": "tether_factor",
+      "args": [
+        8,
+        7
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "tether_0_8",
+      "op": "tether_factor",
+      "args": [
+        0,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_1_8",
+      "op": "tether_factor",
+      "args": [
+        1,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_2_8",
+      "op": "tether_factor",
+      "args": [
+        2,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_3_8",
+      "op": "tether_factor",
+      "args": [
+        3,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_4_8",
+      "op": "tether_factor",
+      "args": [
+        4,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "tether_5_8",
+      "op": "tether_factor",
+      "args": [
+        5,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.9
+      }
+    },
+    {
+      "id": "tether_6_8",
+      "op": "tether_factor",
+      "args": [
+        6,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.8
+      }
+    },
+    {
+      "id": "tether_7_8",
+      "op": "tether_factor",
+      "args": [
+        7,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.7
+      }
+    },
+    {
+      "id": "tether_8_8",
+      "op": "tether_factor",
+      "args": [
+        8,
+        8
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0.6
+      }
+    },
+    {
+      "id": "tether_9_8",
+      "op": "tether_factor",
+      "args": [
+        9,
+        8
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "invalid_tether_0_0",
+      "op": "tether_factor",
+      "args": [
+        0,
+        0
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "invalid_tether_-1_2",
+      "op": "tether_factor",
+      "args": [
+        -1,
+        2
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "invalid_tether_1_-1",
+      "op": "tether_factor",
+      "args": [
+        1,
+        -1
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "invalid_tether_1.5_2",
+      "op": "tether_factor",
+      "args": [
+        1.5,
+        2
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "invalid_tether_1_null",
+      "op": "tether_factor",
+      "args": [
+        1,
+        null
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "invalid_tether_null_1",
+      "op": "tether_factor",
+      "args": [
+        null,
+        1
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "invalid_tether_true_1",
+      "op": "tether_factor",
+      "args": [
+        true,
+        1
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_astral",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 80
+      }
+    },
+    {
+      "id": "damage_body",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "body"
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 120
+      }
+    },
+    {
+      "id": "damage_recalled",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "recalled": true
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 56
+      }
+    },
+    {
+      "id": "damage_round_once",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 63,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 21
+      }
+    },
+    {
+      "id": "damage_half",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 5,
+          "attackerPower": 40,
+          "defenderEndurance": 0,
+          "distance": 1,
+          "reach": 5,
+          "target": "body"
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 8
+      }
+    },
+    {
+      "id": "damage_half_below",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 1,
+          "attackerPower": 40,
+          "defenderEndurance": 0,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral",
+          "openingMultiplier": 0.49999999999999994
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0
+      }
+    },
+    {
+      "id": "damage_zero",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 0,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 0
+      }
+    },
+    {
+      "id": "damage_grid_0_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 0,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 13
+      }
+    },
+    {
+      "id": "damage_grid_0_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 0,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 13
+      }
+    },
+    {
+      "id": "damage_grid_0_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 0,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 10
+      }
+    },
+    {
+      "id": "damage_grid_0_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 0,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 8
+      }
+    },
+    {
+      "id": "damage_grid_19_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 19,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 17
+      }
+    },
+    {
+      "id": "damage_grid_19_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 19,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 17
+      }
+    },
+    {
+      "id": "damage_grid_19_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 19,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 13
+      }
+    },
+    {
+      "id": "damage_grid_19_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 19,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 10
+      }
+    },
+    {
+      "id": "damage_grid_20_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 20,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 17
+      }
+    },
+    {
+      "id": "damage_grid_20_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 20,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 17
+      }
+    },
+    {
+      "id": "damage_grid_20_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 20,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 13
+      }
+    },
+    {
+      "id": "damage_grid_20_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 20,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 10
+      }
+    },
+    {
+      "id": "damage_grid_39_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 39,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 21
+      }
+    },
+    {
+      "id": "damage_grid_39_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 39,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 21
+      }
+    },
+    {
+      "id": "damage_grid_39_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 39,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 17
+      }
+    },
+    {
+      "id": "damage_grid_39_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 39,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 13
+      }
+    },
+    {
+      "id": "damage_grid_40_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 40,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 21
+      }
+    },
+    {
+      "id": "damage_grid_40_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 40,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 21
+      }
+    },
+    {
+      "id": "damage_grid_40_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 40,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 17
+      }
+    },
+    {
+      "id": "damage_grid_40_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 40,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 13
+      }
+    },
+    {
+      "id": "damage_grid_59_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 59,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 25
+      }
+    },
+    {
+      "id": "damage_grid_59_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 59,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 25
+      }
+    },
+    {
+      "id": "damage_grid_59_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 59,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 20
+      }
+    },
+    {
+      "id": "damage_grid_59_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 59,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 15
+      }
+    },
+    {
+      "id": "damage_grid_60_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 60,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 25
+      }
+    },
+    {
+      "id": "damage_grid_60_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 60,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 25
+      }
+    },
+    {
+      "id": "damage_grid_60_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 60,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 20
+      }
+    },
+    {
+      "id": "damage_grid_60_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 60,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 15
+      }
+    },
+    {
+      "id": "damage_grid_74_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 74,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 28
+      }
+    },
+    {
+      "id": "damage_grid_74_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 74,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 28
+      }
+    },
+    {
+      "id": "damage_grid_74_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 74,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 23
+      }
+    },
+    {
+      "id": "damage_grid_74_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 74,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 17
+      }
+    },
+    {
+      "id": "damage_grid_75_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 75,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 28
+      }
+    },
+    {
+      "id": "damage_grid_75_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 75,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 28
+      }
+    },
+    {
+      "id": "damage_grid_75_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 75,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 23
+      }
+    },
+    {
+      "id": "damage_grid_75_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 75,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 17
+      }
+    },
+    {
+      "id": "damage_grid_89_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 89,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 31
+      }
+    },
+    {
+      "id": "damage_grid_89_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 89,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 31
+      }
+    },
+    {
+      "id": "damage_grid_89_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 89,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 25
+      }
+    },
+    {
+      "id": "damage_grid_89_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 89,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 19
+      }
+    },
+    {
+      "id": "damage_grid_90_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 90,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 32
+      }
+    },
+    {
+      "id": "damage_grid_90_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 90,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 32
+      }
+    },
+    {
+      "id": "damage_grid_90_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 90,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 25
+      }
+    },
+    {
+      "id": "damage_grid_90_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 90,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 19
+      }
+    },
+    {
+      "id": "damage_grid_100_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 100,
+          "defenderEndurance": 37,
+          "distance": 1,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 34
+      }
+    },
+    {
+      "id": "damage_grid_100_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 100,
+          "defenderEndurance": 37,
+          "distance": 3,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 34
+      }
+    },
+    {
+      "id": "damage_grid_100_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 100,
+          "defenderEndurance": 37,
+          "distance": 4,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 27
+      }
+    },
+    {
+      "id": "damage_grid_100_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 11,
+          "attackerPower": 100,
+          "defenderEndurance": 37,
+          "distance": 5,
+          "reach": 5,
+          "target": "body",
+          "openingMultiplier": 1.5
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 20
+      }
+    },
+    {
+      "id": "damage_invalid_0",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": -1,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_1",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 0.1,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_2",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 9007199254740991,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": 7205759403792793
+      }
+    },
+    {
+      "id": "damage_invalid_3",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 101,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_4",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": -1,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_5",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral",
+          "openingMultiplier": -1
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_6",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral",
+          "openingMultiplier": null
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_7",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral",
+          "openingMultiplier": true
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_8",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral",
+          "openingMultiplier": 9007199254740991
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_9",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral",
+          "recalled": true
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_10",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "astral",
+          "recalled": 1
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_11",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 5,
+          "target": "missing"
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_12",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 1,
+          "reach": 0,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_invalid_13",
+      "op": "calculate_damage",
+      "args": [
+        {
+          "power": 100,
+          "attackerPower": 40,
+          "defenderEndurance": 50,
+          "distance": 6,
+          "reach": 5,
+          "target": "astral"
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "damage_null",
+      "op": "calculate_damage",
+      "args": [
+        null
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_valid",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": true
+      }
+    },
+    {
+      "id": "actor_optional_absent",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "value": true
+      }
+    },
+    {
+      "id": "actor_invalid_0",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_1",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "有星",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_2",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "other",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_3",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "other",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_4",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "other",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_5",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": -1,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_6",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 0.5,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_7",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": -1,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_8",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 0,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_9",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 101,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_10",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 0,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_11",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 21,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_12",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": -1,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_13",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": null,
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_14",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": null,
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_15",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": null,
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_16",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 4
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_17",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "same",
+            "same"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_18",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "bad id"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_19",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": null,
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "actor_invalid_20",
+      "op": "validate_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": true,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_close_body",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        30
+      ],
+      "expected": {
+        "ok": true,
+        "value": {
+          "actor": {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 70,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          "damage": 30,
+          "absorbed": 0
+        }
+      }
+    },
+    {
+      "id": "shared_close_astral",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "astral",
+        30
+      ],
+      "expected": {
+        "ok": true,
+        "value": {
+          "actor": {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 70,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          "damage": 30,
+          "absorbed": 0
+        }
+      }
+    },
+    {
+      "id": "shared_remote_body",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "remote",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        30
+      ],
+      "expected": {
+        "ok": true,
+        "value": {
+          "actor": {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "remote",
+            "mode": "manifested",
+            "hp": 70,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          "damage": 30,
+          "absorbed": 0
+        }
+      }
+    },
+    {
+      "id": "shared_remote_astral",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "remote",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "astral",
+        30
+      ],
+      "expected": {
+        "ok": true,
+        "value": {
+          "actor": {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "remote",
+            "mode": "manifested",
+            "hp": 70,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          "damage": 30,
+          "absorbed": 0
+        }
+      }
+    },
+    {
+      "id": "shared_auto_body",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "auto",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        30
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_auto_astral",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "auto",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "astral",
+        30
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_swarm_body",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "swarm",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        30
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_swarm_astral",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "swarm",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "astral",
+        30
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_set_body",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "set",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        30
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_set_astral",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "set",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "astral",
+        30
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_field_body",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "field",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        30
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_field_astral",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "field",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "astral",
+        30
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_invalid_-1",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        -1
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_invalid_0.5",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        0.5
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_invalid_null",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        null
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_invalid_10",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        "10"
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_invalid_true",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "body",
+        true
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "shared_wrong_target",
+      "op": "apply_shared_damage",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "missing",
+        1
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "interval_0_light",
+      "op": "action_interval",
+      "args": [
+        0,
+        "light"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 98
+      }
+    },
+    {
+      "id": "interval_0_normal",
+      "op": "action_interval",
+      "args": [
+        0,
+        "normal"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 140
+      }
+    },
+    {
+      "id": "interval_0_heavy",
+      "op": "action_interval",
+      "args": [
+        0,
+        "heavy"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 182
+      }
+    },
+    {
+      "id": "interval_20_light",
+      "op": "action_interval",
+      "args": [
+        20,
+        "light"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 88
+      }
+    },
+    {
+      "id": "interval_20_normal",
+      "op": "action_interval",
+      "args": [
+        20,
+        "normal"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 125
+      }
+    },
+    {
+      "id": "interval_20_heavy",
+      "op": "action_interval",
+      "args": [
+        20,
+        "heavy"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 163
+      }
+    },
+    {
+      "id": "interval_40_light",
+      "op": "action_interval",
+      "args": [
+        40,
+        "light"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 77
+      }
+    },
+    {
+      "id": "interval_40_normal",
+      "op": "action_interval",
+      "args": [
+        40,
+        "normal"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 110
+      }
+    },
+    {
+      "id": "interval_40_heavy",
+      "op": "action_interval",
+      "args": [
+        40,
+        "heavy"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 143
+      }
+    },
+    {
+      "id": "interval_60_light",
+      "op": "action_interval",
+      "args": [
+        60,
+        "light"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 70
+      }
+    },
+    {
+      "id": "interval_60_normal",
+      "op": "action_interval",
+      "args": [
+        60,
+        "normal"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 100
+      }
+    },
+    {
+      "id": "interval_60_heavy",
+      "op": "action_interval",
+      "args": [
+        60,
+        "heavy"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 130
+      }
+    },
+    {
+      "id": "interval_75_light",
+      "op": "action_interval",
+      "args": [
+        75,
+        "light"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 63
+      }
+    },
+    {
+      "id": "interval_75_normal",
+      "op": "action_interval",
+      "args": [
+        75,
+        "normal"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 90
+      }
+    },
+    {
+      "id": "interval_75_heavy",
+      "op": "action_interval",
+      "args": [
+        75,
+        "heavy"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 117
+      }
+    },
+    {
+      "id": "interval_90_light",
+      "op": "action_interval",
+      "args": [
+        90,
+        "light"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 56
+      }
+    },
+    {
+      "id": "interval_90_normal",
+      "op": "action_interval",
+      "args": [
+        90,
+        "normal"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 80
+      }
+    },
+    {
+      "id": "interval_90_heavy",
+      "op": "action_interval",
+      "args": [
+        90,
+        "heavy"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 104
+      }
+    },
+    {
+      "id": "interval_100_light",
+      "op": "action_interval",
+      "args": [
+        100,
+        "light"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 56
+      }
+    },
+    {
+      "id": "interval_100_normal",
+      "op": "action_interval",
+      "args": [
+        100,
+        "normal"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 80
+      }
+    },
+    {
+      "id": "interval_100_heavy",
+      "op": "action_interval",
+      "args": [
+        100,
+        "heavy"
+      ],
+      "expected": {
+        "ok": true,
+        "value": 104
+      }
+    },
+    {
+      "id": "interval_bad_weight",
+      "op": "action_interval",
+      "args": [
+        60,
+        "other"
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "interval_bad_speed",
+      "op": "action_interval",
+      "args": [
+        101,
+        "normal"
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "timeline_ties",
+      "op": "order_timeline",
+      "args": [
+        [
+          {
+            "id": "enemy",
+            "team": "enemy",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "a",
+            "team": "player",
+            "order": 1,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "A",
+            "team": "player",
+            "order": 1,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "first",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "early",
+            "team": "enemy",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 99,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          }
+        ]
+      ],
+      "expected": {
+        "ok": true,
+        "value": [
+          {
+            "id": "early",
+            "team": "enemy",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 99,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "first",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "A",
+            "team": "player",
+            "order": 1,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "a",
+            "team": "player",
+            "order": 1,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "enemy",
+            "team": "enemy",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 100,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "timeline_stable",
+      "op": "order_timeline",
+      "args": [
+        [
+          {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 90,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 80,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "dead",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": null,
+            "kind": "close",
+            "mode": "extinguished",
+            "hp": 0,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 0,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          }
+        ]
+      ],
+      "expected": {
+        "ok": true,
+        "value": [
+          {
+            "id": "dead",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": null,
+            "kind": "close",
+            "mode": "extinguished",
+            "hp": 0,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 0,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 90,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 2,
+              "y": 2
+            },
+            "astral": {
+              "x": 3,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 80,
+            "maxHp": 100,
+            "will": 10,
+            "maxWill": 20,
+            "shield": 0,
+            "chart": {
+              "pow": 60,
+              "spd": 60,
+              "rch": 20,
+              "end": 40,
+              "prc": 40,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 100,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "timeline_empty",
+      "op": "order_timeline",
+      "args": [
+        []
+      ],
+      "expected": {
+        "ok": true,
+        "value": []
+      }
+    },
+    {
+      "id": "reschedule",
+      "op": "reschedule_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 20,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 80,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "heavy"
+      ],
+      "expected": {
+        "ok": true,
+        "value": {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 20,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 243,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        }
+      }
+    },
+    {
+      "id": "reschedule_overflow",
+      "op": "reschedule_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": {
+            "x": 3,
+            "y": 2
+          },
+          "kind": "close",
+          "mode": "manifested",
+          "hp": 100,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 9007199254740991,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "normal"
+      ],
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "id": "reschedule_dead",
+      "op": "reschedule_actor",
+      "args": [
+        {
+          "id": "finn",
+          "team": "player",
+          "order": 0,
+          "body": {
+            "x": 2,
+            "y": 2
+          },
+          "astral": null,
+          "kind": "close",
+          "mode": "extinguished",
+          "hp": 0,
+          "maxHp": 100,
+          "will": 10,
+          "maxWill": 20,
+          "shield": 0,
+          "chart": {
+            "pow": 60,
+            "spd": 60,
+            "rch": 20,
+            "end": 40,
+            "prc": 40,
+            "pot": 80
+          },
+          "reach": 2,
+          "readyAt": 100,
+          "skillIds": [
+            "basic_strike"
+          ],
+          "lampMarks": 0
+        },
+        "normal"
+      ],
+      "expected": {
+        "ok": false
+      }
+    }
+  ],
+  "replays": [
+    {
+      "id": "shield_then_ko",
+      "initial": {
+        "id": "finn",
+        "team": "player",
+        "order": 0,
+        "body": {
+          "x": 2,
+          "y": 2
+        },
+        "astral": {
+          "x": 3,
+          "y": 2
+        },
+        "kind": "close",
+        "mode": "manifested",
+        "hp": 20,
+        "maxHp": 100,
+        "will": 10,
+        "maxWill": 20,
+        "shield": 15,
+        "chart": {
+          "pow": 60,
+          "spd": 60,
+          "rch": 20,
+          "end": 40,
+          "prc": 40,
+          "pot": 80
+        },
+        "reach": 2,
+        "readyAt": 100,
+        "skillIds": [
+          "basic_strike"
+        ],
+        "lampMarks": 0
+      },
+      "steps": [
+        {
+          "command": {
+            "target": "astral",
+            "amount": 10
+          },
+          "expected": {
+            "ok": true,
+            "value": {
+              "actor": {
+                "id": "finn",
+                "team": "player",
+                "order": 0,
+                "body": {
+                  "x": 2,
+                  "y": 2
+                },
+                "astral": {
+                  "x": 3,
+                  "y": 2
+                },
+                "kind": "close",
+                "mode": "manifested",
+                "hp": 20,
+                "maxHp": 100,
+                "will": 10,
+                "maxWill": 20,
+                "shield": 5,
+                "chart": {
+                  "pow": 60,
+                  "spd": 60,
+                  "rch": 20,
+                  "end": 40,
+                  "prc": 40,
+                  "pot": 80
+                },
+                "reach": 2,
+                "readyAt": 100,
+                "skillIds": [
+                  "basic_strike"
+                ],
+                "lampMarks": 0
+              },
+              "damage": 0,
+              "absorbed": 10
+            }
+          }
+        },
+        {
+          "command": {
+            "target": "body",
+            "amount": 100
+          },
+          "expected": {
+            "ok": true,
+            "value": {
+              "actor": {
+                "id": "finn",
+                "team": "player",
+                "order": 0,
+                "body": {
+                  "x": 2,
+                  "y": 2
+                },
+                "astral": null,
+                "kind": "close",
+                "mode": "extinguished",
+                "hp": 0,
+                "maxHp": 100,
+                "will": 10,
+                "maxWill": 20,
+                "shield": 0,
+                "chart": {
+                  "pow": 60,
+                  "spd": 60,
+                  "rch": 20,
+                  "end": 40,
+                  "prc": 40,
+                  "pot": 80
+                },
+                "reach": 2,
+                "readyAt": 100,
+                "skillIds": [
+                  "basic_strike"
+                ],
+                "lampMarks": 0
+              },
+              "damage": 20,
+              "absorbed": 5
+            }
+          }
+        },
+        {
+          "command": {
+            "target": "body",
+            "amount": 5
+          },
+          "expected": {
+            "ok": true,
+            "value": {
+              "actor": {
+                "id": "finn",
+                "team": "player",
+                "order": 0,
+                "body": {
+                  "x": 2,
+                  "y": 2
+                },
+                "astral": null,
+                "kind": "close",
+                "mode": "extinguished",
+                "hp": 0,
+                "maxHp": 100,
+                "will": 10,
+                "maxWill": 20,
+                "shield": 0,
+                "chart": {
+                  "pow": 60,
+                  "spd": 60,
+                  "rch": 20,
+                  "end": 40,
+                  "prc": 40,
+                  "pot": 80
+                },
+                "reach": 2,
+                "readyAt": 100,
+                "skillIds": [
+                  "basic_strike"
+                ],
+                "lampMarks": 0
+              },
+              "damage": 0,
+              "absorbed": 0
+            }
+          }
+        },
+        {
+          "command": {
+            "target": "astral",
+            "amount": 5
+          },
+          "expected": {
+            "ok": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "recalled_body",
+      "initial": {
+        "id": "finn",
+        "team": "player",
+        "order": 0,
+        "body": {
+          "x": 2,
+          "y": 2
+        },
+        "astral": null,
+        "kind": "remote",
+        "mode": "recalled",
+        "hp": 100,
+        "maxHp": 100,
+        "will": 10,
+        "maxWill": 20,
+        "shield": 0,
+        "chart": {
+          "pow": 60,
+          "spd": 60,
+          "rch": 20,
+          "end": 40,
+          "prc": 40,
+          "pot": 80
+        },
+        "reach": 2,
+        "readyAt": 100,
+        "skillIds": [
+          "basic_strike"
+        ],
+        "lampMarks": 0
+      },
+      "steps": [
+        {
+          "command": {
+            "target": "astral",
+            "amount": 5
+          },
+          "expected": {
+            "ok": false
+          }
+        },
+        {
+          "command": {
+            "target": "body",
+            "amount": 7
+          },
+          "expected": {
+            "ok": true,
+            "value": {
+              "actor": {
+                "id": "finn",
+                "team": "player",
+                "order": 0,
+                "body": {
+                  "x": 2,
+                  "y": 2
+                },
+                "astral": null,
+                "kind": "remote",
+                "mode": "recalled",
+                "hp": 93,
+                "maxHp": 100,
+                "will": 10,
+                "maxWill": 20,
+                "shield": 0,
+                "chart": {
+                  "pow": 60,
+                  "spd": 60,
+                  "rch": 20,
+                  "end": 40,
+                  "prc": 40,
+                  "pot": 80
+                },
+                "reach": 2,
+                "readyAt": 100,
+                "skillIds": [
+                  "basic_strike"
+                ],
+                "lampMarks": 0
+              },
+              "damage": 7,
+              "absorbed": 0
+            }
+          }
+        },
+        {
+          "command": {
+            "target": "body",
+            "amount": 0
+          },
+          "expected": {
+            "ok": true,
+            "value": {
+              "actor": {
+                "id": "finn",
+                "team": "player",
+                "order": 0,
+                "body": {
+                  "x": 2,
+                  "y": 2
+                },
+                "astral": null,
+                "kind": "remote",
+                "mode": "recalled",
+                "hp": 93,
+                "maxHp": 100,
+                "will": 10,
+                "maxWill": 20,
+                "shield": 0,
+                "chart": {
+                  "pow": 60,
+                  "spd": 60,
+                  "rch": 20,
+                  "end": 40,
+                  "prc": 40,
+                  "pot": 80
+                },
+                "reach": 2,
+                "readyAt": 100,
+                "skillIds": [
+                  "basic_strike"
+                ],
+                "lampMarks": 0
+              },
+              "damage": 0,
+              "absorbed": 0
+            }
+          }
+        },
+        {
+          "command": {
+            "target": "body",
+            "amount": 100
+          },
+          "expected": {
+            "ok": true,
+            "value": {
+              "actor": {
+                "id": "finn",
+                "team": "player",
+                "order": 0,
+                "body": {
+                  "x": 2,
+                  "y": 2
+                },
+                "astral": null,
+                "kind": "remote",
+                "mode": "extinguished",
+                "hp": 0,
+                "maxHp": 100,
+                "will": 10,
+                "maxWill": 20,
+                "shield": 0,
+                "chart": {
+                  "pow": 60,
+                  "spd": 60,
+                  "rch": 20,
+                  "end": 40,
+                  "prc": 40,
+                  "pot": 80
+                },
+                "reach": 2,
+                "readyAt": 100,
+                "skillIds": [
+                  "basic_strike"
+                ],
+                "lampMarks": 0
+              },
+              "damage": 93,
+              "absorbed": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "invalid_then_valid",
+      "initial": {
+        "id": "finn",
+        "team": "player",
+        "order": 0,
+        "body": {
+          "x": 2,
+          "y": 2
+        },
+        "astral": {
+          "x": 3,
+          "y": 2
+        },
+        "kind": "close",
+        "mode": "manifested",
+        "hp": 100,
+        "maxHp": 100,
+        "will": 10,
+        "maxWill": 20,
+        "shield": 0,
+        "chart": {
+          "pow": 60,
+          "spd": 60,
+          "rch": 20,
+          "end": 40,
+          "prc": 40,
+          "pot": 80
+        },
+        "reach": 2,
+        "readyAt": 100,
+        "skillIds": [
+          "basic_strike"
+        ],
+        "lampMarks": 0
+      },
+      "steps": [
+        {
+          "command": {
+            "target": "body",
+            "amount": -1
+          },
+          "expected": {
+            "ok": false
+          }
+        },
+        {
+          "command": {
+            "target": "astral",
+            "amount": 30
+          },
+          "expected": {
+            "ok": true,
+            "value": {
+              "actor": {
+                "id": "finn",
+                "team": "player",
+                "order": 0,
+                "body": {
+                  "x": 2,
+                  "y": 2
+                },
+                "astral": {
+                  "x": 3,
+                  "y": 2
+                },
+                "kind": "close",
+                "mode": "manifested",
+                "hp": 70,
+                "maxHp": 100,
+                "will": 10,
+                "maxWill": 20,
+                "shield": 0,
+                "chart": {
+                  "pow": 60,
+                  "spd": 60,
+                  "rch": 20,
+                  "end": 40,
+                  "prc": 40,
+                  "pot": 80
+                },
+                "reach": 2,
+                "readyAt": 100,
+                "skillIds": [
+                  "basic_strike"
+                ],
+                "lampMarks": 0
+              },
+              "damage": 30,
+              "absorbed": 0
+            }
+          }
+        },
+        {
+          "command": {
+            "target": "body",
+            "amount": 30
+          },
+          "expected": {
+            "ok": true,
+            "value": {
+              "actor": {
+                "id": "finn",
+                "team": "player",
+                "order": 0,
+                "body": {
+                  "x": 2,
+                  "y": 2
+                },
+                "astral": {
+                  "x": 3,
+                  "y": 2
+                },
+                "kind": "close",
+                "mode": "manifested",
+                "hp": 40,
+                "maxHp": 100,
+                "will": 10,
+                "maxWill": 20,
+                "shield": 0,
+                "chart": {
+                  "pow": 60,
+                  "spd": 60,
+                  "rch": 20,
+                  "end": 40,
+                  "prc": 40,
+                  "pot": 80
+                },
+                "reach": 2,
+                "readyAt": 100,
+                "skillIds": [
+                  "basic_strike"
+                ],
+                "lampMarks": 0
+              },
+              "damage": 30,
+              "absorbed": 0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
