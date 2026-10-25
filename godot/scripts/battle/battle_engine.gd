@@ -1,17 +1,30 @@
 extends RefCounted
-## G2b movement transactions. Skills and fixed intents are added in subsequent steps.
+## Deterministic battle transactions; fixed intent orchestration lives above this layer.
 ## No scene, resource, filesystem, clock or random dependencies.
 const BattleMath = preload("res://scripts/battle/battle_math.gd")
+const Skills = preload("res://scripts/battle/battle_skills.gd")
+const Effects = preload("res://scripts/battle/battle_effects.gd")
 const Grid = preload("res://scripts/battle/battle_grid.gd")
 const ASTRAL_MOVEMENT: Dictionary = {"E": 1, "D": 2, "C": 3, "B": 4, "A": 5, "S": 6}
 var _math: BattleMath
 var _skills: Dictionary = {}
+var _skill_book: Skills
+var _effects: Effects
 
-func configure(balance: Variant, skill_ids: Variant) -> String:
+func configure(balance: Variant, skill_data: Variant) -> String:
 	var candidate: BattleMath = BattleMath.new()
 	var error: String = candidate.configure(balance)
 	if not error.is_empty():
 		return error
+	var book: Skills
+	var skill_ids: Variant = skill_data
+	if skill_data is Dictionary:
+		book = Skills.new()
+		error = book.configure(skill_data)
+		if not error.is_empty():
+			return error
+		skill_ids = book.ids()
+	# Legacy G2b ID lists remain useful for movement-only replay fixtures.
 	if not skill_ids is Array:
 		return "invalid_skill_ids"
 	var available: Dictionary = {}
@@ -21,6 +34,11 @@ func configure(balance: Variant, skill_ids: Variant) -> String:
 		available[id] = true
 	_math = candidate
 	_skills = available
+	_skill_book = book
+	_effects = Effects.new() if book != null else null
+	if _effects != null:
+		_effects.math = _math
+		_effects.skills = book
 	return ""
 
 func create_battle(definition: Variant) -> Dictionary:
@@ -103,6 +121,27 @@ func apply_command(input: Variant, command: Variant) -> Dictionary:
 		actor["mode"] = "recalled"
 		actor["astral"] = null
 		return _finish_action(input, state, actor, "light", [{"type": "recall", "actorId": actor["id"]}])
+	if type in ["guard", "skill", "cancelled_skill"] and _skill_book == null:
+		return _invalid(input, "skill_data_unavailable")
+	if type == "guard":
+		var before: int = int(actor["shield"])
+		actor["shield"] = maxi(before, _skill_book.rule("guardShield"))
+		return _finish_action(input, state, actor, "normal", [{"type": "shield", "actorId": actor["id"], "sourceId": actor["id"], "amount": actor["shield"] - before, "shield": actor["shield"]}])
+	if type == "skill":
+		var resolved: Dictionary = _effects.resolve_skill(state, actor, command)
+		if not resolved["ok"]:
+			return _invalid(input, resolved["error"])
+		return _finish_action(input, state, actor, resolved["weight"], resolved["events"])
+	if type == "cancelled_skill":
+		var skill: Dictionary = _skill_book.get_skill(command.get("skillId"))
+		if actor["team"] != "enemy" or skill.is_empty() or skill["effect"] != "damage" or skill["id"] not in actor.get("skillIds", ["basic_strike"]):
+			return _invalid(input, "skill_unavailable")
+		if actor["will"] < skill["cost"]:
+			return _invalid(input, "not_enough_will")
+		if command.get("outcome") not in ["miss", "interrupted"] or command.get("reason") not in ["actor_displaced", "actor_unavailable", "plan_blocked", "target_unavailable", "outside_skill_range", "blocked_line_of_sight", "empty_cell", "skill_condition_lost"]:
+			return _invalid(input, "invalid_cancellation")
+		actor["will"] = int(actor["will"]) - int(skill["cost"])
+		return _finish_action(input, state, actor, skill["weight"], [{"type": "cancelled_skill", "actorId": actor["id"], "skillId": skill["id"], "cost": skill["cost"], "outcome": command["outcome"], "reason": command["reason"]}])
 	return _invalid(input, "unknown_command")
 
 func reachable_moves(state: Variant, unit: Variant) -> Array:
@@ -115,19 +154,22 @@ func reachable_moves(state: Variant, unit: Variant) -> Array:
 	return Grid.reachable(state, actor, unit, _allowance(actor, unit) - spent)
 
 func _finish_action(input: Dictionary, state: Dictionary, actor: Dictionary, weight: String, events: Array) -> Dictionary:
-	var schedule: Dictionary = _math.reschedule_actor(actor, weight)
-	if not schedule["ok"] or int(state["turnNumber"]) >= BattleMath.MAX_SAFE_INTEGER:
-		return _invalid(input, "numeric_overflow")
+	if actor["hp"] > 0:
+		var schedule: Dictionary = _math.reschedule_actor(actor, weight)
+		if not schedule["ok"]:
+			return _invalid(input, "numeric_overflow")
+		actor.merge(schedule["value"], true)
 	if actor["team"] == "enemy":
 		var count: int = int(state["enemyActions"].get(actor["id"], 0))
 		if count >= BattleMath.MAX_SAFE_INTEGER:
 			return _invalid(input, "numeric_overflow")
 		state["enemyActions"][actor["id"]] = count + 1
-	actor.merge(schedule["value"], true)
 	state["phase"] = _outcome(state)
 	if state["phase"] != "active":
 		events.append({"type": "outcome", "phase": state["phase"]})
 		return _accepted(state, events)
+	if int(state["turnNumber"]) >= BattleMath.MAX_SAFE_INTEGER:
+		return _invalid(input, "numeric_overflow")
 	var living: Array = state["actors"].filter(func(item: Dictionary) -> bool: return item["hp"] > 0)
 	var next_id: String = _math.order_timeline(living)["value"][0]["id"]
 	var next: Dictionary = _find(state, next_id)
@@ -204,16 +246,17 @@ func _valid_state(state: Variant) -> bool:
 		return false
 	if not _math.validate_actor(state.get("turnStart"))["ok"] or state["turnStart"]["id"] != state["activeId"]:
 		return false
-	# Undo is a transaction too: its snapshot must be legal against the other units.
-	var origin_board: Dictionary = state.duplicate(true)
-	for index: int in origin_board["actors"].size():
-		if origin_board["actors"][index]["id"] == state["activeId"]:
-			var restored: Dictionary = origin_board["actors"][index]
-			for key: String in ["body", "astral", "mode"]:
-				var value: Variant = state["turnStart"][key]
-				restored[key] = value.duplicate(true) if value is Dictionary else value
-	if not _definition_error(origin_board).is_empty():
-		return false
+	if state["phase"] == "active":
+		# Undo is a transaction too: its snapshot must be legal against the other units.
+		var origin_board: Dictionary = state.duplicate(true)
+		for index: int in origin_board["actors"].size():
+			if origin_board["actors"][index]["id"] == state["activeId"]:
+				var restored: Dictionary = origin_board["actors"][index]
+				for key: String in ["body", "astral", "mode"]:
+					var value: Variant = state["turnStart"][key]
+					restored[key] = value.duplicate(true) if value is Dictionary else value
+		if not _definition_error(origin_board).is_empty():
+			return false
 	var active: Dictionary = _find(state, state["activeId"])
 	if state["astralSpent"] > _allowance(active, "astral") or (state["phase"] == "active" and active["hp"] == 0):
 		return false

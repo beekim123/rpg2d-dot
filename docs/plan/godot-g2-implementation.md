@@ -29,8 +29,12 @@
 
 ## G2c–G2e · 后续顺序
 
-- [ ] G2c：技能、治疗/护盾、灯印、射线、击退/共享碰撞去重及剧情生命底线。
+- [x] G2c：技能、治疗/护盾、灯印、射线、击退/共享碰撞去重及剧情生命底线。
 - [ ] G2d：固定定点/锁定意图、可见中断、实时预计扣血，完整事件回放。
 - [ ] G2e：艾拉/影匠两战真实胜负与失败重建，补未觉醒芬恩道具/鼓舞；完整G2技术验收后进入G3原生表现。
 
 验证入口：`npm run battle:fixtures:verify`、`npm run godot:test:battle`、`npm run check`。每次增量更新本表、backlog/progress/status。G2纯规则阶段不宣称原生战斗画面或完整序章已完成；画面/声音验收在G3，完整故事在G4。
+
+## G2c实现契约
+
+`BattleSkills.configure(skill_data)`校验并深拷贝rules/skills；`BattleEngine.configure(balance, skill_data)`注入完整数据。旧ID数组只用于G2b移动夹具，不能执行技能。BattleEffects只处理引擎私有事务副本，失败返回原输入和invalid事件；不暴露资源/场景依赖。共享skills.json包含20回放/70指令/200射线；原生额外覆盖三格击退剩余碰撞伤害、非法配置保留旧数据、伤害/治疗/护盾溢出回滚。
