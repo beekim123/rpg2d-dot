@@ -59,6 +59,18 @@ function runInline(html) {
   return context.window;
 }
 
+test('release PCM16 is verified against Godot before packaging the independent viewer',async t=>{
+  const f=await fixture(t),frames=5513,wav=Buffer.alloc(44+frames*2);
+  wav.write('RIFF');wav.writeUInt32LE(wav.length-8,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);
+  wav.writeUInt16LE(1,20);wav.writeUInt16LE(1,22);wav.writeUInt32LE(44100,24);wav.writeUInt32LE(88200,28);
+  wav.writeUInt16LE(2,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(frames*2,40);
+  const manifest={format:'astra.audio/1',sampleFormat:'pcm16',sampleRate:44100,source_sha256:sha(Buffer.from(synth)),cues:[{id:'tap',file:'tap.wav',kind:'effect',sampleRate:44100,frames,bytes:wav.length,sha256:sha(wav)}]};
+  await f.put('resources/audio/export/manifest.json',manifest);await f.put('resources/audio/export/tap.wav',wav);
+  await f.put('godot/resources/audio/manifest.json',manifest);await f.put('godot/resources/audio/tap.wav',wav);
+  const result=await buildWorkbench(f.options);assert.equal(payload(await readFile(result.indexPath,'utf8')).audio.sample_format,'pcm16');
+  await f.put('godot/resources/audio/tap.wav','altered');await assert.rejects(buildWorkbench(f.options),/Godot audio differs/);
+});
+
 test('self-contained bundle embeds canonical PNG/font bytes, complete licenses and synth metadata', async t => {
   const f = await fixture(t), result = await buildWorkbench(f.options);
   assert.equal(result.assets, 2); assert.equal(result.cues, 1); assert.equal(result.verifiedGodot, true);

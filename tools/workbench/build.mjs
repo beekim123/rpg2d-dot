@@ -5,6 +5,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import vm from 'node:vm';
 import { stripTypeScriptTypes } from 'node:module';
 import { repoRoot as defaultRoot } from '../lib/paths.mjs';
+import {readAudioManifest} from '../resources/audio-manifest.mjs';
 
 const FONT_ROOT = 'third_party/fonts/fusion-pixel-12px';
 const FONT_FILE = 'fusion-pixel-12px-proportional-zh_hans.otf.woff2';
@@ -139,6 +140,11 @@ export async function buildWorkbench({repoRoot = defaultRoot, outDir = join(repo
   const labels = JSON.parse(await textAt(repoRoot, 'workbench/audio-labels.json'));
   if (labels === null || typeof labels !== 'object' || Array.isArray(labels)) throw new Error('Independent audio labels missing');
   const audio = synthBundle(synth, labels);
+  const release=await readAudioManifest(repoRoot);
+  if(release.manifest){
+    if(release.manifest.cues.length!==audio.cues.length||audio.cues.some(cue=>!release.manifest.cues.some(entry=>entry.id===cue.id&&entry.kind===cue.kind&&Math.abs(entry.frames/44100-cue.duration)<1/44100)))throw new Error('Audio release metadata differs from independent synthesizer');
+    if(verifyGodot)for(const [source,bytes] of release.files)await verifyCopy(repoRoot,bytes,'godot/resources/audio/'+source.split('/').at(-1),'audio');
+  }
   const template = await textAt(repoRoot, 'workbench/index.html');
   const style = await textAt(repoRoot, 'workbench/style.css');
   const viewer = await textAt(repoRoot, 'workbench/viewer.js');
@@ -147,7 +153,7 @@ export async function buildWorkbench({repoRoot = defaultRoot, outDir = join(repo
     format: 'astra.workbench/1',
     art: {manifest, manifest_json: manifestJson, pngs}, palette,
     font: {data_url: dataUri('font/woff2', font), licenses},
-    audio: {source_sha256: sha(Buffer.from(synth)), cues: audio.cues},
+    audio: {source_sha256: sha(Buffer.from(synth)), cues: audio.cues, sample_format:release.manifest?.sampleFormat??'float32'},
   };
   const replacements = {
     STYLE: `<style id="astra-workbench-style">${style.replace(/<\/style/gi, match => match.replace('/', '\\/'))}</style>`,

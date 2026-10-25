@@ -14,6 +14,7 @@ var _locales: Dictionary = {}
 var _stories: Dictionary = {}
 var _tables: Dictionary = {}
 var _palette: Dictionary = {}
+var _audio: Dictionary = {}
 var _font: FontFile
 
 func load_pack() -> bool:
@@ -27,6 +28,9 @@ func load_pack() -> bool:
 			return false
 	if _pack.has("tables") and not _pack["tables"] is Dictionary:
 		push_error("Invalid resource pack table index")
+		return false
+	if _pack.has("audio") and not _pack["audio"] is Dictionary:
+		push_error("Invalid resource pack audio index")
 		return false
 	if not _pack.get("files") is Array or not _pack.get("art_manifest") is String or not _pack.get("font") is String:
 		push_error("Missing resource pack file metadata")
@@ -52,6 +56,7 @@ func load_pack() -> bool:
 	_locales.clear()
 	_stories.clear()
 	_tables.clear()
+	_audio.clear()
 	_font = null
 	for asset: Dictionary in manifest.get("assets", []):
 		definitions[String(asset["id"])] = asset
@@ -94,6 +99,33 @@ func table_data(table_id: String) -> Dictionary:
 
 func has_table(table_id: String) -> bool:
 	return (_pack.get("tables", {}) as Dictionary).has(table_id)
+
+func audio_ids() -> Array[String]:
+	var result: Array[String] = []
+	for id: String in _pack.get("audio", {}):
+		result.append(id)
+	result.sort()
+	return result
+
+func audio_kind(id: String) -> String:
+	return String((_pack.get("audio", {}) as Dictionary).get(id, {}).get("kind", ""))
+
+func audio_stream(id: String) -> AudioStreamWAV:
+	var index: Dictionary = _pack.get("audio", {})
+	if not index.has(id):
+		return null
+	if not _audio.has(id):
+		var entry: Dictionary = index[id]
+		var stream: AudioStreamWAV = load(String(entry["path"])) as AudioStreamWAV
+		if stream == null or stream.mix_rate != entry["sample_rate"] or stream.stereo or stream.format != AudioStreamWAV.FORMAT_16_BITS or stream.data.size() != int(entry["frames"]) * 2:
+			push_error("Imported audio does not match canonical PCM16: " + id)
+			return null
+		stream = stream.duplicate() as AudioStreamWAV
+		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD if entry["kind"] == "music" else AudioStreamWAV.LOOP_DISABLED
+		stream.loop_begin = 0
+		stream.loop_end = int(entry["frames"])
+		_audio[id] = stream
+	return (_audio[id] as AudioStreamWAV).duplicate() as AudioStreamWAV
 
 func shadow_for_terrain(terrain_asset_id: String) -> String:
 	match terrain_asset_id:

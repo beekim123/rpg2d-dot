@@ -17,6 +17,7 @@ func _run() -> void:
 	root.add_child(world)
 	await process_frame
 	check(world.loaded, "world loads before native battle")
+	check(world.has_method("audio_state"), "world owns the native audio service")
 	var initial: Dictionary = world.snapshot_state()
 	var supported: bool = world.has_method("start_battle")
 	check(supported, "world exposes validated native battle entry")
@@ -107,6 +108,8 @@ func _run() -> void:
 				check(Compare.equal(world.snapshot_state(), initial), "each native fight preserves exploration progress without lighting the faced lamp")
 	world.queue_free()
 	await process_frame
+	# AudioServer releases stopped playback objects on its next mix, after node disposal.
+	await create_timer(maxf(0.05, AudioServer.get_time_to_next_mix() + AudioServer.get_output_latency())).timeout
 	print("BattleView: %d checks, %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)
 

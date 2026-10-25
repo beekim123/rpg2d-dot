@@ -187,6 +187,9 @@
         let buffer = buffers.get(cue.id);
         if (!buffer) {
           const samples = window.ASTRA_SYNTH.renderCue(cue.id, 44100);
+          if (pack.audio.sample_format === 'pcm16') for (let index = 0; index < samples.length; index++) {
+            const value = samples[index]; samples[index] = Math.round(value * (value < 0 ? 32768 : 32767)) / 32768;
+          }
           buffer = audioContext.createBuffer(1, samples.length, 44100); buffer.getChannelData(0).set(samples); buffers.set(cue.id, buffer);
         }
         const source = audioContext.createBufferSource(); source.buffer = buffer; source.loop = cue.kind === 'music'; source.connect(audioMaster);

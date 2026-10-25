@@ -39,3 +39,5 @@ npm run workbench:test:web
 浏览器验证会把HTML复制到仓库外的临时目录，通过`file://`真实打开；检查动画、暂停、整数倍率、分类、PNG下载字节和零网络请求。另验HTTP展示和192kHz设备下44100Hz资源试听。所有测试单worker。
 
 构建最低Node 22.13（本机和CI验证Node24）。采用Node内置stripTypeScriptTypes处理仓库合成器，不另引入旧版编译器；API版本依据[Node官方文档](https://nodejs.org/api/module.html#modulestriptypescripttypescode-options)。成品HTML运行不需要Node。
+
+声音发行包由 `resources/audio/export/` 的原始PCM16清单校验。构建时同时核对Godot受管声音副本；离线HTML仍使用内嵌合成器并以相同PCM16量化试听，不依赖游戏源码、WAV下载或服务器。更改合成器后先执行 `npm run audio:build`、`npm run godot:sync`，再重建展示器。

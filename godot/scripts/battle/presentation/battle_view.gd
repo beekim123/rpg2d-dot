@@ -3,6 +3,10 @@ extends Node2D
 signal changed
 signal close_requested
 signal sound_requested(cue: String)
+signal gesture_received
+signal muted_changed(value: bool)
+signal restarted
+signal outcome_presented(phase: String)
 const Controls = preload("res://scripts/battle/presentation/battle_controls.gd")
 const EventPlayer = preload("res://scripts/battle/presentation/battle_event_player.gd")
 const Unit = preload("res://scripts/battle/presentation/battle_unit_view.gd")
@@ -100,6 +104,8 @@ func set_animation_speed(index: int) -> void:
 func _input(event: InputEvent) -> void:
 	if not loaded or not is_inside_tree():
 		return
+	if event.is_pressed() and not event.is_echo():
+		gesture_received.emit()
 	if event is InputEventMouseMotion or event is InputEventMouseButton:
 		_mouse_navigation = true
 		_pointer = event.position
@@ -122,6 +128,7 @@ func _input(event: InputEvent) -> void:
 			_refresh()
 		else:
 			muted = not muted
+			muted_changed.emit(muted)
 			_refresh()
 		viewport.set_input_as_handled()
 		return
@@ -202,6 +209,11 @@ func _accept(result: Dictionary) -> bool:
 		return true
 	sound_requested.emit("confirm")
 	if result.get("reset", false):
+		restarted.emit()
+		for child: Node in get_children():
+			if child is AnimatedSprite2D or child is Label:
+				child.queue_free()
+		_popups.clear()
 		_shown = _controls.snapshot()["battle"]
 		_sync_units()
 		_refresh()
@@ -311,6 +323,7 @@ func _event_started(event: Dictionary) -> void:
 			_shown["activeId"] = event["actorId"]
 		"outcome":
 			_shown["phase"] = event["phase"]
+			outcome_presented.emit(event["phase"])
 			sound_requested.emit("battle_win" if event["phase"] == "won" else "battle_lose")
 	_refresh()
 func _event_progressed(event: Dictionary, tick: int, duration: int) -> void:

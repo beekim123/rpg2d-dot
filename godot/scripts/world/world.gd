@@ -8,6 +8,7 @@ signal battle_finished(battle_id: String, phase: String)
 const BattleBook = preload("res://scripts/resources/battle_catalog.gd")
 const BattleView = preload("res://scripts/battle/presentation/battle_view.gd")
 const BattleScene = preload("res://scenes/battle/battle_view.tscn")
+const SoundService = preload("res://scripts/audio/audio_service.gd")
 
 @export var initial_map_id: String = ""
 @export var persistence_enabled: bool = true
@@ -47,6 +48,8 @@ var _battle_before: Dictionary = {}
 var _battle_camera: Vector2 = Vector2.ZERO
 var _battle_id: String = ""
 var _battle_materials: Dictionary = {}
+var _audio_service: SoundService
+var _battle_music: String = ""
 
 @onready var ground: TileMapLayer = $Ground
 @onready var edges: TileMapLayer = $Edges
@@ -111,6 +114,12 @@ func _ready() -> void:
 	_save_controller.changed.connect(_on_save_presentation_changed)
 	persistence.changed.connect(_on_persistence_result)
 	_battle_book.configure(catalog, world_data, _strings)
+	_audio_service = SoundService.new()
+	_audio_service.name = "AudioService"
+	add_child(_audio_service)
+	_audio_service.setup(catalog)
+	_audio_service.changed.connect(_publish_accessibility_state)
+	_audio_service.music("test_theme")
 	controls_label.text = String(_strings["hint.explore"])
 	_install_input_actions()
 	var start_id: String = initial_map_id if not initial_map_id.is_empty() else catalog.binding("map")
@@ -134,7 +143,13 @@ func _process(_delta: float) -> void:
 		_update_camera()
 
 func _input(event: InputEvent) -> void:
+	if loaded and event.is_pressed() and not event.is_echo():
+		_audio_service.unlock()
 	if not loaded or battle_active() or _save_controller.is_busy() or (event is InputEventKey and event.echo):
+		return
+	if event is InputEventKey and event.pressed and event.physical_keycode == KEY_M:
+		_audio_service.set_muted(not _audio_service.is_muted())
+		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed(&"save_menu"):
 		if menu_active():
@@ -267,6 +282,7 @@ func light_facing_lamp() -> bool:
 		persistence.report_failure(String(result.get("error", "save.unknown_lamp")), "lamp")
 		return false
 	if bool(result["newly_lit"]):
+		_audio_service.play("lamp")
 		lamps.assign(result["state"]["lamps"])
 		_refresh_lamp_visuals()
 		var saved: Dictionary = persistence.autosave()
@@ -528,6 +544,7 @@ func accessibility_state() -> Dictionary:
 	var sorted_lamps: Array[String] = lamps.duplicate()
 	sorted_lamps.sort()
 	return {
+		"audio_state": JSON.stringify(audio_state()),
 		"battle_active": battle_active(),
 		"battle_id": _battle_id if battle_active() else "",
 		"battle_ui": JSON.stringify(_battle.ui_state()) if battle_active() and _battle.loaded else "{}",
@@ -551,6 +568,7 @@ func accessibility_state() -> Dictionary:
 	}
 
 func _on_player_step_finished(cell: Vector2i) -> void:
+	_audio_service.play("step")
 	steps = mini(steps + 1, SaveCodec.MAX_INTEGER)
 	var result: Dictionary = world_data.transition(String(map_data["id"]), cell, flags)
 	if bool(result.get("ok", false)):
@@ -728,6 +746,9 @@ func _camera_axis(focus: float, map_pixels: int, viewport_pixels: int) -> int:
 func battle_active() -> bool:
 	return is_instance_valid(_battle)
 
+func audio_state() -> Dictionary:
+	return _audio_service.snapshot() if is_instance_valid(_audio_service) else {}
+
 func start_battle(id: String) -> bool:
 	if not _can_persistence_action() or menu_active() or _save_controller.is_busy():
 		return false
@@ -752,6 +773,7 @@ func start_battle(id: String) -> bool:
 		if dim != null:
 			node.material = dim
 	var view: BattleView = BattleScene.instantiate() as BattleView
+	view.muted = _audio_service.is_muted()
 	if not view.setup(catalog, prepared, _strings, actors):
 		view.free()
 		_restore_battle_materials()
@@ -763,7 +785,14 @@ func start_battle(id: String) -> bool:
 	view.name = "BattleView"
 	view.changed.connect(_publish_accessibility_state)
 	view.close_requested.connect(close_battle)
+	view.gesture_received.connect(_audio_service.unlock)
+	view.sound_requested.connect(_audio_service.play)
+	view.muted_changed.connect(_audio_service.set_muted)
+	view.restarted.connect(_restart_battle_sound)
+	view.outcome_presented.connect(_on_battle_outcome_sound)
 	add_child(view)
+	_battle_music = prepared["presentation"]["music"]
+	_restart_battle_sound()
 	player.hide()
 	for entity: Dictionary in map_data["entities"]:
 		if entity["kind"] == "npc" or String(entity["sprite"]).begins_with("astral."):
@@ -780,6 +809,8 @@ func close_battle() -> void:
 	var id: String = _battle_id
 	var phase: String = _battle.ui_state()["snapshot"]["battle"]["phase"]
 	var view: BattleView = _battle
+	_audio_service.stop_effects()
+	_audio_service.music("test_theme")
 	_battle = null
 	remove_child(view)
 	view.queue_free()
@@ -792,6 +823,14 @@ func close_battle() -> void:
 		push_error("Battle preview could not restore its validated exploration snapshot")
 	_publish_accessibility_state()
 	battle_finished.emit(id, phase)
+
+func _restart_battle_sound() -> void:
+	_audio_service.stop_effects()
+	_audio_service.music(_battle_music)
+
+func _on_battle_outcome_sound(_phase: String) -> void:
+	_audio_service.stop_effects()
+	_audio_service.music("")
 
 func _start_battle_preview() -> void:
 	var requested: String = ""

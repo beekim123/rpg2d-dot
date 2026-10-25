@@ -27,6 +27,92 @@
     "battle.skills": "res://data/tables/battle-skills.json",
     "battle.support": "res://data/tables/battle-support.json"
   },
+  "audio": {
+    "confirm": {
+      "path": "res://resources/audio/confirm.wav",
+      "kind": "effect",
+      "frames": 9261,
+      "sample_rate": 44100
+    },
+    "cancel": {
+      "path": "res://resources/audio/cancel.wav",
+      "kind": "effect",
+      "frames": 8820,
+      "sample_rate": 44100
+    },
+    "step": {
+      "path": "res://resources/audio/step.wav",
+      "kind": "effect",
+      "frames": 3969,
+      "sample_rate": 44100
+    },
+    "save": {
+      "path": "res://resources/audio/save.wav",
+      "kind": "effect",
+      "frames": 26460,
+      "sample_rate": 44100
+    },
+    "deny": {
+      "path": "res://resources/audio/deny.wav",
+      "kind": "effect",
+      "frames": 10584,
+      "sample_rate": 44100
+    },
+    "lamp": {
+      "path": "res://resources/audio/lamp.wav",
+      "kind": "effect",
+      "frames": 30870,
+      "sample_rate": 44100
+    },
+    "test_theme": {
+      "path": "res://resources/audio/test_theme.wav",
+      "kind": "music",
+      "frames": 352800,
+      "sample_rate": 44100
+    },
+    "battle_theme": {
+      "path": "res://resources/audio/battle_theme.wav",
+      "kind": "music",
+      "frames": 705600,
+      "sample_rate": 44100
+    },
+    "battle_hit": {
+      "path": "res://resources/audio/battle_hit.wav",
+      "kind": "effect",
+      "frames": 9702,
+      "sample_rate": 44100
+    },
+    "battle_heal": {
+      "path": "res://resources/audio/battle_heal.wav",
+      "kind": "effect",
+      "frames": 31752,
+      "sample_rate": 44100
+    },
+    "battle_guard": {
+      "path": "res://resources/audio/battle_guard.wav",
+      "kind": "effect",
+      "frames": 21168,
+      "sample_rate": 44100
+    },
+    "battle_cast": {
+      "path": "res://resources/audio/battle_cast.wav",
+      "kind": "effect",
+      "frames": 22932,
+      "sample_rate": 44100
+    },
+    "battle_win": {
+      "path": "res://resources/audio/battle_win.wav",
+      "kind": "effect",
+      "frames": 55125,
+      "sample_rate": 44100
+    },
+    "battle_lose": {
+      "path": "res://resources/audio/battle_lose.wav",
+      "kind": "effect",
+      "frames": 59535,
+      "sample_rate": 44100
+    }
+  },
   "bootstrap": {
     "map": "lv.finn_house",
     "locale": "zh-Hans",
@@ -580,6 +666,96 @@
       "path": "res://resources/art/palette.json",
       "sha256": "4a553533b8fbf0dffc8de3c62e83a2557e561ea688d8f9166eeb230ca2345ec5",
       "bytes": 3631
+    },
+    {
+      "source": "resources/audio/export/battle_cast.wav",
+      "path": "res://resources/audio/battle_cast.wav",
+      "sha256": "520307050b378ead7b668f44a66c2c7173375c646e91323ae0dde33a913bf7fb",
+      "bytes": 45908
+    },
+    {
+      "source": "resources/audio/export/battle_guard.wav",
+      "path": "res://resources/audio/battle_guard.wav",
+      "sha256": "b8ed0dcb15384474e0d3191d8343753d0506385591642356522a7df23e85fb84",
+      "bytes": 42380
+    },
+    {
+      "source": "resources/audio/export/battle_heal.wav",
+      "path": "res://resources/audio/battle_heal.wav",
+      "sha256": "db815d5b344100f89306032de50a89d32e2faa1915c03fc59f38e0b09b0d592d",
+      "bytes": 63548
+    },
+    {
+      "source": "resources/audio/export/battle_hit.wav",
+      "path": "res://resources/audio/battle_hit.wav",
+      "sha256": "b28c778c5bb7a87dfb6a637e7fd2ca38c61758b3fc119855157303cba505940d",
+      "bytes": 19448
+    },
+    {
+      "source": "resources/audio/export/battle_lose.wav",
+      "path": "res://resources/audio/battle_lose.wav",
+      "sha256": "16e89b312045700e4e1c628feb1283ce59afcf44490fdcab7fa4da4a94ce558b",
+      "bytes": 119114
+    },
+    {
+      "source": "resources/audio/export/battle_theme.wav",
+      "path": "res://resources/audio/battle_theme.wav",
+      "sha256": "0bf8a6d1b165ea50d69aa5d26325e0e67231a4047c22d708bef1436677d942c0",
+      "bytes": 1411244
+    },
+    {
+      "source": "resources/audio/export/battle_win.wav",
+      "path": "res://resources/audio/battle_win.wav",
+      "sha256": "3b74eab472e2ec36380889a2902a1e2124fca6405181a3e70c119ad15a106097",
+      "bytes": 110294
+    },
+    {
+      "source": "resources/audio/export/cancel.wav",
+      "path": "res://resources/audio/cancel.wav",
+      "sha256": "987f2a3246312a059be548488b559b2716db664e962e22fa0b44bd91c85d725d",
+      "bytes": 17684
+    },
+    {
+      "source": "resources/audio/export/confirm.wav",
+      "path": "res://resources/audio/confirm.wav",
+      "sha256": "6908b02f29255c82afaa614b1d31ece5c9ac16150b0e07c1b25f50f648ed5ad7",
+      "bytes": 18566
+    },
+    {
+      "source": "resources/audio/export/deny.wav",
+      "path": "res://resources/audio/deny.wav",
+      "sha256": "219e5a0d51862f0e8a68f0d4f3e1602c9deab3c6034726b6d87a27ef107eb0f1",
+      "bytes": 21212
+    },
+    {
+      "source": "resources/audio/export/lamp.wav",
+      "path": "res://resources/audio/lamp.wav",
+      "sha256": "3bac4f35c3ad91712681c50a57911d4c5e2a2af46381077a88800b8aedf9b29e",
+      "bytes": 61784
+    },
+    {
+      "source": "resources/audio/export/manifest.json",
+      "path": "res://resources/audio/manifest.json",
+      "sha256": "4b88d3f9065616f8444611d6d0a180d490935464353650a14f947fe4adbac68c",
+      "bytes": 4832
+    },
+    {
+      "source": "resources/audio/export/save.wav",
+      "path": "res://resources/audio/save.wav",
+      "sha256": "f9a8f50315caa0b7047ac2c262dfdce7ec924d4adaf5f4f32bbe6a19e32a56aa",
+      "bytes": 52964
+    },
+    {
+      "source": "resources/audio/export/step.wav",
+      "path": "res://resources/audio/step.wav",
+      "sha256": "7574a433718230d8033a5bd75d515ef21a92f28688e9732ddefae72fb6ee28c9",
+      "bytes": 7982
+    },
+    {
+      "source": "resources/audio/export/test_theme.wav",
+      "path": "res://resources/audio/test_theme.wav",
+      "sha256": "8dc5284d4c0e0f129fb317c9d38d1ad5af94674467af50672a4153611a277b3b",
+      "bytes": 705644
     },
     {
       "source": "third_party/fonts/fusion-pixel-12px/LICENSES/ark-pixel/OFL.txt",

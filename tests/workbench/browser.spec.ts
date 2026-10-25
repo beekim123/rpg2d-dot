@@ -49,12 +49,12 @@ test('HTTP viewer is isolated, keeps all categories, and resamples audio for a 1
   page.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url());});
   await page.addInitScript(()=>{
     const Original=window.AudioContext;
-    const state=window as unknown as {audioContexts:AudioContext[];assetBufferRates:number[]};
-    state.audioContexts=[];state.assetBufferRates=[];
+    const state=window as unknown as {audioContexts:AudioContext[];assetBufferRates:number[];assetBuffers:AudioBuffer[]};
+    state.audioContexts=[];state.assetBufferRates=[];state.assetBuffers=[];
     window.AudioContext=class extends Original{
       constructor(options?:AudioContextOptions){super({...options,sampleRate:192000});state.audioContexts.push(this);}
       override createBuffer(channels:number,length:number,sampleRate:number):AudioBuffer{
-        state.assetBufferRates.push(sampleRate);return super.createBuffer(channels,length,sampleRate);
+        state.assetBufferRates.push(sampleRate);const buffer=super.createBuffer(channels,length,sampleRate);state.assetBuffers.push(buffer);return buffer;
       }
     };
   });
@@ -64,6 +64,7 @@ test('HTTP viewer is isolated, keeps all categories, and resamples audio for a 1
   await expect.poll(()=>page.evaluate(()=>(window as unknown as {audioContexts:AudioContext[]}).audioContexts.map(c=>c.state))).toEqual(['running']);
   await page.locator('button[data-cue="battle_theme"]').click();
   expect(await page.evaluate(()=>(window as unknown as {assetBufferRates:number[]}).assetBufferRates.every(rate=>rate===44100))).toBe(true);
+  expect(await page.evaluate(()=>(window as unknown as {assetBuffers:AudioBuffer[]}).assetBuffers.every(buffer=>buffer.getChannelData(0).every(sample=>Number.isInteger(sample*32768))))).toBe(true);
   await page.locator('#audio-stop').click();
   await page.locator('#search').fill('prop.windmill');
   await expect(page.locator('article[data-id]:visible')).toHaveCount(1);

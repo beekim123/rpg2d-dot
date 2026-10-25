@@ -4,6 +4,7 @@ import { mkdtemp, mkdir, readFile, writeFile, rm, symlink, access } from 'node:f
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { syncResources } from '../../tools/resources/sync-godot-assets.mjs';
+import {createHash} from 'node:crypto';
 
 async function fixture(t) {
   const root = await mkdtemp(join(tmpdir(), 'astra-resource-pack-'));
@@ -34,6 +35,32 @@ async function fixture(t) {
 }
 
 async function index(f) { return JSON.parse(await readFile(join(f.targetRoot, 'resource-pack.json'), 'utf8')); }
+
+test('PCM16 audio is indexed by semantic ID, byte-identical and protected by read-only verify',async t=>{
+  const f=await fixture(t),sha=b=>createHash('sha256').update(b).digest('hex');
+  const wav=Buffer.alloc(48);wav.write('RIFF');wav.writeUInt32LE(40,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);
+  wav.writeUInt16LE(1,20);wav.writeUInt16LE(1,22);wav.writeUInt32LE(44100,24);wav.writeUInt32LE(88200,28);
+  wav.writeUInt16LE(2,32);wav.writeUInt16LE(16,34);wav.write('data',36);wav.writeUInt32LE(4,40);
+  await f.put(f.sourceRoot,'resources/audio/synth.ts','original source');
+  const folder=join(f.sourceRoot,'resources/audio/export');await mkdir(folder,{recursive:true});
+  await writeFile(join(folder,'tap.wav'),wav);
+  const manifest={format:'astra.audio/1',sampleFormat:'pcm16',sampleRate:44100,source_sha256:sha('original source'),cues:[{id:'tap',file:'tap.wav',kind:'effect',sampleRate:44100,frames:2,bytes:48,sha256:sha(wav)}]};
+  await f.put(f.sourceRoot,'resources/audio/export/manifest.json',manifest);
+  await syncResources(f.options);
+  assert.deepEqual((await index(f)).audio.tap,{path:'res://resources/audio/tap.wav',kind:'effect',frames:2,sample_rate:44100});
+  assert.deepEqual(await readFile(join(f.targetRoot,'resources/audio/tap.wav')),wav);
+  await writeFile(join(f.targetRoot,'resources/audio/tap.wav'),'edited');
+  assert.ok((await syncResources({...f.options,verify:true})).mismatches.some(m=>m.includes('tap.wav')));
+  assert.equal(await readFile(join(f.targetRoot,'resources/audio/tap.wav'),'utf8'),'edited');
+  manifest.extra='x'.repeat(2_000_000);await f.put(f.sourceRoot,'resources/audio/export/manifest.json',manifest);
+  const before=await readFile(join(f.targetRoot,'resource-pack.json'));
+  await assert.rejects(syncResources(f.options),/budget|oversized/i);
+  assert.deepEqual(await readFile(join(f.targetRoot,'resource-pack.json')),before);delete manifest.extra;
+  manifest.cues[0].file='../escape.wav';await f.put(f.sourceRoot,'resources/audio/export/manifest.json',manifest);
+  await assert.rejects(syncResources(f.options),/Invalid audio cue/);
+  manifest.cues[0].file='tap.wav';await f.put(f.sourceRoot,'resources/audio/export/manifest.json',manifest);
+  await writeFile(join(folder,'tap.wav'),'bad');await assert.rejects(syncResources(f.options),/Audio WAV/);
+});
 
 test('pack is deterministic, complete, and verify never repairs modified copies', async t => {
   const f = await fixture(t), first = await syncResources(f.options);

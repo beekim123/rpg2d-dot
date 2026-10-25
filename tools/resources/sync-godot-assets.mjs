@@ -3,6 +3,7 @@ import { dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { createHash, randomUUID } from 'node:crypto';
 import { repoRoot } from '../lib/paths.mjs';
+import {readAudioManifest} from './audio-manifest.mjs';
 
 // Generated copies only. The authoritative inputs are resources/, content/, and third_party/.
 const defaultRoot = repoRoot;
@@ -18,6 +19,7 @@ function validRelative(relative) {
 }
 function destinationFor(source) {
   if (source === 'resources/art/palette.json') return 'res://resources/art/palette.json';
+  if (/^resources\/audio\/export\/(?:manifest\.json|[a-z][a-z0-9_]*\.wav)$/.test(source)) return `res://resources/audio/${source.split('/').at(-1)}`;
   if (!validRelative(source)) throw new Error(`Unsafe source path: ${source}`);
   if (/^resources\/art\/export\/(?:manifest\.json|[\w.-]+\.png)$/.test(source)) {
     return `res://resources/art/${source.split('/').at(-1)}`;
@@ -166,7 +168,8 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
   const manifest = JSON.parse(manifestBytes.toString('utf8'));
   if (manifest.format !== 'astra.art/1' || !Array.isArray(manifest.assets)) throw new Error('Invalid art manifest');
   const content = await registeredContent(sourceRoot);
-  const sources = [manifestSource, ...content.contentBytes.keys()];
+  const audio=await readAudioManifest(sourceRoot);
+  const sources = [manifestSource, ...content.contentBytes.keys(), ...audio.files.keys()];
   const paletteSource='resources/art/palette.json';
   const paletteBytes=await readOptional(await safePath(sourceRoot,paletteSource));
   if(paletteBytes){
@@ -191,7 +194,7 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
     const resourcePath = destinationFor(source);
     if (destinations.has(resourcePath)) throw new Error(`Duplicate resource destination: ${resourcePath}`);
     destinations.add(resourcePath);
-    const bytes = source === manifestSource ? manifestBytes : content.contentBytes.get(source) ?? await readSource(sourceRoot, source);
+    const bytes = source === manifestSource ? manifestBytes : content.contentBytes.get(source) ?? audio.files.get(source) ?? await readSource(sourceRoot, source);
     const file = await safePath(targetRoot, resourceRelative(resourcePath));
     prepared.push({ file, bytes, record: { source, path: resourcePath, sha256: hash(bytes), bytes: bytes.length } });
   }
@@ -204,6 +207,7 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
     locales: content.locales,
     stories: content.stories,
     tables: content.tables,
+    audio: Object.fromEntries((audio.manifest?.cues??[]).map(cue=>[cue.id,{path:destinationFor('resources/audio/export/'+cue.file),kind:cue.kind,frames:cue.frames,sample_rate:cue.sampleRate}])),
     bootstrap: { map: content.bootstrap.map, locale: content.bootstrap.locale, player: 'char.finn', shadow: 'prop.shadow', panel: 'ui.panel' },
     files: prepared.map(item => item.record),
   };
