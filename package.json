@@ -21,7 +21,16 @@
     "audio:check": "node --experimental-strip-types tools/audio-check.ts",
     "test:route": "node --experimental-strip-types tools/playthrough.ts",
     "test:e2e": "node tools/run.mjs playwright test",
-    "test:battle-route": "node --experimental-strip-types tools/battle-playthrough.ts"
+    "test:battle-route": "node --experimental-strip-types tools/battle-playthrough.ts",
+    "godot:sync": "node tools/sync-godot-assets.mjs",
+    "godot:verify": "node tools/sync-godot-assets.mjs --verify",
+    "godot:import": "node tools/godot.mjs import",
+    "godot:test": "node tools/godot.mjs test",
+    "godot:export:web": "node tools/godot.mjs export",
+    "godot:serve": "node tools/serve-godot.mjs",
+    "godot:run": "node tools/godot.mjs run",
+    "godot:editor": "node tools/godot.mjs editor",
+    "godot:test:web": "node tools/run.mjs playwright test --config godot-web.config.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

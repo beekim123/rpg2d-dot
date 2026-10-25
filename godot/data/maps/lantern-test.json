@@ -1,0 +1,161 @@
+{
+  "id": "lantern.test",
+  "name": "map.lantern",
+  "width": 40,
+  "height": 28,
+  "rows": [
+    "ttttttttttttttttttttttttttttwwwwtttttttt",
+    "tgggggggggggggggggggggggggggwwwwgggggggt",
+    "tgggggggggggggggggggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tgssssssssssssssssssssssssssbbbbssssssst",
+    "tgssssssssssssssssssssssssssbbbbssssssst",
+    "tgssssssssssssssssssssssssssbbbbssssssst",
+    "tgssssssssssssssssssssssssssbbbbssssssst",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tggggggggggggsssssggggggggggwwwwgggggggt",
+    "tgggggggggggggggggggggggggggwwwwgggggggt",
+    "ttttttttttttttttttttttttttttwwwwtttttttt"
+  ],
+  "spawn": {
+    "x": 8,
+    "y": 12
+  },
+  "entities": [
+    {
+      "id": "hob",
+      "kind": "npc",
+      "sprite": "char.hob",
+      "x": 10,
+      "y": 11,
+      "script": "hob",
+      "solid": true
+    },
+    {
+      "id": "first_lamp",
+      "kind": "lamp",
+      "sprite": "prop.lamp",
+      "x": 15,
+      "y": 11,
+      "solid": true
+    },
+    {
+      "id": "east_lamp",
+      "kind": "lamp",
+      "sprite": "prop.lamp",
+      "x": 25,
+      "y": 13,
+      "solid": true
+    },
+    {
+      "id": "home",
+      "kind": "decoration",
+      "sprite": "prop.house",
+      "x": 8,
+      "y": 8,
+      "solid": true,
+      "footprint": [
+        5,
+        3
+      ]
+    },
+    {
+      "id": "lamp_shop",
+      "kind": "decoration",
+      "sprite": "prop.house",
+      "x": 22,
+      "y": 7,
+      "solid": true,
+      "footprint": [
+        5,
+        3
+      ]
+    },
+    {
+      "id": "tree1",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 4,
+      "y": 6,
+      "solid": true
+    },
+    {
+      "id": "tree2",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 26,
+      "y": 8,
+      "solid": true
+    },
+    {
+      "id": "tree3",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 35,
+      "y": 9,
+      "solid": true
+    },
+    {
+      "id": "tree4",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 7,
+      "y": 20,
+      "solid": true
+    },
+    {
+      "id": "tree5",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 24,
+      "y": 21,
+      "solid": true
+    },
+    {
+      "id": "tree6",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 34,
+      "y": 19,
+      "solid": true
+    },
+    {
+      "id": "tree7",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 4,
+      "y": 24,
+      "solid": true
+    },
+    {
+      "id": "tree8",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 37,
+      "y": 23,
+      "solid": true
+    }
+  ],
+  "required": [
+    "hob",
+    "first_lamp",
+    "east_lamp"
+  ],
+  "exits": []
+}

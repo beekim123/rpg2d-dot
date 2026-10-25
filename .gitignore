@@ -17,3 +17,9 @@ test-results/
 # 美术 / 声音缓存
 art/.tmp/
 audio/.cache/
+
+# Local Godot editor and generated engine caches
+/Godot.app/
+/.godot/
+/godot-build/
+godot/.godot/

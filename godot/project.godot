@@ -1,0 +1,37 @@
+; ASTRA native Godot migration foundation. Source assets live outside this project.
+config_version=5
+
+[application]
+config/name="伴星 ASTRA"
+run/main_scene="res://scenes/main.tscn"
+boot_splash/show_image=false
+config/icon="res://assets/art/portrait.finn.png"
+
+[display]
+window/size/viewport_width=480
+window/size/viewport_height=270
+window/size/window_width_override=960
+window/size/window_height_override=540
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+window/stretch/scale_mode="integer"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+textures/canvas_textures/default_texture_filter=0
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
+driver/threads/thread_model=1
+environment/defaults/default_clear_color=Color(0.102, 0.071, 0.125, 1)
+
+[threading]
+worker_pool/max_threads=1
+
+[physics]
+common/physics_ticks_per_second=60
+2d/run_on_separate_thread=false
+
+[audio]
+driver/enable_input=false

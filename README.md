@@ -9,7 +9,19 @@
 - 序章 + 7 章 + 终章的完整故事
 - 美术全部由代码绘制，音乐音效全部由代码合成
 
-## 当前状态
+## 当前主工程：Godot
+
+后续开发已切换到 Godot 4.7.2，入口为 [`godot/project.godot`](godot/project.godot)。原生G0场景已通过117项检查与Web移动/碰撞验收；战斗、对话、存档还在迁移前阶段。计划见 [`Godot迁移计划`](docs/plan/godot-migration.md)。
+
+```sh
+npm run godot:sync
+npm run godot:import
+npm run godot:run
+```
+
+`npm run godot:export:web` 导出，`npm run godot:serve` 预览；编辑器和模板不提交。
+
+## 网页参考实现（历史进度）
 
 **M0 地基已可玩**：标题、灯谷测试地图、四向移动、对话、点灯、三手动存档位与自动存档、文件导入导出、调试菜单、原创合成声音和美术工作台。人物有呼吸/眨眼/围巾轻摆，树木、花和灌木随风轻摆，灯火跳动。现在增加了可操作的两场战斗候选：双单位移动、星绳、技能、公开意图、重试及完整动作反馈。正式序章剧情尚未接完。
 

@@ -7,7 +7,13 @@
 - 美术和声音走 [art-pipeline.md](../art/art-pipeline.md) 和 [audio-direction.md](../audio/audio-direction.md) 的管线。
 - 运行时不访问网络。
 
-## 1 推荐技术栈
+## 当前实施路线（2026-10-25用户校准）
+
+后续主工程改为 **Godot 4.7.2 + GDScript + Compatibility**，入口为 `godot/project.godot`，同时保持原生运行与Web单线程导出。版本已通过用户放入的编辑器实际确认；Godot运行/导出验收单独记录，不能沿用网页M0/M1的通过状态。
+
+详细顺序与复用/重写边界见 [Godot迁移计划](../plan/godot-migration.md)。现有TypeScript/Canvas只保留作原型和确定性测试参考；不继续增加网页专用游戏功能。PNG/源数据/地图/文本/合成音源继续复用，场景/HUD/输入/播放服务改为Godot原生实现。
+
+## 1 原始网页原型技术栈（历史选择）
 
 | 项 | 推荐 | 理由 |
 |---|---|---|
