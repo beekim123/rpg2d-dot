@@ -15,6 +15,7 @@ var loaded: bool = false
 var map_data: Dictionary = {}
 var catalog: AssetCatalog = AssetCatalog.new()
 var world_data: WorldData = WorldData.new()
+var story_rules: StoryRules = StoryRules.new()
 var flags: Dictionary = {}
 var player: GridActor
 var _entities: Dictionary = {}
@@ -22,6 +23,9 @@ var _strings: Dictionary = {}
 var _terrain_sources: Dictionary = {}
 var _edge_source: int = -1
 var _last_accessibility_payload: String = ""
+var _dialogue: WorldDialogue = WorldDialogue.new()
+var _interlocutor_id: String = ""
+var _interlocutor_animation: Dictionary = {}
 
 @onready var ground: TileMapLayer = $Ground
 @onready var edges: TileMapLayer = $Edges
@@ -31,6 +35,8 @@ var _last_accessibility_payload: String = ""
 @onready var controls_label: Label = $HUD/Controls
 @onready var title_panel: NinePatchRect = $HUD/TitlePanel
 @onready var controls_panel: NinePatchRect = $HUD/ControlsPanel
+@onready var dialogue_box: DialogueBox = $HUD/DialogueBox
+@onready var speaking_marker: Label = $SpeakingMarker
 
 func _ready() -> void:
 	if not catalog.load_pack():
@@ -52,18 +58,33 @@ func _ready() -> void:
 		return
 	title_label.add_theme_font_override("font", font)
 	controls_label.add_theme_font_override("font", font)
+	speaking_marker.add_theme_font_override("font", font)
+	speaking_marker.text = String(_strings["hint.speaking"])
 	var panel_texture: AtlasTexture = catalog.frame_texture(catalog.binding("panel"), 0)
 	title_panel.texture = panel_texture
 	controls_panel.texture = panel_texture
-	# G1a exposes movement only; dialogue and menu controls belong to later migration stages.
-	controls_label.text = String(_strings["hint.controls"]).split("   ")[0]
+	dialogue_box.configure(font, panel_texture, String(_strings["hint.dialogue"]))
+	var portraits: Array[String] = []
+	for asset_id: String in catalog.definitions:
+		if catalog.definitions[asset_id].get("category") == "portrait":
+			portraits.append(asset_id)
+	var story_errors: Array[String] = story_rules.configure(catalog.story_scripts(), _strings, portraits)
+	if not story_errors.is_empty():
+		push_error("Dialogue content could not load: " + "; ".join(story_errors))
+		return
+	_dialogue.configure(story_rules, _read_story_flags, apply_story_flags)
+	_dialogue.line_ready.connect(_on_dialogue_line)
+	_dialogue.closed.connect(_on_dialogue_closed)
+	dialogue_box.advance_requested.connect(_on_dialogue_advance)
+	dialogue_box.visibility_progress_changed.connect(_publish_accessibility_state)
+	controls_label.text = String(_strings["hint.explore"])
 	_install_input_actions()
 	var start_id: String = initial_map_id if not initial_map_id.is_empty() else catalog.binding("map")
 	if not enter_map(start_id):
 		push_error("Initial map could not be entered: " + start_id)
 
 func _physics_process(_delta: float) -> void:
-	if not loaded:
+	if not loaded or dialogue_active():
 		return
 	if not player.is_moving:
 		for index: int in range(INPUT_ACTIONS.size()):
@@ -75,21 +96,190 @@ func _process(_delta: float) -> void:
 	if loaded:
 		_update_camera()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if not loaded or (event is InputEventKey and event.echo):
+		return
+	if event.is_action_pressed(&"interact"):
+		if dialogue_active():
+			confirm_dialogue()
+		else:
+			interact()
+		get_viewport().set_input_as_handled()
+	elif dialogue_active() and event.is_action_pressed(&"dialogue_reveal"):
+		reveal_dialogue()
+		get_viewport().set_input_as_handled()
+
 func request_move(direction: Vector2i) -> bool:
-	if not loaded or player.is_moving or not direction in DIRECTIONS:
+	if not loaded or dialogue_active() or player.is_moving or not direction in DIRECTIONS:
 		return false
 	player.face(direction)
 	if not is_walkable(player.grid_position + direction):
+		_refresh_interaction_hint()
 		_publish_accessibility_state()
 		return false
 	player.begin_step(direction)
+	_refresh_interaction_hint()
 	_publish_accessibility_state()
 	return true
 
 func enter_map(map_id: String, at: Vector2i = Vector2i(-1, -1)) -> bool:
-	if not world_data.validate_state(flags).is_empty():
+	if dialogue_active() or not world_data.validate_state(flags).is_empty():
 		return false
 	return _enter_validated_map(map_id, at)
+
+func interact() -> bool:
+	if not loaded or player.is_moving or dialogue_active():
+		return false
+	var target: Dictionary = _interaction_target()
+	if target.is_empty():
+		controls_label.text = String(_strings["hint.no_target"])
+		return false
+	_interlocutor_id = String(target["id"]) if target["kind"] == "npc" else ""
+	_turn_interlocutor()
+	var started: bool = _dialogue.begin(String(target["script"]))
+	if not started:
+		_restore_interlocutor()
+		_interlocutor_id = ""
+		controls_label.text = String(_strings["hint.interaction_failed"])
+	return started
+
+func confirm_dialogue() -> void:
+	if dialogue_active():
+		dialogue_box.request_confirm()
+
+func reveal_dialogue() -> void:
+	if dialogue_active():
+		dialogue_box.reveal_all()
+
+func dialogue_active() -> bool:
+	return _dialogue.is_active()
+
+func dialogue_state() -> Dictionary:
+	if not dialogue_active():
+		return {"active": false, "script": "", "speaker": "", "text": "", "full_text": "", "revealed": false}
+	var line: Dictionary = _dialogue.current_line()
+	return {
+		"active": true,
+		"script": _dialogue.script_id,
+		"speaker": String(_strings.get(line.get("speaker", ""), "")),
+		"text": dialogue_box.visible_text(),
+		"full_text": String(_strings.get(line.get("text", ""), "")),
+		"revealed": dialogue_box.is_revealed(),
+	}
+
+func apply_story_flags(candidate: Dictionary) -> bool:
+	if not loaded or player.is_moving:
+		return _reject_story_flags()
+	if candidate == flags:
+		return true
+	var map_id: String = String(map_data["id"])
+	var cell: Vector2i = player.grid_position
+	if not world_data.validate_position(map_id, cell, candidate).is_empty():
+		return _reject_story_flags()
+	var next_map: Dictionary = world_data.get_map(map_id, candidate)
+	if next_map.is_empty() or not _can_render_map(next_map):
+		return _reject_story_flags()
+	var layout_changed: bool = next_map["entities"] != map_data["entities"]
+	var previous_flags: Dictionary = flags
+	flags = candidate.duplicate(true)
+	if layout_changed:
+		if not _enter_validated_map(map_id, cell):
+			flags = previous_flags
+			return _reject_story_flags()
+	else:
+		map_data = next_map
+		_refresh_interaction_hint()
+	return true
+
+func _read_story_flags() -> Dictionary:
+	return flags.duplicate(true)
+
+func _reject_story_flags() -> bool:
+	_dialogue.cancel("Story flag transaction was rejected")
+	return false
+
+func _on_dialogue_line(line: Dictionary) -> void:
+	controls_panel.hide()
+	controls_label.hide()
+	dialogue_box.show_line(String(_strings[line["speaker"]]), String(_strings[line["text"]]), catalog.frame_texture(String(line["portrait"]), 0))
+	_update_speaking_marker(line)
+	_publish_accessibility_state()
+
+func _on_dialogue_advance() -> void:
+	_dialogue.advance()
+
+func _on_dialogue_closed(error: String) -> void:
+	dialogue_box.close()
+	speaking_marker.hide()
+	_restore_interlocutor()
+	_interlocutor_id = ""
+	controls_panel.show()
+	controls_label.show()
+	_refresh_interaction_hint()
+	if not error.is_empty():
+		controls_label.text = String(_strings["hint.interaction_failed"])
+	_publish_accessibility_state()
+
+func _interaction_target() -> Dictionary:
+	var direction: Vector2i = Vector2i.DOWN
+	match player.facing:
+		"up": direction = Vector2i.UP
+		"left": direction = Vector2i.LEFT
+		"right": direction = Vector2i.RIGHT
+	return world_data.interaction_target(map_data, player.grid_position, direction)
+
+func _refresh_interaction_hint() -> void:
+	if not loaded or dialogue_active():
+		return
+	var target: Dictionary = {} if player.is_moving else _interaction_target()
+	var key: String = "hint.explore"
+	if not target.is_empty():
+		key = "hint.talk" if target["kind"] == "npc" else "hint.inspect"
+	controls_label.text = String(_strings[key])
+
+func _turn_interlocutor() -> void:
+	var sprite: AnimatedSprite2D = find_entity(_interlocutor_id)
+	if sprite == null or not _interlocutor_animation.is_empty():
+		return
+	var delta: Vector2 = player.position - sprite.position
+	var facing: String = "down"
+	if absf(delta.x) > absf(delta.y):
+		facing = "right" if delta.x > 0 else "left"
+	else:
+		facing = "down" if delta.y >= 0 else "up"
+	var animation: StringName = StringName("idle_" + facing)
+	if not sprite.sprite_frames.has_animation(animation):
+		return
+	_interlocutor_animation = {"animation": sprite.animation, "frame": sprite.frame, "progress": sprite.frame_progress, "speed": sprite.speed_scale, "playing": sprite.is_playing()}
+	sprite.play(animation)
+
+func _restore_interlocutor() -> void:
+	var sprite: AnimatedSprite2D = find_entity(_interlocutor_id)
+	if sprite != null and not _interlocutor_animation.is_empty():
+		sprite.speed_scale = float(_interlocutor_animation["speed"])
+		sprite.play(StringName(_interlocutor_animation["animation"]))
+		sprite.set_frame_and_progress(int(_interlocutor_animation["frame"]), float(_interlocutor_animation["progress"]))
+		if not bool(_interlocutor_animation["playing"]):
+			sprite.pause()
+	_interlocutor_animation.clear()
+
+func _update_speaking_marker(line: Dictionary) -> void:
+	speaking_marker.hide()
+	if line.is_empty():
+		return
+	var actor_id: String = "char." + String(line["portrait"]).trim_prefix("portrait.")
+	var speaker_node: Node2D
+	if actor_id == catalog.binding("player"):
+		speaker_node = player
+	else:
+		for entity: Dictionary in map_data["entities"]:
+			if entity["sprite"] == actor_id:
+				speaker_node = find_entity(String(entity["id"]))
+				if entity["id"] == _interlocutor_id:
+					break
+	if speaker_node != null:
+		speaking_marker.position = speaker_node.position + Vector2(-6, -catalog.anchor(actor_id).y - 14)
+		speaking_marker.show()
 
 func _enter_validated_map(map_id: String, at: Vector2i) -> bool:
 	var candidate: Dictionary = world_data.get_map(map_id, flags)
@@ -102,6 +292,7 @@ func _enter_validated_map(map_id: String, at: Vector2i) -> bool:
 	if not world_data.is_safe_entry(candidate, destination):
 		return false
 	var facing: String = player.facing if is_instance_valid(player) else "down"
+	_restore_interlocutor()
 	loaded = false
 	ground.clear()
 	edges.clear()
@@ -122,11 +313,16 @@ func _enter_validated_map(map_id: String, at: Vector2i) -> bool:
 	title_label.text = String(_strings["game.title"]) + "  ·  " + String(_strings[map_data["name"]])
 	_update_camera()
 	loaded = true
+	if dialogue_active():
+		_turn_interlocutor()
+		_update_speaking_marker(_dialogue.current_line())
+	_refresh_interaction_hint()
 	_publish_accessibility_state()
 	map_entered.emit(map_id, destination)
 	return true
 
 func accessibility_state() -> Dictionary:
+	var dialogue: Dictionary = dialogue_state()
 	return {
 		"ready": loaded,
 		"map_id": String(map_data.get("id", "")),
@@ -134,6 +330,11 @@ func accessibility_state() -> Dictionary:
 		"grid_y": player.grid_position.y if player != null else -1,
 		"facing": player.facing if player != null else "",
 		"moving": player.is_moving if player != null else false,
+		"dialogue_active": dialogue["active"],
+		"speaker": dialogue["speaker"],
+		"dialogue_text": dialogue["text"],
+		"dialogue_revealed": dialogue["revealed"],
+		"dialogue_script": dialogue["script"],
 	}
 
 func _on_player_step_finished(cell: Vector2i) -> void:
@@ -143,6 +344,7 @@ func _on_player_step_finished(cell: Vector2i) -> void:
 		if _enter_validated_map(String(result["map_id"]), result["position"]):
 			return
 	_refresh_ground_shadow()
+	_refresh_interaction_hint()
 	_publish_accessibility_state()
 
 func _refresh_ground_shadow() -> void:
@@ -275,6 +477,15 @@ func _install_input_actions() -> void:
 			continue
 		InputMap.add_action(action)
 		for code: Key in keys[index]:
+			var event: InputEventKey = InputEventKey.new()
+			event.physical_keycode = code
+			InputMap.action_add_event(action, event)
+	var dialogue_actions: Dictionary = {&"interact": [KEY_Z, KEY_SPACE, KEY_ENTER, KEY_KP_ENTER], &"dialogue_reveal": [KEY_X]}
+	for action: StringName in dialogue_actions:
+		if InputMap.has_action(action):
+			continue
+		InputMap.add_action(action)
+		for code: Key in dialogue_actions[action]:
 			var event: InputEventKey = InputEventKey.new()
 			event.physical_keycode = code
 			InputMap.action_add_event(action, event)

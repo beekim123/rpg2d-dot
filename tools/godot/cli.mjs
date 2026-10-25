@@ -3,7 +3,7 @@ import {mkdirSync,existsSync,readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {repoRoot as root} from '../lib/paths.mjs';
 const action=process.argv[2]??'test';
-const actions={import:['--headless','--editor','--import','--quit'],test:['--headless','--script','tests/run_smoke.gd'],'test-world':['--headless','--script','tests/world/run_world_data.gd'],'test-travel':['--headless','--script','tests/world/run_world_travel.gd'],export:['--headless','--export-debug','Web','../build/godot-web/index.html'],run:[],editor:['--editor']};
+const actions={import:['--headless','--editor','--import','--quit'],test:['--headless','--script','tests/run_smoke.gd'],'test-world':['--headless','--script','tests/world/run_world_data.gd'],'test-travel':['--headless','--script','tests/world/run_world_travel.gd'],'test-story':['--headless','--script','tests/story/run_story_rules.gd'],'test-ui':['--headless','--script','tests/ui/run_dialogue_box.gd'],'test-story-content':['--headless','--script','tests/story/run_story_content.gd'],'test-interaction':['--headless','--script','tests/story/run_interaction.gd'],export:['--headless','--export-debug','Web','../build/godot-web/index.html'],run:[],editor:['--editor']};
 if(!Object.hasOwn(actions,action))throw new Error('Use import, test, test-world, test-travel, export, run or editor');
 const bundled=resolve(root,'Godot.app/Contents/MacOS/Godot');
 const executable=process.env.ASTRA_GODOT_BIN??(existsSync(bundled)?bundled:'godot');

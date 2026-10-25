@@ -1,0 +1,678 @@
+{
+  "lv.npc.hob.day": [
+    {
+      "op": "if",
+      "flag": "p.s09_done",
+      "equals": true,
+      "goto": 8
+    },
+    {
+      "op": "if",
+      "flag": "seen.hob",
+      "equals": true,
+      "goto": 6
+    },
+    {
+      "op": "say",
+      "speaker": "name.hob",
+      "portrait": "portrait.hob",
+      "text": "lv.npc.hob.day.01"
+    },
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.npc.hob.day.02"
+    },
+    {
+      "op": "set",
+      "flag": "seen.hob",
+      "value": true
+    },
+    {
+      "op": "end"
+    },
+    {
+      "op": "say",
+      "speaker": "name.hob",
+      "portrait": "portrait.hob",
+      "text": "lv.npc.hob.repeat.01"
+    },
+    {
+      "op": "end"
+    },
+    {
+      "op": "say",
+      "speaker": "name.hob",
+      "portrait": "portrait.hob",
+      "text": "lv.npc.hob.after.01"
+    },
+    {
+      "op": "say",
+      "speaker": "name.hob",
+      "portrait": "portrait.hob",
+      "text": "lv.npc.hob.after.02"
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.brio.day": [
+    {
+      "op": "say",
+      "speaker": "name.brio",
+      "portrait": "portrait.brio",
+      "text": "lv.npc.brio.day.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.brio",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.mayor_tolan.day": [
+    {
+      "op": "say",
+      "speaker": "name.mayor_tolan",
+      "portrait": "portrait.mayor_tolan",
+      "text": "lv.npc.mayor_tolan.day.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.mayor_tolan",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.mili.day": [
+    {
+      "op": "say",
+      "speaker": "name.mili",
+      "portrait": "portrait.mili",
+      "text": "lv.npc.mili.day.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.mili",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.hedo.day": [
+    {
+      "op": "say",
+      "speaker": "name.hedo",
+      "portrait": "portrait.hedo",
+      "text": "lv.npc.hedo.day.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.hedo",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.teya.day": [
+    {
+      "op": "if",
+      "flag": "p.awakened",
+      "equals": true,
+      "goto": 5
+    },
+    {
+      "op": "say",
+      "speaker": "name.teya",
+      "portrait": "portrait.teya",
+      "text": "lv.npc.teya.day.01"
+    },
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.npc.teya.paper_corner.02"
+    },
+    {
+      "op": "set",
+      "flag": "seen.teya",
+      "value": true
+    },
+    {
+      "op": "end"
+    },
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.npc.teya.paper_corner.03"
+    },
+    {
+      "op": "say",
+      "speaker": "name.teya",
+      "portrait": "portrait.teya",
+      "text": "lv.npc.teya.paper_corner.04"
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.oren.day": [
+    {
+      "op": "say",
+      "speaker": "name.oren",
+      "portrait": "portrait.oren",
+      "text": "lv.npc.oren.day.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.oren",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.nemi.day": [
+    {
+      "op": "say",
+      "speaker": "name.nemi",
+      "portrait": "portrait.nemi",
+      "text": "lv.npc.nemi.day.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.nemi",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.ella.day": [
+    {
+      "op": "say",
+      "speaker": "name.ella",
+      "portrait": "portrait.ella",
+      "text": "lv.npc.ella.day.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.ella",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.brio.after": [
+    {
+      "op": "say",
+      "speaker": "name.brio",
+      "portrait": "portrait.brio",
+      "text": "lv.npc.brio.after.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.brio_after",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.mayor_tolan.after": [
+    {
+      "op": "say",
+      "speaker": "name.mayor_tolan",
+      "portrait": "portrait.mayor_tolan",
+      "text": "lv.npc.mayor_tolan.after.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.mayor_tolan_after",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.mili.after": [
+    {
+      "op": "say",
+      "speaker": "name.mili",
+      "portrait": "portrait.mili",
+      "text": "lv.npc.mili.after.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.mili_after",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.hedo.after": [
+    {
+      "op": "say",
+      "speaker": "name.hedo",
+      "portrait": "portrait.hedo",
+      "text": "lv.npc.hedo.after.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.hedo_after",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.teya.after": [
+    {
+      "op": "if",
+      "flag": "p.awakened",
+      "equals": false,
+      "goto": 7
+    },
+    {
+      "op": "if",
+      "flag": "seen.teya",
+      "equals": false,
+      "goto": 7
+    },
+    {
+      "op": "if",
+      "flag": "seen.teya_star",
+      "equals": true,
+      "goto": 7
+    },
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.npc.teya.paper_corner.03"
+    },
+    {
+      "op": "say",
+      "speaker": "name.teya",
+      "portrait": "portrait.teya",
+      "text": "lv.npc.teya.paper_corner.04"
+    },
+    {
+      "op": "set",
+      "flag": "seen.teya_star",
+      "value": true
+    },
+    {
+      "op": "end"
+    },
+    {
+      "op": "say",
+      "speaker": "name.teya",
+      "portrait": "portrait.teya",
+      "text": "lv.npc.teya.after.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.teya_after",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.oren.after": [
+    {
+      "op": "say",
+      "speaker": "name.oren",
+      "portrait": "portrait.oren",
+      "text": "lv.npc.oren.after.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.oren_after",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.nemi.after": [
+    {
+      "op": "say",
+      "speaker": "name.nemi",
+      "portrait": "portrait.nemi",
+      "text": "lv.npc.nemi.after.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.nemi_after",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.npc.sela.day": [
+    {
+      "op": "if",
+      "flag": "p.s09_done",
+      "equals": true,
+      "goto": 4
+    },
+    {
+      "op": "say",
+      "speaker": "name.sela",
+      "portrait": "portrait.sela",
+      "text": "lv.npc.sela.day.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.sela",
+      "value": true
+    },
+    {
+      "op": "end"
+    },
+    {
+      "op": "say",
+      "speaker": "name.sela",
+      "portrait": "portrait.sela",
+      "text": "lv.npc.sela.after.01"
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.ella_bed": [
+    {
+      "op": "if",
+      "flag": "p.s09_done",
+      "equals": true,
+      "goto": 3
+    },
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.ella_bed.01"
+    },
+    {
+      "op": "end"
+    },
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.ella_bed.after.01"
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.finn_bed": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.finn_bed.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_finn_bed",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.home_books": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.home_books.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_home_books",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.home_table": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.home_table.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_home_table",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.home_stove": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.home_stove.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_home_stove",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.shop_bench": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.shop_bench.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_shop_bench",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.shop_shelf": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.shop_shelf.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_shop_shelf",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.shop_crate": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.shop_crate.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_shop_crate",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.shop_barrel": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.shop_barrel.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_shop_barrel",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.bread_counter": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.bread_counter.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_bread_counter",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.bakery_stove": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.bakery_stove.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_bakery_stove",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.bakery_table": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.bakery_table.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_bakery_table",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.dough_cart": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.dough_cart.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_dough_cart",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.well": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.well.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_well",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.town_sign": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.town_sign.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_town_sign",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.road_sign": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.road_sign.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_road_sign",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ],
+  "lv.inspect.paper_table": [
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "lv.inspect.paper_table.01"
+    },
+    {
+      "op": "set",
+      "flag": "seen.inspect_paper_table",
+      "value": true
+    },
+    {
+      "op": "end"
+    }
+  ]
+}

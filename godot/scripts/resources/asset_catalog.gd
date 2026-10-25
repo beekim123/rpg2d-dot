@@ -11,6 +11,7 @@ var _frames: Dictionary = {}
 var _textures: Dictionary = {}
 var _maps: Dictionary = {}
 var _locales: Dictionary = {}
+var _stories: Dictionary = {}
 var _font: FontFile
 
 func load_pack() -> bool:
@@ -18,7 +19,7 @@ func load_pack() -> bool:
 	if _pack.get("format") != "astra.resource-pack/1":
 		push_error("Invalid ASTRA resource pack")
 		return false
-	for index: String in ["maps", "locales", "bootstrap"]:
+	for index: String in ["maps", "locales", "stories", "bootstrap"]:
 		if not _pack.get(index) is Dictionary:
 			push_error("Missing resource pack index: " + index)
 			return false
@@ -43,6 +44,7 @@ func load_pack() -> bool:
 	_textures.clear()
 	_maps.clear()
 	_locales.clear()
+	_stories.clear()
 	_font = null
 	for asset: Dictionary in manifest.get("assets", []):
 		definitions[String(asset["id"])] = asset
@@ -68,6 +70,17 @@ func map_ids() -> Array[String]:
 
 func locale(locale_id: String) -> Dictionary:
 	return _indexed_json("locales", locale_id, _locales)
+
+func story_scripts() -> Dictionary:
+	var scripts: Dictionary = {}
+	for bundle_id: String in _pack.get("stories", {}):
+		var bundle: Dictionary = _indexed_json("stories", bundle_id, _stories)
+		for script_id: String in bundle:
+			if scripts.has(script_id):
+				push_error("Duplicate story script ID: " + script_id)
+				return {}
+			scripts[script_id] = bundle[script_id]
+	return scripts
 
 func shadow_for_terrain(terrain_asset_id: String) -> String:
 	match terrain_asset_id:

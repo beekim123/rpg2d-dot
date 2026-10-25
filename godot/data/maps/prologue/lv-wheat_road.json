@@ -56,7 +56,8 @@
       "sprite": "prop.sign",
       "x": 11,
       "y": 29,
-      "solid": true
+      "solid": true,
+      "script": "lv.inspect.road_sign"
     },
     {
       "id": "lv.road.tree0",

@@ -42,7 +42,7 @@ func _run() -> void:
 		_finish()
 		return
 	var initial_accessibility: Dictionary = world.call("accessibility_state")
-	_check(initial_accessibility == {"ready": true, "map_id": "lantern.test", "grid_x": 8, "grid_y": 12, "facing": "down", "moving": false}, "accessibility snapshot describes the ready player")
+	_check(initial_accessibility == {"ready": true, "map_id": "lantern.test", "grid_x": 8, "grid_y": 12, "facing": "down", "moving": false, "dialogue_active": false, "speaker": "", "dialogue_text": "", "dialogue_revealed": false, "dialogue_script": ""}, "accessibility snapshot describes the ready player")
 	initial_accessibility["grid_x"] = 999
 	_check(player.get("grid_position") == Vector2i(8, 12), "mutating an accessibility snapshot cannot change gameplay")
 	var catalog: RefCounted = world.get("catalog") as RefCounted
@@ -86,7 +86,7 @@ func _run() -> void:
 	_check((font as FontFile).antialiasing == TextServer.FONT_ANTIALIASING_NONE, "UI font has no antialiasing")
 	_check(not (font as FontFile).allow_system_fallback, "UI uses the licensed bundled font only")
 	_check(bool(world.call("request_move", Vector2i.RIGHT)), "production move request accepts free right tile")
-	_check(world.call("accessibility_state") == {"ready": true, "map_id": "lantern.test", "grid_x": 9, "grid_y": 12, "facing": "right", "moving": true}, "accessibility snapshot publishes movement target and direction")
+	_check(world.call("accessibility_state") == {"ready": true, "map_id": "lantern.test", "grid_x": 9, "grid_y": 12, "facing": "right", "moving": true, "dialogue_active": false, "speaker": "", "dialogue_text": "", "dialogue_revealed": false, "dialogue_script": ""}, "accessibility snapshot publishes movement target and direction")
 	_check(sprite.animation == &"walk_right", "moving selects directional walk animation")
 	_check(not bool(world.call("request_move", Vector2i.DOWN)), "a pending grid step cannot be overwritten")
 	await _wait_for_step(player)
@@ -99,7 +99,7 @@ func _run() -> void:
 	_check(player.get("grid_position") == Vector2i(9, 11), "approach ends west of Hob")
 	_check(not bool(world.call("request_move", Vector2i.RIGHT)), "Hob blocks requested target tile")
 	_check(player.get("grid_position") == Vector2i(9, 11), "blocked move preserves player grid position")
-	_check(world.call("accessibility_state") == {"ready": true, "map_id": "lantern.test", "grid_x": 9, "grid_y": 11, "facing": "right", "moving": false}, "blocked movement publishes facing without changing grid position")
+	_check(world.call("accessibility_state") == {"ready": true, "map_id": "lantern.test", "grid_x": 9, "grid_y": 11, "facing": "right", "moving": false, "dialogue_active": false, "speaker": "", "dialogue_text": "", "dialogue_revealed": false, "dialogue_script": ""}, "blocked movement publishes facing without changing grid position")
 	_check(not bool(world.call("is_walkable", Vector2i(6, 6))), "house footprint blocks its upper-left tile")
 	_check(not bool(world.call("is_walkable", Vector2i(10, 8))), "house footprint blocks its lower-right tile")
 	_check(bool(world.call("is_walkable", Vector2i(5, 8))), "tile just outside house footprint stays open")

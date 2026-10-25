@@ -14,5 +14,9 @@
   "bootstrap": {
     "map": "lv.finn_house",
     "locale": "zh-Hans"
+  },
+  "stories": {
+    "m0": "story/m0.json",
+    "lantern_vale": "story/lantern-vale.json"
   }
 }

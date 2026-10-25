@@ -35,7 +35,8 @@
       "footprint": [
         3,
         1
-      ]
+      ],
+      "script": "lv.inspect.bread_counter"
     },
     {
       "id": "lv.bakery.stove",
@@ -43,7 +44,8 @@
       "sprite": "prop.stove",
       "x": 15,
       "y": 3,
-      "solid": true
+      "solid": true,
+      "script": "lv.inspect.bakery_stove"
     },
     {
       "id": "lv.bakery.barrel",
@@ -63,7 +65,8 @@
       "footprint": [
         2,
         1
-      ]
+      ],
+      "script": "lv.inspect.bakery_table"
     },
     {
       "id": "lv.bakery.mat_a",
@@ -87,7 +90,8 @@
       "sprite": "prop.dough_cart",
       "x": 7,
       "y": 8,
-      "solid": true
+      "solid": true,
+      "script": "lv.inspect.dough_cart"
     },
     {
       "id": "lv.bakery.dough_b",
@@ -95,7 +99,8 @@
       "sprite": "prop.dough_cart",
       "x": 10,
       "y": 8,
-      "solid": true
+      "solid": true,
+      "script": "lv.inspect.dough_cart"
     },
     {
       "id": "lv.bakery.brio",

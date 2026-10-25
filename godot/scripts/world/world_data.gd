@@ -33,6 +33,38 @@ func get_map(map_id: String, flags: Dictionary = {}) -> Dictionary:
 		return {}
 	return _visible_copy(_maps[map_id], flags)
 
+## Query an already visibility-filtered view. NPCs win ties; source order stays stable.
+func interaction_target(map: Dictionary, cell: Vector2i, direction: Vector2i) -> Dictionary:
+	if not direction in DIRECTIONS or not _terrain_walkable(map, cell) or not map.get("entities") is Array:
+		return {}
+	var front: Vector2i = cell + direction
+	var preferred: Dictionary = {}
+	var fallback: Dictionary = {}
+	for value: Variant in map["entities"]:
+		if not value is Dictionary or not _entity_geometry_valid(value, map):
+			return {}
+		var entity: Dictionary = value
+		if not _text(entity.get("script")) or not _entity_rect(entity).has_point(front):
+			continue
+		if entity.get("kind") == "npc":
+			if preferred.is_empty():
+				preferred = entity
+		elif fallback.is_empty():
+			fallback = entity
+	return (preferred if not preferred.is_empty() else fallback).duplicate(true)
+
+## Flag transactions must preserve routes from the player's actual position, not only spawn.
+func validate_position(map_id: String, cell: Vector2i, flags: Dictionary = {}) -> Array[String]:
+	var errors: Array[String] = validate_state(flags)
+	if not errors.is_empty():
+		return errors
+	if not _maps.has(map_id):
+		return ["Unknown current map: " + map_id]
+	var view: Dictionary = get_map(map_id, flags)
+	if not is_safe_entry(view, cell):
+		return ["Blocked player position in " + map_id]
+	return _access_errors(view, cell, reachable(view, cell))
+
 func is_walkable(map: Dictionary, cell: Vector2i) -> bool:
 	if not _terrain_walkable(map, cell) or not map.get("entities") is Array:
 		return false

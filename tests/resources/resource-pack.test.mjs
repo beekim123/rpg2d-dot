@@ -206,3 +206,35 @@ test('changed registration is detected read-only and removes only owned obsolete
   await assert.rejects(access(join(f.targetRoot, 'data/maps/lantern-test.json')));
   await access(join(f.targetRoot, 'data/maps/user-draft.json'));
 });
+
+test('registered story bundles are managed, verified, and removable without touching drafts', async t => {
+  const f = await fixture(t);
+  f.registry.stories = { village: 'story/village.json' };
+  const scripts = { greeting: [{ op: 'end' }] };
+  await f.put(f.sourceRoot, 'content/story/village.json', scripts);
+  await f.put(f.sourceRoot, 'content/registry.json', f.registry);
+  await syncResources(f.options);
+  assert.equal((await index(f)).stories.village, 'res://data/story/village.json');
+  assert.deepEqual(JSON.parse(await readFile(join(f.targetRoot, 'data/story/village.json'), 'utf8')), scripts);
+  await f.put(f.targetRoot, 'data/story/draft.json', { keep: true });
+  await f.put(f.targetRoot, 'data/story/village.json', 'edited');
+  assert.ok((await syncResources({...f.options,verify:true})).mismatches.some(v=>v.includes('story/village.json')));
+  await syncResources(f.options);
+  f.registry.stories = {};
+  await f.put(f.sourceRoot, 'content/registry.json', f.registry);
+  assert.deepEqual((await syncResources(f.options)).removed, ['res://data/story/village.json']);
+  await access(join(f.targetRoot,'data/story/draft.json'));
+});
+
+test('story registration rejects unsafe paths and malformed bundles before writing', async t => {
+  for (const stories of [null, [], {village:'../escape.json'}, {village:'maps/lantern-test.json'}, {'../bad':'story/village.json'}]) {
+    const f = await fixture(t);f.registry.stories = stories;
+    await f.put(f.sourceRoot,'content/registry.json',f.registry);
+    await assert.rejects(syncResources(f.options), /stor|unsafe/i);
+    await assert.rejects(access(join(f.targetRoot,'resource-pack.json')));
+  }
+  const f = await fixture(t);f.registry.stories={village:'story/village.json'};
+  await f.put(f.sourceRoot,'content/registry.json',f.registry);
+  await f.put(f.sourceRoot,'content/story/village.json',['not a keyed script dictionary']);
+  await assert.rejects(syncResources(f.options), /story bundle/i);
+});

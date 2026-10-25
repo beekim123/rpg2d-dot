@@ -32,7 +32,8 @@
       "footprint": [
         3,
         1
-      ]
+      ],
+      "script": "lv.inspect.shop_bench"
     },
     {
       "id": "lv.shop.shelf",
@@ -44,7 +45,8 @@
       "footprint": [
         2,
         1
-      ]
+      ],
+      "script": "lv.inspect.shop_shelf"
     },
     {
       "id": "lv.shop.crate",
@@ -52,7 +54,8 @@
       "sprite": "prop.crate",
       "x": 3,
       "y": 7,
-      "solid": true
+      "solid": true,
+      "script": "lv.inspect.shop_crate"
     },
     {
       "id": "lv.shop.barrel",
@@ -60,7 +63,8 @@
       "sprite": "prop.barrel",
       "x": 12,
       "y": 4,
-      "solid": true
+      "solid": true,
+      "script": "lv.inspect.shop_barrel"
     },
     {
       "id": "lv.lamp.shop",

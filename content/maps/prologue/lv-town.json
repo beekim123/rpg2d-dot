@@ -88,7 +88,8 @@
       "footprint": [
         3,
         1
-      ]
+      ],
+      "script": "lv.inspect.bread_counter"
     },
     {
       "id": "lv.town.lamp_bench",
@@ -100,7 +101,8 @@
       "footprint": [
         3,
         1
-      ]
+      ],
+      "script": "lv.inspect.shop_bench"
     },
     {
       "id": "lv.town.well",
@@ -112,7 +114,8 @@
       "footprint": [
         2,
         1
-      ]
+      ],
+      "script": "lv.inspect.well"
     },
     {
       "id": "lv.town.windmill",
@@ -136,7 +139,8 @@
       "footprint": [
         2,
         1
-      ]
+      ],
+      "script": "lv.inspect.paper_table"
     },
     {
       "id": "lv.town.sign",
@@ -144,7 +148,8 @@
       "sprite": "prop.sign",
       "x": 18,
       "y": 29,
-      "solid": true
+      "solid": true,
+      "script": "lv.inspect.town_sign"
     },
     {
       "id": "lv.town.pillar_n",
