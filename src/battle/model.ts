@@ -21,6 +21,20 @@ export interface BattleActor {
   chart: StarChart;
   reach: number;
   readyAt: number;
+  skillIds?: string[];
+  lampMarks?: number;
+}
+
+export interface BattleSkill {
+  id: string;
+  cost: number;
+  power: number;
+  range: number;
+  weight: ActionWeight;
+  effect: 'damage' | 'heal' | 'shield';
+  lampMarks?: number;
+  consumeMarks?: boolean;
+  knockback?: number;
 }
 
 export interface DamageInput {

@@ -30,6 +30,9 @@ export function validateActor(actor:BattleActor):void {
   if((actor.mode==='manifested')!==(actor.astral!==null)||actor.hp===0&&actor.mode!=='extinguished')throw new RangeError('Inconsistent astral manifestation');
   if(!actor.chart||typeof actor.chart!=='object')throw new RangeError('Invalid star chart');
   for(const key of ['pow','spd','rch','end','prc','pot'] as const)chartValue(actor.chart[key]);
+  if(actor.lampMarks!==undefined)integer(actor.lampMarks,'lamp marks',0,3);
+  if(actor.skillIds!==undefined&&(!Array.isArray(actor.skillIds)||new Set(actor.skillIds).size!==actor.skillIds.length
+    ||actor.skillIds.some(id=>typeof id!=='string'||!/^\w[\w.-]*$/.test(id))))throw new RangeError('Invalid actor skill list');
 }
 
 export function rating(value:number):Rating {

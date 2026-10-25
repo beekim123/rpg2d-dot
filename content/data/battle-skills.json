@@ -1,0 +1,12 @@
+{
+  "rules": { "guardShield": 20, "collisionDamagePerCell": 10, "precisionDivisor": 10 },
+  "skills": [
+    { "id": "basic_strike", "cost": 0, "power": 16, "range": 1, "weight": "normal", "effect": "damage" },
+    { "id": "lamp_punch", "cost": 0, "power": 18, "range": 1, "weight": "normal", "effect": "damage", "lampMarks": 1 },
+    { "id": "flare", "cost": 3, "power": 12, "range": 3, "weight": "heavy", "effect": "damage", "consumeMarks": true },
+    { "id": "laurel_bolt", "cost": 0, "power": 12, "range": 2, "weight": "normal", "effect": "damage" },
+    { "id": "laurel_heal", "cost": 3, "power": 22, "range": 3, "weight": "normal", "effect": "heal" },
+    { "id": "laurel_shield", "cost": 2, "power": 18, "range": 3, "weight": "normal", "effect": "shield" },
+    { "id": "rush", "cost": 4, "power": 24, "range": 1, "weight": "heavy", "effect": "damage", "knockback": 1 }
+  ]
+}
