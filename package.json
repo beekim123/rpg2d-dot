@@ -7,20 +7,21 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview --host 127.0.0.1",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "check": "npm run typecheck && npm test && npm run test:art && npm run content:check && npm run art:verify && npm run audio:check && npm run test:route && npm run build",
-    "test:art": "node --test --test-concurrency=1 tests/art.test.mjs",
+    "dev": "node tools/run.mjs vite --host 127.0.0.1",
+    "build": "node tools/run.mjs tsc --noEmit && node tools/run.mjs vite build",
+    "preview": "node tools/run.mjs vite preview --host 127.0.0.1",
+    "typecheck": "node tools/run.mjs tsc --noEmit",
+    "test": "node tools/run.mjs vitest run",
+    "check": "npm run typecheck && npm test && npm run test:art && npm run content:check && npm run art:verify && npm run audio:check && npm run test:route && npm run test:battle-route && npm run build",
+    "test:art": "node --test --test-concurrency=1 tests/art.test.mjs tests/art-battle.test.mjs",
     "art:build": "node tools/art.mjs build",
     "art:verify": "node tools/art.mjs verify",
     "art:sheet": "node tools/art.mjs sheet",
     "content:check": "node --experimental-strip-types tools/content-check.ts",
     "audio:check": "node --experimental-strip-types tools/audio-check.ts",
     "test:route": "node --experimental-strip-types tools/playthrough.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "node tools/run.mjs playwright test",
+    "test:battle-route": "node --experimental-strip-types tools/battle-playthrough.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

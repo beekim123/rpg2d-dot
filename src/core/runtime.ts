@@ -16,7 +16,7 @@ export class FixedClock {
   }
   reset(): void { this.previous = undefined; this.remainder = 0; }
 }
-export type Scene = 'title' | 'map' | 'dialogue' | 'menu' | 'debug';
+export type Scene = 'title' | 'map' | 'dialogue' | 'menu' | 'debug' | 'battle';
 export class SceneStack {
   private scenes: Scene[];
   constructor(initial: Scene) { this.scenes = [initial]; }

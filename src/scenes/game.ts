@@ -1,3 +1,6 @@
+import {BattleScene} from './battle-scene.ts';
+import {battleMapId,battleArenaId} from './battle-catalog.ts';
+import {battles} from '../battle/content.ts';
 import { Assets } from '../render/assets.ts';
 import { renderWorld } from '../render/world.ts';
 import { text, centered, lines } from '../render/text.ts';
@@ -12,7 +15,7 @@ import { runScript, type Say } from '../systems/story.ts';
 
 const menuKeys=['menu.resume','menu.save1','menu.save2','menu.save3','menu.load1','menu.load2','menu.load3','menu.export','menu.import','menu.audio','menu.titleback'];
 const titleKeys=['title.new','title.continue','title.workbench'];
-const debugKeys=['debug.grid','debug.teleport','debug.reset'];
+const debugKeys=['debug.grid','debug.teleport','debug.reset','debug.battle_ella','debug.battle_shade'];
 export class Game {
   state:GameState=newGame();
   private canvas:HTMLCanvasElement;
@@ -37,18 +40,21 @@ export class Game {
   private moveRemaining=0;
   private moveDuration=10;
   private fileInput:HTMLInputElement;
+  private battle:BattleScene|undefined;
+  private beforeBattle:GameState|undefined;
   constructor(canvas:HTMLCanvasElement,assets:Assets) {
     this.canvas=canvas; this.ctx=canvas.getContext('2d')!; this.ctx.imageSmoothingEnabled=false;this.assets=assets;
     const unavailable={getItem:()=>null,setItem:()=>{throw new Error('storage unavailable');}};
     let storage:Storage;try{storage=localStorage;}catch{storage=unavailable as unknown as Storage;}
     this.store=new SaveStore(storage,maps);
-    this.input=new Input(canvas,()=>{void this.audio.unlock().then(()=>this.audio.music('test_theme')).catch(()=>{});});
+    this.input=new Input(canvas,()=>{void this.audio.unlock().then(()=>this.audio.music(this.battle?'battle_theme':'test_theme')).catch(()=>{});});
     this.fileInput=document.createElement('input');this.fileInput.type='file';this.fileInput.accept='.json,application/json';this.fileInput.hidden=true;document.body.append(this.fileInput);
     this.fileInput.addEventListener('change',()=>{void this.importSave();});
     canvas.addEventListener('click',e=>this.click(e));
     addEventListener('resize',()=>this.resize());
     document.addEventListener('visibilitychange',()=>this.clock.reset());
     const direct=debugStart(location.search,maps);if(direct){this.state=direct;this.previous=direct.player;this.scenes.replace('map');}
+    const battleId=new URLSearchParams(location.search).get('battle');if(battleId&&Object.hasOwn(battles,battleId))this.startBattle(battleId,true);
     this.resize();canvas.focus();this.syncStatus();requestAnimationFrame(now=>this.frame(now));
   }
   private get map(){return maps[this.state.mapId]!;}
@@ -61,6 +67,7 @@ export class Game {
     this.tick++;
     if(this.moveRemaining>0)this.moveRemaining--;
     const action=this.input.consume();if(action)this.action(action);
+    if(this.scenes.current==='battle'&&this.battle){this.battle.update();this.syncStatus();if(this.battle.exitRequested){this.battle=undefined;if(this.beforeBattle)this.restore(this.beforeBattle);this.beforeBattle=undefined;this.audio.music('test_theme');}}
     if(this.scenes.current==='dialogue') {if(this.tick%2===0)this.letters++;if(this.input.held.has('KeyX'))this.letters+=3;}
     if(this.scenes.current==='map'&&this.moveRemaining===0){
       const d=this.input.direction();if(d)this.tryMove(d);
@@ -74,6 +81,7 @@ export class Game {
   }
   private action(action:Action):void {
     const scene=this.scenes.current;
+    if(scene==='battle'&&this.battle){if(action==='menu')this.battle.toggleSpeed();else if(action!=='debug')this.battle.handle(action);this.syncStatus();return;}
     if(scene==='map') {
       if(action==='up'||action==='down'||action==='left'||action==='right')this.tryMove(action);
       if(action==='confirm'&&this.moveRemaining===0)this.interact();
@@ -116,6 +124,7 @@ export class Game {
       if(this.selection===0)this.grid=!this.grid;
       if(this.selection===1){this.state.player={...this.map.spawn,facing:'down'};this.previous=this.state.player;this.moveRemaining=0;}
       if(this.selection===2){this.state=newGame();this.previous=this.state.player;this.moveRemaining=0;}
+      if(this.selection===3||this.selection===4){this.startBattle(this.selection===3?'prologue_ella':'prologue_shade');return;}
       this.scenes.pop();
     } else if(this.scenes.current==='menu') {
       const n=this.selection;
@@ -129,6 +138,15 @@ export class Game {
     }
     this.syncStatus();
   }
+  private startBattle(id:string,directPreview=false):void {
+    if(!Object.hasOwn(battles,id))return;const definition=battles[id]!;
+    const previousSave=directPreview?this.store.load(0):undefined;
+    this.beforeBattle=structuredClone(previousSave?.ok?previousSave.state:this.state);
+    if(!directPreview)this.store.save(0,this.state);
+    const map=maps[battleMapId]!,arena=map.arenas![battleArenaId]!;
+    this.state={...newGame(),mapId:map.id,player:{...map.spawn,facing:'right'}};this.previous=this.state.player;this.moveRemaining=0;
+    this.battle=new BattleScene(definition,map,this.state,arena,this.audio);this.scenes.replace('battle');this.input.clear();this.audio.music('battle_theme');
+  }
   private restore(state:GameState):void {this.state=state;this.previous=state.player;this.moveRemaining=0;this.scenes.replace('map');this.input.clear();this.syncStatus();}
   private exportSave():void {const blob=new Blob([encodeSave(this.state)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='astra-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);this.notify('save.exported');}
   private async importSave():Promise<void> {
@@ -139,6 +157,7 @@ export class Game {
   private notify(key:string):void {this.toast=t(key);this.toastUntil=this.tick+180;this.syncStatus();}
   private syncStatus():void {
     this.canvas.dataset.scene=this.scenes.current;
+    if(this.battle){const b=this.battle.controller;this.canvas.dataset.battleActor=b.actor.id;this.canvas.dataset.battleMode=b.mode;this.canvas.dataset.battleTurn=String(b.encounter.battle.turnNumber);this.canvas.dataset.battleBody=`${b.actor.body.x},${b.actor.body.y}`;this.canvas.dataset.battleBusy=String(this.battle.busy);this.canvas.dataset.intentMode=Object.values(b.encounter.intents)[0]?.mode??'';this.canvas.dataset.battleState=JSON.stringify(b.encounter.battle);this.canvas.dataset.battleSpeed=String(this.battle.speed);}
     this.canvas.dataset.position=`${this.state.player.x},${this.state.player.y}`;
     this.canvas.dataset.lamps=String(this.state.lamps.length);
     this.canvas.dataset.metHob=String(!!this.state.flags.met_hob);
@@ -150,6 +169,7 @@ export class Game {
   }
   private render():void {
     const ctx=this.ctx,assets=this.assets,scene=this.scenes.current;
+    if(scene==='battle'&&this.battle){this.battle.render(ctx,assets,this.tick);return;}
     renderWorld(ctx,assets,this.map,this.state,this.tick,this.visual(),this.moveRemaining>0,this.grid);
     if(scene==='title'){
       assets.panel(ctx,100,29,280,207);
@@ -181,7 +201,7 @@ export class Game {
       centered(ctx,t('menu.savehint'),240,223,'#b09a8a');
     }
     if(scene==='debug'){
-      assets.panel(ctx,114,77,252,120);text(ctx,t('debug.title'),130,89,'#ffe36b');debugKeys.forEach((key,n)=>this.option(key,n,136,113+n*24,scene));
+      assets.panel(ctx,114,53,252,168);text(ctx,t('debug.title'),130,65,'#ffe36b');debugKeys.forEach((key,n)=>this.option(key,n,136,89+n*24,scene));
     }
     if(this.toastUntil>this.tick&&scene!=='dialogue'){
       const width=Math.min(456,this.toast.length*12+20);assets.panel(ctx,240-width/2,211,width,29);centered(ctx,this.toast,240,219,'#fff6c8');
@@ -196,11 +216,12 @@ export class Game {
   private click(e:MouseEvent):void {
     const rect=this.canvas.getBoundingClientRect(),x=(e.clientX-rect.left)*480/rect.width,y=(e.clientY-rect.top)*270/rect.height;
     const scene=this.scenes.current;
+    if(scene==='battle'&&this.battle){this.battle.click(x,y);this.syncStatus();return;}
     if(scene==='dialogue'){this.action('confirm');return;}
     let hit=-1;
     if(scene==='title'&&x>=140&&x<=350&&y>=124&&y<200)hit=Math.floor((y-124)/24);
     if(scene==='menu'&&x>=38&&x<440&&y>=90&&y<216)hit=Math.floor((x-38)/202)*6+Math.floor((y-90)/21);
-    if(scene==='debug'&&x>=126&&x<355&&y>=109&&y<183)hit=Math.floor((y-109)/24);
+    if(scene==='debug'&&x>=126&&x<355&&y>=85&&y<207)hit=Math.floor((y-85)/24);
     const count=scene==='title'?titleKeys.length:scene==='menu'?menuKeys.length:debugKeys.length;
     if(hit>=0&&hit<count){this.selection=hit;this.choose();}
   }

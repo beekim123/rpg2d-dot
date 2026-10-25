@@ -1,0 +1,131 @@
+{
+  "id": "lantern.yard",
+  "name": "map.yard",
+  "width": 30,
+  "height": 20,
+  "rows": [
+    "tttttttttttttttttttttttttttttt",
+    "tggggggggggggggggggggggggggggt",
+    "tgggggggggggggggggggggggwwwwgt",
+    "tgggggggggggggggggggggggwwwwgt",
+    "tgggggggggggggggggggggggwwwwgt",
+    "tgggggggggggggggggggggggwwwwgt",
+    "tgggggggsssssssssssssgggwwwwgt",
+    "tgggggggsssssssssssssgggwwwwgt",
+    "tgggggggsssssssssssssgggwwwwgt",
+    "tgggggggsssssssssssssgggwwwwgt",
+    "tgggggggssssssssssssssssbbbbst",
+    "tgggggggssssssssssssssssbbbbst",
+    "tgggggggsssssssssssssgggwwwwgt",
+    "tgggggggsssssssssssssgggwwwwgt",
+    "tgggggggsssssssssssssgggwwwwgt",
+    "tgggggggsssssssssssssgggwwwwgt",
+    "tgggggggggggggggggggggggwwwwgt",
+    "tgggggggggggggggggggggggwwwwgt",
+    "tggggggggggggggggggggggggggggt",
+    "tttttttttttttttttttttttttttttt"
+  ],
+  "spawn": {
+    "x": 11,
+    "y": 10
+  },
+  "required": [
+    "yard_lamp"
+  ],
+  "exits": [],
+  "arenas": {
+    "practice": {
+      "x": 10,
+      "y": 7,
+      "width": 8,
+      "height": 6
+    }
+  },
+  "entities": [
+    {
+      "id": "yard_lamp",
+      "kind": "lamp",
+      "sprite": "prop.lamp",
+      "x": 8,
+      "y": 10,
+      "solid": true
+    },
+    {
+      "id": "pillar_north",
+      "kind": "decoration",
+      "sprite": "prop.pillar",
+      "x": 13,
+      "y": 8,
+      "solid": true
+    },
+    {
+      "id": "pillar_south",
+      "kind": "decoration",
+      "sprite": "prop.pillar",
+      "x": 13,
+      "y": 11,
+      "solid": true
+    },
+    {
+      "id": "yard_hob",
+      "kind": "npc",
+      "sprite": "char.hob",
+      "x": 7,
+      "y": 10,
+      "solid": true,
+      "script": "hob"
+    },
+    {
+      "id": "yard_tree0",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 4,
+      "y": 8,
+      "solid": true
+    },
+    {
+      "id": "yard_tree1",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 22,
+      "y": 6,
+      "solid": true
+    },
+    {
+      "id": "yard_tree2",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 5,
+      "y": 17,
+      "solid": true
+    },
+    {
+      "id": "yard_tree3",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 22,
+      "y": 16,
+      "solid": true
+    },
+    {
+      "id": "yard_tree4",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 3,
+      "y": 4,
+      "solid": true
+    },
+    {
+      "id": "yard_house",
+      "kind": "decoration",
+      "sprite": "prop.house",
+      "x": 17,
+      "y": 4,
+      "solid": true,
+      "footprint": [
+        5,
+        3
+      ]
+    }
+  ]
+}

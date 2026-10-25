@@ -186,5 +186,17 @@
   "battle.description.laurel_bolt": "飞叶攻击远处目标。",
   "battle.description.laurel_heal": "回复队友的体力。",
   "battle.description.laurel_shield": "用叶盾保护队友。",
-  "battle.description.rush": "重拳将目标击退。"
+  "battle.description.rush": "重拳将目标击退。",
+  "battle.cell": "格",
+  "battle.goal.actions": "敌方行动",
+  "battle.goal.hit_done": "已有效命中",
+  "battle.goal.hit_needed": "需要命中一次",
+  "battle.intent.reason.actor_displaced": "位置变动",
+  "battle.intent.reason.actor_unavailable": "无法行动",
+  "battle.intent.reason.plan_blocked": "路线受阻",
+  "battle.intent.reason.target_unavailable": "目标消失",
+  "battle.intent.reason.outside_skill_range": "射程不足",
+  "battle.intent.reason.blocked_line_of_sight": "障碍遮挡",
+  "battle.intent.reason.skill_condition_lost": "条件失效",
+  "battle.intent.reason.empty_cell": "目标离格"
 }

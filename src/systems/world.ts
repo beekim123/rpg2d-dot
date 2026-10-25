@@ -1,7 +1,7 @@
 export type Direction = 'up' | 'down' | 'left' | 'right';
 export interface Point { x: number; y: number }
 export interface Entity extends Point { id: string; kind: 'npc'|'lamp'|'decoration'; sprite: string; solid: boolean; script?: string; footprint?: [number,number] }
-export interface MapData { id: string; name: string; width: number; height: number; rows: string[]; spawn: Point; entities: Entity[]; required: string[]; exits: {x:number;y:number;to:string;at:Point}[] }
+export interface MapData { id: string; name: string; width: number; height: number; rows: string[]; spawn: Point; entities: Entity[]; arenas?:Record<string,{x:number;y:number;width:number;height:number}>; required: string[]; exits: {x:number;y:number;to:string;at:Point}[] }
 export interface GameState { version: 1; mapId: string; player: Point & { facing: Direction }; followers: Point[]; actors: Record<string,Point>; flags: Record<string,boolean>; lamps: string[]; steps: number; inventory: Record<string,number> }
 export const DELTA: Record<Direction, Point> = {up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}};
 export function newGame(): GameState {
