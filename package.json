@@ -12,7 +12,15 @@
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "npm run typecheck && npm test && npm run build"
+    "check": "npm run typecheck && npm test && npm run test:art && npm run content:check && npm run art:verify && npm run audio:check && npm run test:route && npm run build",
+    "test:art": "node --test --test-concurrency=1 tests/art.test.mjs",
+    "art:build": "node tools/art.mjs build",
+    "art:verify": "node tools/art.mjs verify",
+    "art:sheet": "node tools/art.mjs sheet",
+    "content:check": "node --experimental-strip-types tools/content-check.ts",
+    "audio:check": "node --experimental-strip-types tools/audio-check.ts",
+    "test:route": "node --experimental-strip-types tools/playthrough.ts",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

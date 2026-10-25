@@ -7,5 +7,5 @@
     "allowImportingTsExtensions": true, "resolveJsonModule": true,
     "noEmit": true, "types": ["vite/client", "node"]
   },
-  "include": ["src", "tests/**/*.ts", "tools/**/*.ts", "*.config.ts"]
+  "include": ["src", "workbench", "tests/**/*.ts", "tools/**/*.ts", "*.config.ts"]
 }

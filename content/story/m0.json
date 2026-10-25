@@ -1,0 +1,45 @@
+{
+  "hob": [
+    {
+      "op": "if",
+      "flag": "met_hob",
+      "equals": true,
+      "goto": 6
+    },
+    {
+      "op": "say",
+      "speaker": "name.hob",
+      "portrait": "portrait.hob",
+      "text": "hob.hello"
+    },
+    {
+      "op": "say",
+      "speaker": "name.finn",
+      "portrait": "portrait.finn",
+      "text": "finn.reply"
+    },
+    {
+      "op": "say",
+      "speaker": "name.hob",
+      "portrait": "portrait.hob",
+      "text": "hob.lesson"
+    },
+    {
+      "op": "set",
+      "flag": "met_hob",
+      "value": true
+    },
+    {
+      "op": "end"
+    },
+    {
+      "op": "say",
+      "speaker": "name.hob",
+      "portrait": "portrait.hob",
+      "text": "hob.again"
+    },
+    {
+      "op": "end"
+    }
+  ]
+}

@@ -151,3 +151,11 @@ flag set prologue.awakened
 - 只用小而常见、许可证宽松（MIT / Apache / BSD / OFL）的依赖，并在 `third_party/README.md` 记录。
 - 不加入运行时网络请求、统计、广告。
 - 不提交密钥、本机路径和大文件（单个文件超过 2 MB 要先想办法）。
+
+## M0 已采用的实现（2026-10-25）
+
+- 采用 TypeScript 严格模式、Vite 8、Vitest 5、Playwright；运行 Node 22.12+，CI Node 24。测试 maxWorkers=1，文件顺序执行。
+- 地图使用 JSON 的字符串行与实体表，便于检查与迁移；剧情 v0 使用带稳定文字 ID 的 JSON 指令（say/set/if/move/end）。
+- 存档 v1 显式校验结构、实体布局、可达性，支持 v0 迁移；不可导入将必经NPC藏进建筑的状态。
+- 模块边界、具体任务见 `../plan/m0-implementation.md`。M0只验证探索循环；战斗截图在M0不适用，M1补入。
+- 美术PNG与字体跟随静态发行包，运行时仅请求同源包内资源；“不访问网络”按不依赖外部服务解释，不阻止浏览器加载游戏自己的静态文件。
