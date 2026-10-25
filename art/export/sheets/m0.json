@@ -1,324 +1,1583 @@
 {
   "image": "m0.png",
   "scale": 3,
+  "pages": [
+    {
+      "image": "m0.png",
+      "labels": [
+        {
+          "id": "astral.ash_hand",
+          "page": 0,
+          "cell": [
+            0,
+            24,
+            120,
+            124
+          ],
+          "frames": 18
+        },
+        {
+          "id": "astral.cornerpress",
+          "page": 0,
+          "cell": [
+            120,
+            24,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "astral.faux_sword",
+          "page": 0,
+          "cell": [
+            240,
+            24,
+            120,
+            124
+          ],
+          "frames": 18
+        },
+        {
+          "id": "astral.laurel",
+          "page": 0,
+          "cell": [
+            360,
+            24,
+            120,
+            124
+          ],
+          "frames": 18
+        },
+        {
+          "id": "astral.morning_star",
+          "page": 0,
+          "cell": [
+            0,
+            148,
+            120,
+            124
+          ],
+          "frames": 18
+        },
+        {
+          "id": "astral.rise",
+          "page": 0,
+          "cell": [
+            120,
+            148,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "char.brio",
+          "page": 0,
+          "cell": [
+            240,
+            148,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "char.ella",
+          "page": 0,
+          "cell": [
+            360,
+            148,
+            120,
+            124
+          ],
+          "frames": 34
+        },
+        {
+          "id": "char.faux_sword",
+          "page": 0,
+          "cell": [
+            0,
+            272,
+            120,
+            124
+          ],
+          "frames": 34
+        },
+        {
+          "id": "char.finn",
+          "page": 0,
+          "cell": [
+            120,
+            272,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "char.hedo",
+          "page": 0,
+          "cell": [
+            240,
+            272,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "char.hob",
+          "page": 0,
+          "cell": [
+            360,
+            272,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "char.mayor_tolan",
+          "page": 0,
+          "cell": [
+            0,
+            396,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "char.mili",
+          "page": 0,
+          "cell": [
+            120,
+            396,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "char.nemi",
+          "page": 0,
+          "cell": [
+            240,
+            396,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "char.oren",
+          "page": 0,
+          "cell": [
+            360,
+            396,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "char.sela",
+          "page": 0,
+          "cell": [
+            0,
+            520,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "char.shade",
+          "page": 0,
+          "cell": [
+            120,
+            520,
+            120,
+            124
+          ],
+          "frames": 34
+        },
+        {
+          "id": "char.teya",
+          "page": 0,
+          "cell": [
+            240,
+            520,
+            120,
+            124
+          ],
+          "frames": 32
+        },
+        {
+          "id": "fx.ash_hit",
+          "page": 0,
+          "cell": [
+            360,
+            520,
+            120,
+            124
+          ],
+          "frames": 6
+        },
+        {
+          "id": "fx.heal",
+          "page": 0,
+          "cell": [
+            0,
+            644,
+            120,
+            124
+          ],
+          "frames": 6
+        },
+        {
+          "id": "fx.hit",
+          "page": 0,
+          "cell": [
+            120,
+            644,
+            120,
+            124
+          ],
+          "frames": 5
+        },
+        {
+          "id": "fx.leaf_hit",
+          "page": 0,
+          "cell": [
+            240,
+            644,
+            120,
+            124
+          ],
+          "frames": 6
+        },
+        {
+          "id": "fx.strike",
+          "page": 0,
+          "cell": [
+            360,
+            644,
+            120,
+            124
+          ],
+          "frames": 12
+        },
+        {
+          "id": "fx.summon",
+          "page": 0,
+          "cell": [
+            0,
+            768,
+            120,
+            124
+          ],
+          "frames": 6
+        },
+        {
+          "id": "portrait.brio",
+          "page": 0,
+          "cell": [
+            120,
+            768,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.ella",
+          "page": 0,
+          "cell": [
+            240,
+            768,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.finn",
+          "page": 0,
+          "cell": [
+            360,
+            768,
+            120,
+            124
+          ],
+          "frames": 1
+        }
+      ]
+    },
+    {
+      "image": "m0-2.png",
+      "labels": [
+        {
+          "id": "portrait.hedo",
+          "page": 1,
+          "cell": [
+            0,
+            24,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.hob",
+          "page": 1,
+          "cell": [
+            120,
+            24,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.mayor_tolan",
+          "page": 1,
+          "cell": [
+            240,
+            24,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.mili",
+          "page": 1,
+          "cell": [
+            360,
+            24,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.nemi",
+          "page": 1,
+          "cell": [
+            0,
+            148,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.oren",
+          "page": 1,
+          "cell": [
+            120,
+            148,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.sela",
+          "page": 1,
+          "cell": [
+            240,
+            148,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.shade",
+          "page": 1,
+          "cell": [
+            360,
+            148,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "portrait.teya",
+          "page": 1,
+          "cell": [
+            0,
+            272,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.barrel",
+          "page": 1,
+          "cell": [
+            120,
+            272,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.bed",
+          "page": 1,
+          "cell": [
+            240,
+            272,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.bookshelf",
+          "page": 1,
+          "cell": [
+            360,
+            272,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.bread_counter",
+          "page": 1,
+          "cell": [
+            0,
+            396,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.cooling_mat",
+          "page": 1,
+          "cell": [
+            120,
+            396,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.crate",
+          "page": 1,
+          "cell": [
+            240,
+            396,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.dough_cart",
+          "page": 1,
+          "cell": [
+            360,
+            396,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.festival_lantern",
+          "page": 1,
+          "cell": [
+            0,
+            520,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "prop.flower",
+          "page": 1,
+          "cell": [
+            120,
+            520,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "prop.hedge",
+          "page": 1,
+          "cell": [
+            240,
+            520,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "prop.house",
+          "page": 1,
+          "cell": [
+            360,
+            520,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.lamp",
+          "page": 1,
+          "cell": [
+            0,
+            644,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "prop.paper_boat",
+          "page": 1,
+          "cell": [
+            120,
+            644,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.pendant",
+          "page": 1,
+          "cell": [
+            240,
+            644,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.pillar",
+          "page": 1,
+          "cell": [
+            360,
+            644,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.shadow",
+          "page": 1,
+          "cell": [
+            0,
+            768,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.sign",
+          "page": 1,
+          "cell": [
+            120,
+            768,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.stove",
+          "page": 1,
+          "cell": [
+            240,
+            768,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.table",
+          "page": 1,
+          "cell": [
+            360,
+            768,
+            120,
+            124
+          ],
+          "frames": 1
+        }
+      ]
+    },
+    {
+      "image": "m0-3.png",
+      "labels": [
+        {
+          "id": "prop.tree",
+          "page": 2,
+          "cell": [
+            0,
+            24,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "prop.well",
+          "page": 2,
+          "cell": [
+            120,
+            24,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.windmill",
+          "page": 2,
+          "cell": [
+            240,
+            24,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "prop.workbench",
+          "page": 2,
+          "cell": [
+            360,
+            24,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "tile.bridge",
+          "page": 2,
+          "cell": [
+            0,
+            148,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "tile.edge",
+          "page": 2,
+          "cell": [
+            120,
+            148,
+            120,
+            124
+          ],
+          "frames": 16
+        },
+        {
+          "id": "tile.grass",
+          "page": 2,
+          "cell": [
+            240,
+            148,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "tile.path",
+          "page": 2,
+          "cell": [
+            360,
+            148,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "tile.rug",
+          "page": 2,
+          "cell": [
+            0,
+            272,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "tile.stone_floor",
+          "page": 2,
+          "cell": [
+            120,
+            272,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "tile.water",
+          "page": 2,
+          "cell": [
+            240,
+            272,
+            120,
+            124
+          ],
+          "frames": 2
+        },
+        {
+          "id": "tile.wheat",
+          "page": 2,
+          "cell": [
+            360,
+            272,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "tile.wood_floor",
+          "page": 2,
+          "cell": [
+            0,
+            396,
+            120,
+            124
+          ],
+          "frames": 4
+        },
+        {
+          "id": "tile.wood_wall",
+          "page": 2,
+          "cell": [
+            120,
+            396,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "ui.panel",
+          "page": 2,
+          "cell": [
+            240,
+            396,
+            120,
+            124
+          ],
+          "frames": 1
+        }
+      ]
+    }
+  ],
   "labels": [
     {
       "id": "astral.ash_hand",
+      "page": 0,
       "cell": [
         0,
         24,
         120,
-        112
+        124
       ],
       "frames": 18
     },
     {
-      "id": "astral.faux_sword",
+      "id": "astral.cornerpress",
+      "page": 0,
       "cell": [
         120,
         24,
         120,
-        112
+        124
+      ],
+      "frames": 4
+    },
+    {
+      "id": "astral.faux_sword",
+      "page": 0,
+      "cell": [
+        240,
+        24,
+        120,
+        124
       ],
       "frames": 18
     },
     {
       "id": "astral.laurel",
+      "page": 0,
       "cell": [
-        240,
+        360,
         24,
         120,
-        112
+        124
       ],
       "frames": 18
     },
     {
       "id": "astral.morning_star",
+      "page": 0,
       "cell": [
-        360,
-        24,
+        0,
+        148,
         120,
-        112
+        124
       ],
       "frames": 18
     },
     {
-      "id": "char.ella",
+      "id": "astral.rise",
+      "page": 0,
       "cell": [
-        0,
-        136,
         120,
-        112
+        148,
+        120,
+        124
+      ],
+      "frames": 4
+    },
+    {
+      "id": "char.brio",
+      "page": 0,
+      "cell": [
+        240,
+        148,
+        120,
+        124
+      ],
+      "frames": 32
+    },
+    {
+      "id": "char.ella",
+      "page": 0,
+      "cell": [
+        360,
+        148,
+        120,
+        124
       ],
       "frames": 34
     },
     {
       "id": "char.faux_sword",
+      "page": 0,
       "cell": [
+        0,
+        272,
         120,
-        136,
-        120,
-        112
+        124
       ],
       "frames": 34
     },
     {
       "id": "char.finn",
+      "page": 0,
+      "cell": [
+        120,
+        272,
+        120,
+        124
+      ],
+      "frames": 32
+    },
+    {
+      "id": "char.hedo",
+      "page": 0,
       "cell": [
         240,
-        136,
+        272,
         120,
-        112
+        124
       ],
       "frames": 32
     },
     {
       "id": "char.hob",
+      "page": 0,
       "cell": [
         360,
-        136,
+        272,
         120,
-        112
+        124
       ],
       "frames": 4
     },
     {
-      "id": "char.shade",
+      "id": "char.mayor_tolan",
+      "page": 0,
       "cell": [
         0,
-        248,
+        396,
         120,
-        112
+        124
+      ],
+      "frames": 32
+    },
+    {
+      "id": "char.mili",
+      "page": 0,
+      "cell": [
+        120,
+        396,
+        120,
+        124
+      ],
+      "frames": 32
+    },
+    {
+      "id": "char.nemi",
+      "page": 0,
+      "cell": [
+        240,
+        396,
+        120,
+        124
+      ],
+      "frames": 32
+    },
+    {
+      "id": "char.oren",
+      "page": 0,
+      "cell": [
+        360,
+        396,
+        120,
+        124
+      ],
+      "frames": 32
+    },
+    {
+      "id": "char.sela",
+      "page": 0,
+      "cell": [
+        0,
+        520,
+        120,
+        124
+      ],
+      "frames": 32
+    },
+    {
+      "id": "char.shade",
+      "page": 0,
+      "cell": [
+        120,
+        520,
+        120,
+        124
       ],
       "frames": 34
     },
     {
-      "id": "fx.ash_hit",
+      "id": "char.teya",
+      "page": 0,
       "cell": [
+        240,
+        520,
         120,
-        248,
+        124
+      ],
+      "frames": 32
+    },
+    {
+      "id": "fx.ash_hit",
+      "page": 0,
+      "cell": [
+        360,
+        520,
         120,
-        112
+        124
       ],
       "frames": 6
     },
     {
       "id": "fx.heal",
+      "page": 0,
       "cell": [
-        240,
-        248,
+        0,
+        644,
         120,
-        112
+        124
       ],
       "frames": 6
     },
     {
       "id": "fx.hit",
+      "page": 0,
       "cell": [
-        360,
-        248,
         120,
-        112
+        644,
+        120,
+        124
       ],
       "frames": 5
     },
     {
       "id": "fx.leaf_hit",
+      "page": 0,
       "cell": [
-        0,
-        360,
+        240,
+        644,
         120,
-        112
+        124
       ],
       "frames": 6
     },
     {
       "id": "fx.strike",
+      "page": 0,
       "cell": [
-        120,
         360,
+        644,
         120,
-        112
+        124
       ],
       "frames": 12
     },
     {
       "id": "fx.summon",
+      "page": 0,
       "cell": [
-        240,
-        360,
+        0,
+        768,
         120,
-        112
+        124
       ],
       "frames": 6
     },
     {
-      "id": "portrait.ella",
+      "id": "portrait.brio",
+      "page": 0,
       "cell": [
-        360,
-        360,
         120,
-        112
+        768,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "portrait.ella",
+      "page": 0,
+      "cell": [
+        240,
+        768,
+        120,
+        124
       ],
       "frames": 1
     },
     {
       "id": "portrait.finn",
+      "page": 0,
+      "cell": [
+        360,
+        768,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "portrait.hedo",
+      "page": 1,
       "cell": [
         0,
-        472,
+        24,
         120,
-        112
+        124
       ],
       "frames": 1
     },
     {
       "id": "portrait.hob",
+      "page": 1,
       "cell": [
         120,
-        472,
+        24,
         120,
-        112
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "portrait.mayor_tolan",
+      "page": 1,
+      "cell": [
+        240,
+        24,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "portrait.mili",
+      "page": 1,
+      "cell": [
+        360,
+        24,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "portrait.nemi",
+      "page": 1,
+      "cell": [
+        0,
+        148,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "portrait.oren",
+      "page": 1,
+      "cell": [
+        120,
+        148,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "portrait.sela",
+      "page": 1,
+      "cell": [
+        240,
+        148,
+        120,
+        124
       ],
       "frames": 1
     },
     {
       "id": "portrait.shade",
+      "page": 1,
       "cell": [
-        240,
-        472,
+        360,
+        148,
         120,
-        112
+        124
       ],
       "frames": 1
     },
     {
-      "id": "prop.flower",
+      "id": "portrait.teya",
+      "page": 1,
+      "cell": [
+        0,
+        272,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.barrel",
+      "page": 1,
+      "cell": [
+        120,
+        272,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.bed",
+      "page": 1,
+      "cell": [
+        240,
+        272,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.bookshelf",
+      "page": 1,
       "cell": [
         360,
-        472,
+        272,
         120,
-        112
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.bread_counter",
+      "page": 1,
+      "cell": [
+        0,
+        396,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.cooling_mat",
+      "page": 1,
+      "cell": [
+        120,
+        396,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.crate",
+      "page": 1,
+      "cell": [
+        240,
+        396,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.dough_cart",
+      "page": 1,
+      "cell": [
+        360,
+        396,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.festival_lantern",
+      "page": 1,
+      "cell": [
+        0,
+        520,
+        120,
+        124
+      ],
+      "frames": 4
+    },
+    {
+      "id": "prop.flower",
+      "page": 1,
+      "cell": [
+        120,
+        520,
+        120,
+        124
       ],
       "frames": 4
     },
     {
       "id": "prop.hedge",
+      "page": 1,
       "cell": [
-        0,
-        584,
+        240,
+        520,
         120,
-        112
+        124
       ],
       "frames": 4
     },
     {
       "id": "prop.house",
+      "page": 1,
       "cell": [
+        360,
+        520,
         120,
-        584,
-        120,
-        112
+        124
       ],
       "frames": 1
     },
     {
       "id": "prop.lamp",
+      "page": 1,
       "cell": [
-        240,
-        584,
+        0,
+        644,
         120,
-        112
+        124
       ],
       "frames": 4
     },
     {
+      "id": "prop.paper_boat",
+      "page": 1,
+      "cell": [
+        120,
+        644,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.pendant",
+      "page": 1,
+      "cell": [
+        240,
+        644,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
       "id": "prop.pillar",
+      "page": 1,
       "cell": [
         360,
-        584,
+        644,
         120,
-        112
+        124
       ],
       "frames": 1
     },
     {
       "id": "prop.shadow",
+      "page": 1,
       "cell": [
         0,
-        696,
+        768,
         120,
-        112
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.sign",
+      "page": 1,
+      "cell": [
+        120,
+        768,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.stove",
+      "page": 1,
+      "cell": [
+        240,
+        768,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.table",
+      "page": 1,
+      "cell": [
+        360,
+        768,
+        120,
+        124
       ],
       "frames": 1
     },
     {
       "id": "prop.tree",
+      "page": 2,
       "cell": [
+        0,
+        24,
         120,
-        696,
-        120,
-        112
+        124
       ],
       "frames": 4
     },
     {
-      "id": "tile.bridge",
+      "id": "prop.well",
+      "page": 2,
+      "cell": [
+        120,
+        24,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.windmill",
+      "page": 2,
       "cell": [
         240,
-        696,
+        24,
         120,
-        112
+        124
+      ],
+      "frames": 4
+    },
+    {
+      "id": "prop.workbench",
+      "page": 2,
+      "cell": [
+        360,
+        24,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "tile.bridge",
+      "page": 2,
+      "cell": [
+        0,
+        148,
+        120,
+        124
       ],
       "frames": 1
     },
     {
       "id": "tile.edge",
+      "page": 2,
       "cell": [
-        360,
-        696,
         120,
-        112
+        148,
+        120,
+        124
       ],
       "frames": 16
     },
     {
       "id": "tile.grass",
+      "page": 2,
       "cell": [
-        0,
-        808,
+        240,
+        148,
         120,
-        112
+        124
       ],
       "frames": 4
     },
     {
       "id": "tile.path",
+      "page": 2,
       "cell": [
+        360,
+        148,
         120,
-        808,
-        120,
-        112
+        124
       ],
       "frames": 4
     },
     {
+      "id": "tile.rug",
+      "page": 2,
+      "cell": [
+        0,
+        272,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "tile.stone_floor",
+      "page": 2,
+      "cell": [
+        120,
+        272,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
       "id": "tile.water",
+      "page": 2,
       "cell": [
         240,
-        808,
+        272,
         120,
-        112
+        124
       ],
       "frames": 2
     },
     {
-      "id": "ui.panel",
+      "id": "tile.wheat",
+      "page": 2,
       "cell": [
         360,
-        808,
+        272,
         120,
-        112
+        124
+      ],
+      "frames": 4
+    },
+    {
+      "id": "tile.wood_floor",
+      "page": 2,
+      "cell": [
+        0,
+        396,
+        120,
+        124
+      ],
+      "frames": 4
+    },
+    {
+      "id": "tile.wood_wall",
+      "page": 2,
+      "cell": [
+        120,
+        396,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "ui.panel",
+      "page": 2,
+      "cell": [
+        240,
+        396,
+        120,
+        124
       ],
       "frames": 1
     }

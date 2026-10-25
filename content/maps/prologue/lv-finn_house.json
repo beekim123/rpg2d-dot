@@ -1,0 +1,139 @@
+{
+  "id": "lv.finn_house",
+  "name": "map.finn_house",
+  "width": 16,
+  "height": 13,
+  "rows": [
+    "tttttttttttttttt",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tttttttstttttttt"
+  ],
+  "spawn": {
+    "x": 5,
+    "y": 7
+  },
+  "entities": [
+    {
+      "id": "lv.home.finn_bed",
+      "kind": "decoration",
+      "sprite": "prop.bed",
+      "x": 4,
+      "y": 6,
+      "solid": true,
+      "footprint": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "lv.home.ella_bed",
+      "kind": "decoration",
+      "sprite": "prop.bed",
+      "x": 11,
+      "y": 6,
+      "solid": true,
+      "footprint": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "lv.home.table",
+      "kind": "decoration",
+      "sprite": "prop.table",
+      "x": 8,
+      "y": 5,
+      "solid": true,
+      "footprint": [
+        2,
+        1
+      ]
+    },
+    {
+      "id": "lv.home.books",
+      "kind": "decoration",
+      "sprite": "prop.bookshelf",
+      "x": 3,
+      "y": 3,
+      "solid": true,
+      "footprint": [
+        2,
+        1
+      ]
+    },
+    {
+      "id": "lv.home.stove",
+      "kind": "decoration",
+      "sprite": "prop.stove",
+      "x": 12,
+      "y": 3,
+      "solid": true
+    },
+    {
+      "id": "lv.home.rug",
+      "kind": "decoration",
+      "sprite": "tile.rug",
+      "x": 5,
+      "y": 7,
+      "solid": false
+    },
+    {
+      "id": "lv.home.sela",
+      "kind": "npc",
+      "sprite": "char.sela",
+      "x": 10,
+      "y": 8,
+      "solid": true,
+      "script": "lv.npc.sela.day",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ]
+      }
+    },
+    {
+      "id": "lv.home.hob",
+      "kind": "npc",
+      "sprite": "char.hob",
+      "x": 8,
+      "y": 9,
+      "solid": true,
+      "script": "lv.npc.hob.day",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ],
+        "none": [
+          "p.aftermath_heard"
+        ]
+      }
+    }
+  ],
+  "required": [],
+  "exits": [
+    {
+      "pair": "lv.home_door",
+      "x": 7,
+      "y": 12,
+      "to": "lv.town",
+      "at": {
+        "x": 8,
+        "y": 10
+      }
+    }
+  ],
+  "terrain": {
+    "path": "tile.wood_floor",
+    "border": "tile.wood_wall"
+  }
+}

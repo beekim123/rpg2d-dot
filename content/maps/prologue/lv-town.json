@@ -1,0 +1,677 @@
+{
+  "id": "lv.town",
+  "name": "map.town",
+  "width": 44,
+  "height": 32,
+  "rows": [
+    "ttttttttttttttttttttttttwwwttttttttttttttttt",
+    "tgggggggggggggggggggggggwwwggggggggggggggggt",
+    "tgggggggggggggggggggggggwwwggggggggggggggggt",
+    "tgggggggggggggggggggggggwwwggggggggggggggggt",
+    "tgggggggggggggggggggggggwwwggggggggggggggggt",
+    "tgggggggggggggggggggggggwwwggggggggggggggggt",
+    "tgggggggggggggggggggggggwwwggggggggggggggggt",
+    "tgggggggggggggggggggggggwwwggggggggggggggggt",
+    "tgggggggggggggggggsssgggwwwggggggggggggggggt",
+    "tggggggsssggggggggsssgggwwwgggsssggggggggggt",
+    "tggggggsssggggggggsssgggwwwgggsssggggggggggt",
+    "tggggggsssggggggggsssgggwwwgggsssggggggggggt",
+    "tggsssssssssssssssssssssbbbssssssssssssssggt",
+    "tggsssssssssssssssssssssbbbssssssssssssssggt",
+    "tggsssssssssssssssssssssbbbssssssssssssssggt",
+    "tggggggsssggggssssssssggwwwgggsssggggggggggt",
+    "tggggggsssggggssssssssggwwwgggsssggggggggggt",
+    "tggggggsssggggssssssssggwwwgggsssggggggggggt",
+    "tggggggsssggggssssssssggwwwgggsssggggggggggt",
+    "tggggggsssggggssssssssggwwwgggsssggggggggggt",
+    "tggggggsssggggssssssssggwwwgggsssggggggggggt",
+    "tggggggsssggggggggsssgggwwwgggsssggggggggggt",
+    "tggggggsssggggggggsssgggwwwgggsssggggggggggt",
+    "tgggggssssssssssssssssssbbbsssssssssssssgggt",
+    "tgggggssssssssssssssssssbbbsssssssssssssgggt",
+    "tgggggssssssssssssssssssbbbsssssssssssssgggt",
+    "tgggggggggggggggggsssgggwwwggggggggggggggggt",
+    "tgggggggggggggggggsssgggwwwggggggggggggggggt",
+    "tgggggggggggggggggsssgggwwwggggggggggggggggt",
+    "tgggggggggggggggggsssgggwwwggggggggggggggggt",
+    "tgggggggggggggggggsssgggwwwggggggggggggggggt",
+    "ttttttttttttttttttssstttwwwttttttttttttttttt"
+  ],
+  "spawn": {
+    "x": 8,
+    "y": 10
+  },
+  "entities": [
+    {
+      "id": "lv.town.home",
+      "kind": "decoration",
+      "sprite": "prop.house",
+      "x": 8,
+      "y": 8,
+      "solid": true,
+      "footprint": [
+        5,
+        3
+      ]
+    },
+    {
+      "id": "lv.town.shop",
+      "kind": "decoration",
+      "sprite": "prop.house",
+      "x": 19,
+      "y": 7,
+      "solid": true,
+      "footprint": [
+        5,
+        3
+      ]
+    },
+    {
+      "id": "lv.town.bakery",
+      "kind": "decoration",
+      "sprite": "prop.house",
+      "x": 31,
+      "y": 8,
+      "solid": true,
+      "footprint": [
+        5,
+        3
+      ]
+    },
+    {
+      "id": "lv.town.bread_counter",
+      "kind": "decoration",
+      "sprite": "prop.bread_counter",
+      "x": 34,
+      "y": 10,
+      "solid": true,
+      "footprint": [
+        3,
+        1
+      ]
+    },
+    {
+      "id": "lv.town.lamp_bench",
+      "kind": "decoration",
+      "sprite": "prop.workbench",
+      "x": 16,
+      "y": 8,
+      "solid": true,
+      "footprint": [
+        3,
+        1
+      ]
+    },
+    {
+      "id": "lv.town.well",
+      "kind": "decoration",
+      "sprite": "prop.well",
+      "x": 8,
+      "y": 22,
+      "solid": true,
+      "footprint": [
+        2,
+        1
+      ]
+    },
+    {
+      "id": "lv.town.windmill",
+      "kind": "decoration",
+      "sprite": "prop.windmill",
+      "x": 36,
+      "y": 28,
+      "solid": true,
+      "footprint": [
+        3,
+        3
+      ]
+    },
+    {
+      "id": "lv.town.paper_table",
+      "kind": "decoration",
+      "sprite": "prop.table",
+      "x": 10,
+      "y": 19,
+      "solid": true,
+      "footprint": [
+        2,
+        1
+      ]
+    },
+    {
+      "id": "lv.town.sign",
+      "kind": "decoration",
+      "sprite": "prop.sign",
+      "x": 18,
+      "y": 29,
+      "solid": true
+    },
+    {
+      "id": "lv.town.pillar_n",
+      "kind": "decoration",
+      "sprite": "prop.pillar",
+      "x": 17,
+      "y": 16,
+      "solid": true
+    },
+    {
+      "id": "lv.town.pillar_s",
+      "kind": "decoration",
+      "sprite": "prop.pillar",
+      "x": 17,
+      "y": 19,
+      "solid": true
+    },
+    {
+      "id": "lv.lamp.bakery",
+      "kind": "lamp",
+      "sprite": "prop.lamp",
+      "x": 29,
+      "y": 11,
+      "solid": true
+    },
+    {
+      "id": "lv.lamp.bridge",
+      "kind": "lamp",
+      "sprite": "prop.lamp",
+      "x": 28,
+      "y": 14,
+      "solid": true
+    },
+    {
+      "id": "lv.lamp.square",
+      "kind": "lamp",
+      "sprite": "prop.lamp",
+      "x": 12,
+      "y": 18,
+      "solid": true
+    },
+    {
+      "id": "lv.town.hob",
+      "kind": "npc",
+      "sprite": "char.hob",
+      "x": 18,
+      "y": 10,
+      "solid": true,
+      "script": "lv.npc.hob.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.brio",
+      "kind": "npc",
+      "sprite": "char.brio",
+      "x": 34,
+      "y": 11,
+      "solid": true,
+      "script": "lv.npc.brio.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started",
+          "q.dough_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.brio.dawn",
+      "kind": "npc",
+      "sprite": "char.brio",
+      "x": 34,
+      "y": 11,
+      "solid": true,
+      "script": "lv.npc.brio.after",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.mayor_tolan",
+      "kind": "npc",
+      "sprite": "char.mayor_tolan",
+      "x": 18,
+      "y": 23,
+      "solid": true,
+      "script": "lv.npc.mayor_tolan.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.mayor_tolan.dawn",
+      "kind": "npc",
+      "sprite": "char.mayor_tolan",
+      "x": 18,
+      "y": 23,
+      "solid": true,
+      "script": "lv.npc.mayor_tolan.after",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.mili",
+      "kind": "npc",
+      "sprite": "char.mili",
+      "x": 22,
+      "y": 11,
+      "solid": true,
+      "script": "lv.npc.mili.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.mili.dawn",
+      "kind": "npc",
+      "sprite": "char.mili",
+      "x": 22,
+      "y": 11,
+      "solid": true,
+      "script": "lv.npc.mili.after",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.hedo",
+      "kind": "npc",
+      "sprite": "char.hedo",
+      "x": 21,
+      "y": 13,
+      "solid": true,
+      "script": "lv.npc.hedo.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.hedo.dawn",
+      "kind": "npc",
+      "sprite": "char.hedo",
+      "x": 21,
+      "y": 13,
+      "solid": true,
+      "script": "lv.npc.hedo.after",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.teya",
+      "kind": "npc",
+      "sprite": "char.teya",
+      "x": 10,
+      "y": 20,
+      "solid": true,
+      "script": "lv.npc.teya.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.teya.dawn",
+      "kind": "npc",
+      "sprite": "char.teya",
+      "x": 10,
+      "y": 20,
+      "solid": true,
+      "script": "lv.npc.teya.after",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.sela",
+      "kind": "npc",
+      "sprite": "char.sela",
+      "x": 12,
+      "y": 24,
+      "solid": true,
+      "script": "lv.npc.sela.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.oren",
+      "kind": "npc",
+      "sprite": "char.oren",
+      "x": 27,
+      "y": 22,
+      "solid": true,
+      "script": "lv.npc.oren.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.oren.dawn",
+      "kind": "npc",
+      "sprite": "char.oren",
+      "x": 27,
+      "y": 22,
+      "solid": true,
+      "script": "lv.npc.oren.after",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.nemi",
+      "kind": "npc",
+      "sprite": "char.nemi",
+      "x": 33,
+      "y": 25,
+      "solid": true,
+      "script": "lv.npc.nemi.day",
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.nemi.dawn",
+      "kind": "npc",
+      "sprite": "char.nemi",
+      "x": 33,
+      "y": 25,
+      "solid": true,
+      "script": "lv.npc.nemi.after",
+      "visibleWhen": {
+        "all": [
+          "p.s09_done"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.ella",
+      "kind": "npc",
+      "sprite": "char.ella",
+      "x": 28,
+      "y": 11,
+      "solid": true,
+      "script": "lv.npc.ella.day",
+      "visibleWhen": {
+        "all": [
+          "p.s02_done",
+          "p.s03_done"
+        ],
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.laurel",
+      "kind": "decoration",
+      "sprite": "astral.laurel",
+      "x": 29,
+      "y": 12,
+      "solid": false,
+      "visibleWhen": {
+        "all": [
+          "p.s02_done",
+          "p.s03_done"
+        ],
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.rise",
+      "kind": "decoration",
+      "sprite": "astral.rise",
+      "x": 35,
+      "y": 11,
+      "solid": false,
+      "visibleWhen": {
+        "none": [
+          "p.attack_started",
+          "q.dough_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.cornerpress",
+      "kind": "decoration",
+      "sprite": "astral.cornerpress",
+      "x": 11,
+      "y": 20,
+      "solid": false,
+      "visibleWhen": {
+        "none": [
+          "p.attack_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.tree0",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 3,
+      "y": 7,
+      "solid": true
+    },
+    {
+      "id": "lv.town.tree1",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 5,
+      "y": 18,
+      "solid": true
+    },
+    {
+      "id": "lv.town.tree2",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 15,
+      "y": 6,
+      "solid": true
+    },
+    {
+      "id": "lv.town.tree3",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 40,
+      "y": 11,
+      "solid": true
+    },
+    {
+      "id": "lv.town.tree4",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 38,
+      "y": 18,
+      "solid": true
+    },
+    {
+      "id": "lv.town.tree5",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 4,
+      "y": 28,
+      "solid": true
+    },
+    {
+      "id": "lv.town.tree6",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 30,
+      "y": 28,
+      "solid": true
+    },
+    {
+      "id": "lv.town.tree7",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 15,
+      "y": 28,
+      "solid": true
+    },
+    {
+      "id": "lv.town.festival_lantern0",
+      "kind": "decoration",
+      "sprite": "prop.festival_lantern",
+      "x": 14,
+      "y": 11,
+      "solid": false,
+      "visibleWhen": {
+        "all": [
+          "p.festival_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.festival_lantern1",
+      "kind": "decoration",
+      "sprite": "prop.festival_lantern",
+      "x": 20,
+      "y": 11,
+      "solid": false,
+      "visibleWhen": {
+        "all": [
+          "p.festival_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.festival_lantern2",
+      "kind": "decoration",
+      "sprite": "prop.festival_lantern",
+      "x": 21,
+      "y": 21,
+      "solid": false,
+      "visibleWhen": {
+        "all": [
+          "p.festival_started"
+        ]
+      }
+    },
+    {
+      "id": "lv.town.festival_lantern3",
+      "kind": "decoration",
+      "sprite": "prop.festival_lantern",
+      "x": 14,
+      "y": 21,
+      "solid": false,
+      "visibleWhen": {
+        "all": [
+          "p.festival_started"
+        ]
+      }
+    }
+  ],
+  "required": [
+    "lv.lamp.bakery",
+    "lv.lamp.bridge",
+    "lv.lamp.square",
+    "lv.town.hob",
+    "lv.town.brio",
+    "lv.town.ella"
+  ],
+  "exits": [
+    {
+      "pair": "lv.home_door",
+      "x": 8,
+      "y": 9,
+      "to": "lv.finn_house",
+      "at": {
+        "x": 7,
+        "y": 11
+      }
+    },
+    {
+      "pair": "lv.shop_door",
+      "x": 19,
+      "y": 8,
+      "to": "lv.lamp_shop",
+      "at": {
+        "x": 7,
+        "y": 10
+      }
+    },
+    {
+      "pair": "lv.bakery_door",
+      "x": 31,
+      "y": 9,
+      "to": "lv.bakery",
+      "at": {
+        "x": 9,
+        "y": 13
+      }
+    },
+    {
+      "pair": "lv.south_gate",
+      "x": 19,
+      "y": 31,
+      "to": "lv.wheat_road",
+      "at": {
+        "x": 10,
+        "y": 1
+      }
+    }
+  ],
+  "arenas": {
+    "square": {
+      "x": 14,
+      "y": 15,
+      "width": 8,
+      "height": 6
+    }
+  },
+  "anchors": {
+    "bakery_counter": {
+      "x": 34,
+      "y": 12
+    },
+    "creek_bridge": {
+      "x": 28,
+      "y": 13
+    },
+    "festival_square": {
+      "x": 17,
+      "y": 17
+    },
+    "ella_fall": {
+      "x": 18,
+      "y": 18
+    },
+    "release_platform": {
+      "x": 21,
+      "y": 16
+    },
+    "south_gate": {
+      "x": 19,
+      "y": 30
+    }
+  }
+}

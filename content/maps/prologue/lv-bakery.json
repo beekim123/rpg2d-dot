@@ -1,0 +1,135 @@
+{
+  "id": "lv.bakery",
+  "name": "map.bakery",
+  "width": 20,
+  "height": 15,
+  "rows": [
+    "tttttttttttttttttttt",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tsssssssssssssssssst",
+    "tttttttttstttttttttt"
+  ],
+  "spawn": {
+    "x": 9,
+    "y": 12
+  },
+  "entities": [
+    {
+      "id": "lv.bakery.counter",
+      "kind": "decoration",
+      "sprite": "prop.bread_counter",
+      "x": 5,
+      "y": 4,
+      "solid": true,
+      "footprint": [
+        3,
+        1
+      ]
+    },
+    {
+      "id": "lv.bakery.stove",
+      "kind": "decoration",
+      "sprite": "prop.stove",
+      "x": 15,
+      "y": 3,
+      "solid": true
+    },
+    {
+      "id": "lv.bakery.barrel",
+      "kind": "decoration",
+      "sprite": "prop.barrel",
+      "x": 3,
+      "y": 9,
+      "solid": true
+    },
+    {
+      "id": "lv.bakery.table",
+      "kind": "decoration",
+      "sprite": "prop.table",
+      "x": 14,
+      "y": 7,
+      "solid": true,
+      "footprint": [
+        2,
+        1
+      ]
+    },
+    {
+      "id": "lv.bakery.mat_a",
+      "kind": "decoration",
+      "sprite": "prop.cooling_mat",
+      "x": 7,
+      "y": 7,
+      "solid": false
+    },
+    {
+      "id": "lv.bakery.mat_b",
+      "kind": "decoration",
+      "sprite": "prop.cooling_mat",
+      "x": 10,
+      "y": 7,
+      "solid": false
+    },
+    {
+      "id": "lv.bakery.dough_a",
+      "kind": "decoration",
+      "sprite": "prop.dough_cart",
+      "x": 7,
+      "y": 8,
+      "solid": true
+    },
+    {
+      "id": "lv.bakery.dough_b",
+      "kind": "decoration",
+      "sprite": "prop.dough_cart",
+      "x": 10,
+      "y": 8,
+      "solid": true
+    },
+    {
+      "id": "lv.bakery.brio",
+      "kind": "npc",
+      "sprite": "char.brio",
+      "x": 5,
+      "y": 6,
+      "solid": true,
+      "script": "lv.npc.brio.day",
+      "visibleWhen": {
+        "all": [
+          "q.dough_started"
+        ],
+        "none": [
+          "p.festival_started"
+        ]
+      }
+    }
+  ],
+  "required": [],
+  "exits": [
+    {
+      "pair": "lv.bakery_door",
+      "x": 9,
+      "y": 14,
+      "to": "lv.town",
+      "at": {
+        "x": 31,
+        "y": 10
+      }
+    }
+  ],
+  "terrain": {
+    "path": "tile.wood_floor",
+    "border": "tile.wood_wall"
+  }
+}

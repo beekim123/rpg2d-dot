@@ -1,0 +1,118 @@
+{
+  "id": "lv.wheat_road",
+  "name": "map.wheat_road",
+  "width": 24,
+  "height": 32,
+  "rows": [
+    "tttttttttssstttttttttttt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggssssssssssggggt",
+    "tggggggggssssssssssggggt",
+    "tggggggggssssssssssggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tggggggggsssgggggggggggt",
+    "tttttttttttttttttttttttt"
+  ],
+  "spawn": {
+    "x": 10,
+    "y": 1
+  },
+  "entities": [
+    {
+      "id": "lv.lamp.road",
+      "kind": "lamp",
+      "sprite": "prop.lamp",
+      "x": 12,
+      "y": 5,
+      "solid": true
+    },
+    {
+      "id": "lv.road.sign",
+      "kind": "decoration",
+      "sprite": "prop.sign",
+      "x": 11,
+      "y": 29,
+      "solid": true
+    },
+    {
+      "id": "lv.road.tree0",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 4,
+      "y": 8,
+      "solid": true
+    },
+    {
+      "id": "lv.road.tree1",
+      "kind": "decoration",
+      "sprite": "prop.tree",
+      "x": 19,
+      "y": 14,
+      "solid": true
+    },
+    {
+      "id": "lv.road.windmill",
+      "kind": "decoration",
+      "sprite": "prop.windmill",
+      "x": 5,
+      "y": 24,
+      "solid": true,
+      "footprint": [
+        3,
+        3
+      ]
+    }
+  ],
+  "required": [
+    "lv.lamp.road"
+  ],
+  "exits": [
+    {
+      "pair": "lv.south_gate",
+      "x": 10,
+      "y": 0,
+      "to": "lv.town",
+      "at": {
+        "x": 19,
+        "y": 30
+      }
+    }
+  ],
+  "terrain": {
+    "grass": "tile.wheat"
+  },
+  "anchors": {
+    "overlook": {
+      "x": 18,
+      "y": 17
+    },
+    "chapter_one_exit": {
+      "x": 10,
+      "y": 29
+    }
+  }
+}

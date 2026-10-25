@@ -159,34 +159,51 @@ function paintFrame(canvas, asset, frame, x, y, silhouette = false) {
 }
 function upscale(canvas, scale, colors) {
   const large = new PixelCanvas(canvas.width * scale, canvas.height * scale, colors);
-  for (let y = 0; y < large.height; y++) for (let x = 0; x < large.width; x++) {
-    const source = (Math.floor(y / scale) * canvas.width + Math.floor(x / scale)) * 4;
-    large.data.set(canvas.data.subarray(source, source + 4), (y * large.width + x) * 4);
+  const source = new Uint32Array(canvas.data.buffer, canvas.data.byteOffset, canvas.width * canvas.height);
+  const output = new Uint32Array(large.data.buffer, large.data.byteOffset, large.width * large.height);
+  for (let y = 0; y < large.height; y++) {
+    const row = Math.floor(y / scale) * canvas.width;
+    for (let x = 0; x < large.width; x++) output[y * large.width + x] = source[row + Math.floor(x / scale)];
   }
   return large;
 }
 
 export async function sheet({ outDir = defaultOutput } = {}) {
   const { rendered, colors, definition } = await renderAll();
-  const width = 480, rowHeight = 112, height = 24 + Math.ceil(rendered.length / 4) * rowHeight;
-  const canvas = new PixelCanvas(width, height, colors).fill('stone4');
-  definition.colors.forEach((color, i) => canvas.rect(8 + i * 9, 6, 8, 10, color.char));
-  const labels = [];
-  rendered.forEach((asset, index) => {
-    const cellX = (index % 4) * 120, cellY = 24 + Math.floor(index / 4) * rowHeight;
-    canvas.rect(cellX + 4, cellY + 4, 112, 104, 'stone3');
-    const [w, h] = asset.meta.size;
-    const shown = Math.min(asset.meta.frames, w <= 16 ? 4 : 1);
-    const offsetX = cellX + Math.floor((120 - shown * w) / 2), offsetY = cellY + 10;
-    for (let frame = 0; frame < shown; frame++) paintFrame(canvas, asset, frame, offsetX + frame * w, offsetY);
-    label(canvas, asset.meta.id, cellX + 9, cellY + 96);
-    label(canvas, `${w}X${h} - ${asset.meta.frames}F`, cellX + 9, cellY + 103);
-    labels.push({ id: asset.meta.id, cell: [cellX, cellY, 120, rowHeight], frames: asset.meta.frames });
-  });
-  const scale = 3, large = upscale(canvas, scale, colors);
+  const scale = 3, width = 480;
+  const normal = rendered.filter(asset => asset.meta.size[0] <= 112 && asset.meta.size[1] <= 160);
+  const rowHeight = Math.max(112, ...normal.map(asset => asset.meta.size[1] + 28));
+  const perPage = Math.max(1, Math.floor((4194304 / (width * scale * scale) - 24) / rowHeight)) * 4;
+  const batches = [];
+  for (let index = 0; index < normal.length; index += perPage) batches.push({ assets: normal.slice(index, index + perPage), large: false });
+  for (const asset of rendered.filter(asset => !normal.includes(asset))) batches.push({ assets: [asset], large: true });
+  const pages = [], labels = [];
   await mkdir(path.join(outDir, 'sheets'), { recursive: true });
-  await writeFile(path.join(outDir, 'sheets/m0.png'), encodePNG(large));
-  await writeFile(path.join(outDir, 'sheets/m0.json'), json({ image: 'm0.png', scale, labels }));
+  for (const [pageIndex, batch] of batches.entries()) {
+    const size = batch.assets[0].meta.size;
+    const pageWidth = batch.large ? Math.max(480, size[0] + 16) : width;
+    const height = batch.large ? size[1] + 48 : 24 + Math.ceil(batch.assets.length / 4) * rowHeight;
+    const canvas = new PixelCanvas(pageWidth, height, colors).fill('stone4');
+    definition.colors.forEach((color, i) => canvas.rect(8 + i * 9, 6, 8, 10, color.char));
+    const pageLabels = [];
+    batch.assets.forEach((asset, index) => {
+      const [w, h] = asset.meta.size;
+      const cellX = batch.large ? 0 : index % 4 * 120;
+      const cellY = batch.large ? 24 : 24 + Math.floor(index / 4) * rowHeight;
+      const cellWidth = batch.large ? pageWidth : 120, cellHeight = batch.large ? h + 24 : rowHeight;
+      canvas.rect(cellX + 4, cellY + 4, cellWidth - 8, cellHeight - 8, 'stone3');
+      const shown = batch.large ? 1 : Math.min(asset.meta.frames, w <= 16 ? 4 : 1);
+      for (let frame = 0; frame < shown; frame++) paintFrame(canvas, asset, frame, cellX + Math.floor((cellWidth - shown * w) / 2) + frame * w, cellY + (batch.large ? 4 : 8));
+      label(canvas, asset.meta.id.slice(0, batch.large ? 100 : 26), cellX + 9, cellY + cellHeight - 14);
+      label(canvas, `${w}X${h} - ${asset.meta.frames}F`, cellX + 9, cellY + cellHeight - 7);
+      const entry = { id: asset.meta.id, page: pageIndex, cell: [cellX, cellY, cellWidth, cellHeight], frames: asset.meta.frames };
+      pageLabels.push(entry); labels.push(entry);
+    });
+    const image = pageIndex === 0 ? 'm0.png' : `m0-${pageIndex + 1}.png`;
+    await writeFile(path.join(outDir, 'sheets', image), encodePNG(upscale(canvas, scale, colors)));
+    pages.push({ image, labels: pageLabels });
+  }
+  await writeFile(path.join(outDir, 'sheets/m0.json'), json({ image: 'm0.png', scale, pages, labels }));
   const characters = new PixelCanvas(336, 200, colors).fill('stone4');
   const finn = rendered.find(asset => asset.meta.id === 'char.finn');
   ['down', 'up', 'left', 'right'].forEach((direction, index) => {

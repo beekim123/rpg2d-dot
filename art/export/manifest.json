@@ -62,6 +62,34 @@
       "hash": "c462049df94c494dccf601eecb3c9cc0cd9651e5c66b211cb788ce72440f8bcc"
     },
     {
+      "id": "astral.cornerpress",
+      "file": "astral.cornerpress.png",
+      "category": "astral",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 4,
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "ef350c412806ca3c47f940644f789a4ef3b30c39d82e4edc8549b657d7e57cad"
+    },
+    {
       "id": "astral.faux_sword",
       "file": "astral.faux_sword.png",
       "category": "astral",
@@ -240,6 +268,242 @@
         }
       },
       "hash": "d41a80cb836e710b64d75efbe3d8df817bb459a051e5dd574ba46217c9b40646"
+    },
+    {
+      "id": "astral.rise",
+      "file": "astral.rise.png",
+      "category": "astral",
+      "kind": "procedural",
+      "size": [
+        24,
+        24
+      ],
+      "anchor": [
+        12,
+        24
+      ],
+      "frames": 4,
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "56a5867c40b469332cf271dc9ae83b8a2e7b2be79eefa402f2b1d073b55fb971"
+    },
+    {
+      "id": "char.brio",
+      "file": "char.brio.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        24,
+        32
+      ],
+      "anchor": [
+        12,
+        32
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            8,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8,
+            8,
+            8,
+            8,
+            9,
+            9,
+            11,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            16,
+            16,
+            16,
+            17,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            16,
+            17,
+            17,
+            19,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            24,
+            24,
+            24,
+            25,
+            25,
+            25,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24,
+            24,
+            24,
+            24,
+            25,
+            25,
+            27,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "ff5fb12f0e974e2461a75f146eb05f7747b4610ac27443cf03a0707b5ef7e979"
     },
     {
       "id": "char.ella",
@@ -882,6 +1146,214 @@
       "hash": "67adc4e6245e0b7225cd2a351e5922640e0e616f3bae6db179142aa2b8133dd1"
     },
     {
+      "id": "char.hedo",
+      "file": "char.hedo.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            8,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8,
+            8,
+            8,
+            8,
+            9,
+            9,
+            11,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            16,
+            16,
+            16,
+            17,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            16,
+            17,
+            17,
+            19,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            24,
+            24,
+            24,
+            25,
+            25,
+            25,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24,
+            24,
+            24,
+            24,
+            25,
+            25,
+            27,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "5f9e511eb6c9fe137111ec1678465373069c8892e9f34f2a5f7db14bc8b7d40d"
+    },
+    {
       "id": "char.hob",
       "file": "char.hob.png",
       "category": "character",
@@ -958,6 +1430,1046 @@
         }
       },
       "hash": "2e48effcf01490ce08ac189ab0159a8f78b63a4c76060fd8ec4906993bdf3d91"
+    },
+    {
+      "id": "char.mayor_tolan",
+      "file": "char.mayor_tolan.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        24,
+        32
+      ],
+      "anchor": [
+        12,
+        32
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            8,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8,
+            8,
+            8,
+            8,
+            9,
+            9,
+            11,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            16,
+            16,
+            16,
+            17,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            16,
+            17,
+            17,
+            19,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            24,
+            24,
+            24,
+            25,
+            25,
+            25,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24,
+            24,
+            24,
+            24,
+            25,
+            25,
+            27,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "964b12414dc364dc88480a3fcca71bf6786c8a12767204294ed11ceafb1c7637"
+    },
+    {
+      "id": "char.mili",
+      "file": "char.mili.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            8,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8,
+            8,
+            8,
+            8,
+            9,
+            9,
+            11,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            16,
+            16,
+            16,
+            17,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            16,
+            17,
+            17,
+            19,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            24,
+            24,
+            24,
+            25,
+            25,
+            25,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24,
+            24,
+            24,
+            24,
+            25,
+            25,
+            27,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "60cc2838785ea1ba82c9b5fd9f40245b72502dc9390763ae9cd234e5049ede15"
+    },
+    {
+      "id": "char.nemi",
+      "file": "char.nemi.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            8,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8,
+            8,
+            8,
+            8,
+            9,
+            9,
+            11,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            16,
+            16,
+            16,
+            17,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            16,
+            17,
+            17,
+            19,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            24,
+            24,
+            24,
+            25,
+            25,
+            25,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24,
+            24,
+            24,
+            24,
+            25,
+            25,
+            27,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "01bc25e01eb14d9f723fab2c44bd9bd7b6ccffd74bca137cf0db12600b3ccb42"
+    },
+    {
+      "id": "char.oren",
+      "file": "char.oren.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            8,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8,
+            8,
+            8,
+            8,
+            9,
+            9,
+            11,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            16,
+            16,
+            16,
+            17,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            16,
+            17,
+            17,
+            19,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            24,
+            24,
+            24,
+            25,
+            25,
+            25,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24,
+            24,
+            24,
+            24,
+            25,
+            25,
+            27,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "a723f4363a106c3e73b3218b12a67785b5d26fdd67b02c6d25535f5517feda21"
+    },
+    {
+      "id": "char.sela",
+      "file": "char.sela.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            8,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8,
+            8,
+            8,
+            8,
+            9,
+            9,
+            11,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            16,
+            16,
+            16,
+            17,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            16,
+            17,
+            17,
+            19,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            24,
+            24,
+            24,
+            25,
+            25,
+            25,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24,
+            24,
+            24,
+            24,
+            25,
+            25,
+            27,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "fac90a39d2e8477c2037cb2a13e92c9f1f902fee43562985f56e65f1f414ee82"
     },
     {
       "id": "char.shade",
@@ -1176,6 +2688,214 @@
       "hash": "c6016f96874b6f491f8a26415836a8bffb1760e200a53662f0aa097e9b62b9e1"
     },
     {
+      "id": "char.teya",
+      "file": "char.teya.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            8,
+            8,
+            8,
+            9,
+            9,
+            9,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8,
+            8,
+            8,
+            8,
+            9,
+            9,
+            11,
+            9,
+            10,
+            10,
+            10,
+            8,
+            8
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            16,
+            16,
+            16,
+            17,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16,
+            16,
+            16,
+            16,
+            17,
+            17,
+            19,
+            17,
+            18,
+            18,
+            18,
+            16,
+            16
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            24,
+            24,
+            24,
+            25,
+            25,
+            25,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24,
+            24,
+            24,
+            24,
+            25,
+            25,
+            27,
+            25,
+            26,
+            26,
+            26,
+            24,
+            24
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            3,
+            1,
+            2,
+            2,
+            2,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "4538d72d53acef6a124ae40cec057a3de4f25af6a62d4ed97df551fa8561196f"
+    },
+    {
       "id": "fx.ash_hit",
       "file": "fx.ash_hit.png",
       "category": "effect",
@@ -1379,6 +3099,31 @@
       "hash": "1082d5b01e34d1f452df44182151095acd2ce51d97f175ad270ad34066ba3caa"
     },
     {
+      "id": "portrait.brio",
+      "file": "portrait.brio.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "ca9b22602e75c115f5ba326a2d9b8d4de0f8d538347602fbffcffc854dbbf0fd"
+    },
+    {
       "id": "portrait.ella",
       "file": "portrait.ella.png",
       "category": "portrait",
@@ -1429,6 +3174,31 @@
       "hash": "e922e0c3e5d508f8438e279dde88f99cbba66811571d06d711583bbdee90c6cc"
     },
     {
+      "id": "portrait.hedo",
+      "file": "portrait.hedo.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "a96b560bf59e7249f58548c9e39114ea40b342c9527ab3bdda525f19adad3872"
+    },
+    {
       "id": "portrait.hob",
       "file": "portrait.hob.png",
       "category": "portrait",
@@ -1454,6 +3224,131 @@
       "hash": "21292549e428eff1eb0ff590929c2251760e37c4d7d31cb713f6fcc3541e4b23"
     },
     {
+      "id": "portrait.mayor_tolan",
+      "file": "portrait.mayor_tolan.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "fcfad18cbce5b3b023d6d093da40c095a2539101ebcdccd28bacc1cf8ddaba8e"
+    },
+    {
+      "id": "portrait.mili",
+      "file": "portrait.mili.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "fd58fd1d486986c9a7ce04f1844db28775cb506454244b4bbd5c46ea0c72d8c8"
+    },
+    {
+      "id": "portrait.nemi",
+      "file": "portrait.nemi.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "f568caf9a97330a340470993433957401e0d250f35f89dcf0e56bb285ce2c441"
+    },
+    {
+      "id": "portrait.oren",
+      "file": "portrait.oren.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "dc3b63e2d03d40e26fe6bd6a1946a0db4a71436e8109932ad2c572a159897f4e"
+    },
+    {
+      "id": "portrait.sela",
+      "file": "portrait.sela.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "794a949fe45124e26c710df6b329a4f1d4dfce884138fc4c0d386f332b1e931e"
+    },
+    {
       "id": "portrait.shade",
       "file": "portrait.shade.png",
       "category": "portrait",
@@ -1477,6 +3372,242 @@
         }
       },
       "hash": "432d1b0c29fabe7ed2c2f52abe3444caf78791b905c3c5c2cdcfb50ac1436113"
+    },
+    {
+      "id": "portrait.teya",
+      "file": "portrait.teya.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "401e7b5674d48b368f49d21074e84213f84d0ce4e489bce0f6a8ae9764640f63"
+    },
+    {
+      "id": "prop.barrel",
+      "file": "prop.barrel.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "a595f8d63212bb6521b796346ccf1f9f6f8e327b8d7945f31c5ffbeb9995f2d3"
+    },
+    {
+      "id": "prop.bed",
+      "file": "prop.bed.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        32
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "8541abbcc3d82007747487c4b06ea9b9fe8b2534e0b8eecf2d513569a4e319ce"
+    },
+    {
+      "id": "prop.bookshelf",
+      "file": "prop.bookshelf.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        32
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "04aff0470c5e6abc853c8a4a3ea6849c2d3ae4defa97f0f3b3025e0d58d4444e"
+    },
+    {
+      "id": "prop.bread_counter",
+      "file": "prop.bread_counter.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        48,
+        32
+      ],
+      "anchor": [
+        24,
+        32
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "0819a7a20305505b54bf947dc4f24f60745652a8f4fd99a712d8b0d3cddbb43a"
+    },
+    {
+      "id": "prop.cooling_mat",
+      "file": "prop.cooling_mat.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "4e3d3bc2fc78a23ab0dc2b20a71fffa4887c9f7dfa7549be17c376d9af0f1839"
+    },
+    {
+      "id": "prop.crate",
+      "file": "prop.crate.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "c75516f18be5d7cd8e69381e961d76510b84961df5b3c822d4dea39a14a13d67"
+    },
+    {
+      "id": "prop.dough_cart",
+      "file": "prop.dough_cart.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "55ea9ea2e61a4266cc10f6010ecf75f4452457a541c1e6cc6ce84d1623dcddd6"
+    },
+    {
+      "id": "prop.festival_lantern",
+      "file": "prop.festival_lantern.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 4,
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            0,
+            1,
+            1,
+            2,
+            2,
+            0,
+            0,
+            3,
+            3,
+            0,
+            0
+          ],
+          "fps": 3,
+          "loop": true
+        }
+      },
+      "hash": "81c9afefbf295f67b4a3ecf845907f56f4314df8baf8b4180261bfbfbf3039e6"
     },
     {
       "id": "prop.flower",
@@ -1620,6 +3751,56 @@
       "hash": "b2f58e3e4a41863da177913505ac975d0c837ad3862e98595f57511bc50a63e1"
     },
     {
+      "id": "prop.paper_boat",
+      "file": "prop.paper_boat.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "80a400a377b8f74c7c9463ed1c4eedbcb481229d06d4016e7bf8f9dcb1267b0d"
+    },
+    {
+      "id": "prop.pendant",
+      "file": "prop.pendant.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "c5b6e5f379c13b1fd0a0bac2b24762878d783de6ec3f1c4a5fb58406ff5d67b6"
+    },
+    {
       "id": "prop.pillar",
       "file": "prop.pillar.png",
       "category": "prop",
@@ -1670,6 +3851,81 @@
       "hash": "292e0b3e828ae77368ff8fd0809d99f464a72d179cfe79c92921e6910c51a8a5"
     },
     {
+      "id": "prop.sign",
+      "file": "prop.sign.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "2770e33d8427247b74509af3881fc51a9aaa3157662418b2567959ecaac14b7c"
+    },
+    {
+      "id": "prop.stove",
+      "file": "prop.stove.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        24,
+        32
+      ],
+      "anchor": [
+        12,
+        32
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "493c902e0a911bbde6a9584cbc3e6469ce6253cd39ca50e6cca1ec9c8ad393eb"
+    },
+    {
+      "id": "prop.table",
+      "file": "prop.table.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        32,
+        24
+      ],
+      "anchor": [
+        16,
+        24
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "6f225e33d30bb2051b0651b99b9649be485262df7444ac7dde0766a735e2d62a"
+    },
+    {
       "id": "prop.tree",
       "file": "prop.tree.png",
       "category": "prop",
@@ -1704,6 +3960,88 @@
         }
       },
       "hash": "9e003ca1a2c052ad2d35c13266eb8f27af12e5f407b554aa09fe45f3832e64ad"
+    },
+    {
+      "id": "prop.well",
+      "file": "prop.well.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        32,
+        32
+      ],
+      "anchor": [
+        16,
+        32
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "704ae79d48aac0112465cf18a8e2c362748eac9beb9f23e058161a5263458acc"
+    },
+    {
+      "id": "prop.windmill",
+      "file": "prop.windmill.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        64,
+        96
+      ],
+      "anchor": [
+        32,
+        96
+      ],
+      "frames": 4,
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            0,
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "fd2f5b032756576136bb2adfef43722660bcb23a1550d95f55b83c60ec2fcd0b"
+    },
+    {
+      "id": "prop.workbench",
+      "file": "prop.workbench.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        48,
+        32
+      ],
+      "anchor": [
+        24,
+        32
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "6a4061db95b9f55e19d9180eef4598c489b7afc9ebf50fb4c99f80d53024687d"
     },
     {
       "id": "tile.bridge",
@@ -1806,6 +4144,56 @@
       "hash": "ca4d84f0b9d3fcbd8b7220d1823aaea07e53224431fc9604dc55bcdbcaf57c99"
     },
     {
+      "id": "tile.rug",
+      "file": "tile.rug.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "e1669864ab7840d293631efc8c908d0390362d934892873f415cc1c74f266fae"
+    },
+    {
+      "id": "tile.stone_floor",
+      "file": "tile.stone_floor.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "32b4491adc587bff33411524f11da126d845c92b4eaea85df6028a2ac2c1bf0f"
+    },
+    {
       "id": "tile.water",
       "file": "tile.water.png",
       "category": "tile",
@@ -1830,6 +4218,92 @@
         }
       },
       "hash": "966f278ba28543fe3cc50c991bd68f240fc6bcbb977577f5506e2f83fa41aac5"
+    },
+    {
+      "id": "tile.wheat",
+      "file": "tile.wheat.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 4,
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            0,
+            1,
+            1,
+            2,
+            2,
+            0,
+            0,
+            3,
+            3,
+            0,
+            0
+          ],
+          "fps": 3,
+          "loop": true
+        }
+      },
+      "hash": "c58fa729a5b3dc4c23d0d119e0e73833cb51cf4c093b4c40198ee2099cba01f8"
+    },
+    {
+      "id": "tile.wood_floor",
+      "file": "tile.wood_floor.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 4,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "9d48562344f0d617e34c1d2ac9c3a2f584ef0720621686af6b8dc378cc72ff37"
+    },
+    {
+      "id": "tile.wood_wall",
+      "file": "tile.wood_wall.png",
+      "category": "tile",
+      "kind": "procedural",
+      "size": [
+        16,
+        16
+      ],
+      "anchor": [
+        8,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "5e40d36be53185395ab25952550cbfad918935b75c605fb3fd554f1e6aa180d6"
     },
     {
       "id": "ui.panel",

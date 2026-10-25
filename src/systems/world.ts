@@ -1,11 +1,31 @@
 export type Direction = 'up' | 'down' | 'left' | 'right';
 export interface Point { x: number; y: number }
-export interface Entity extends Point { id: string; kind: 'npc'|'lamp'|'decoration'; sprite: string; solid: boolean; script?: string; footprint?: [number,number] }
-export interface MapData { id: string; name: string; width: number; height: number; rows: string[]; spawn: Point; entities: Entity[]; arenas?:Record<string,{x:number;y:number;width:number;height:number}>; required: string[]; exits: {x:number;y:number;to:string;at:Point}[] }
-export interface GameState { version: 1; mapId: string; player: Point & { facing: Direction }; followers: Point[]; actors: Record<string,Point>; flags: Record<string,boolean>; lamps: string[]; steps: number; inventory: Record<string,number> }
+export interface Entity extends Point { id: string; kind: 'npc'|'lamp'|'decoration'; sprite: string; solid: boolean; script?: string; footprint?: [number,number]; visibleWhen?: { all?:string[]; none?:string[] } }
+export interface MapExit extends Point { pair: string; to: string; at: Point }
+export interface MapData { id: string; name: string; width: number; height: number; rows: string[]; spawn: Point; entities: Entity[]; terrain?:Partial<Record<'grass'|'path'|'water'|'bridge'|'border',string>>; arenas?:Record<string,{x:number;y:number;width:number;height:number}>; required: string[]; exits: MapExit[] }
+export interface GameState { version: 2; mapId: string; player: Point & { facing: Direction }; followers: Point[]; actors: Record<string,Point>; actorMemory: Record<string,Record<string,Point>>; flags: Record<string,boolean>; lamps: string[]; steps: number; inventory: Record<string,number> }
 export const DELTA: Record<Direction, Point> = {up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}};
 export function newGame(): GameState {
-  return { version:1,mapId:'lantern.test',player:{x:8,y:12,facing:'down'},followers:[],actors:{},flags:{},lamps:[],steps:0,inventory:{bread:3} };
+  return { version:2,mapId:'lantern.test',player:{x:8,y:12,facing:'down'},followers:[],actors:{},actorMemory:{},flags:{},lamps:[],steps:0,inventory:{bread:3} };
+}
+export const validFlagId=(id:unknown):id is string=>typeof id==='string'&&/^\w[\w.]*$/.test(id)&&!['__proto__','constructor','prototype'].includes(id);
+const sourceMaps=new WeakMap<MapData,MapData>();
+const mapViews=new WeakMap<MapData,Map<string,MapData>>();
+/** Content maps are immutable after loading; equivalent visibility reuses the same render view. */
+export function activeMap(map:MapData,flags:Record<string,boolean>):MapData {
+  const source=sourceMaps.get(map)??map;
+  if(!source.entities.some(entity=>entity.visibleWhen))return source;
+  const set=(flag:string)=>Object.hasOwn(flags,flag)&&flags[flag]===true;
+  const visible=source.entities.map(entity=>!entity.visibleWhen||
+    (entity.visibleWhen.all??[]).every(set)&&(entity.visibleWhen.none??[]).every(flag=>!set(flag)));
+  if(visible.every(Boolean))return source;
+  const signature=visible.map(value=>value?'1':'0').join('');
+  const views=mapViews.get(source)??new Map<string,MapData>();
+  const existing=views.get(signature);if(existing)return existing;
+  const hidden=new Set(source.entities.filter((_entity,index)=>!visible[index]).map(entity=>entity.id));
+  const view={...source,entities:source.entities.filter((_entity,index)=>visible[index]),required:source.required.filter(id=>!hidden.has(id))};
+  views.set(signature,view);mapViews.set(source,views);sourceMaps.set(view,source);
+  return view;
 }
 export function parseMap(raw: unknown): MapData {
   if (!raw || typeof raw !== 'object') throw new Error('Invalid map');
@@ -16,19 +36,31 @@ export function parseMap(raw: unknown): MapData {
   for(const e of map.entities) {
     if(typeof e.id!=='string'||ids.has(e.id)||!Number.isInteger(e.x)||!Number.isInteger(e.y)||e.x<0||e.y<0||e.x>=map.width||e.y>=map.height||!['npc','lamp','decoration'].includes(e.kind)||typeof e.sprite!=='string'||typeof e.solid!=='boolean') throw new Error('Invalid entity');
     if(e.footprint && (e.footprint.length!==2 || e.footprint.some(n=>!Number.isInteger(n)||n<1))) throw new Error('Invalid footprint');
+    if(e.visibleWhen!==undefined) {
+      const condition=e.visibleWhen;
+      if(!condition||typeof condition!=='object'||Array.isArray(condition)||Object.keys(condition).some(key=>key!=='all'&&key!=='none')||[condition.all,condition.none].some(list=>list!==undefined&&(!Array.isArray(list)||list.some(id=>!validFlagId(id)))))throw new Error('Invalid entity visibility');
+    }
     ids.add(e.id);
   }
-  if(!walkable(map,map.spawn.x,map.spawn.y)) throw new Error('Blocked spawn');
+  const initial=activeMap(map,{});
+  if(!walkable(initial,map.spawn.x,map.spawn.y)) throw new Error('Blocked spawn');
+  const exitTiles=new Set<string>();
+  for(const exit of map.exits) {
+    const tile=`${exit.x},${exit.y}`;
+    if(typeof exit.pair!=='string'||!exit.pair||typeof exit.to!=='string'||!exit.to||!exit.at||!Number.isSafeInteger(exit.at.x)||!Number.isSafeInteger(exit.at.y)||exit.at.x<0||exit.at.y<0||!safeMapEntry(initial,exit)||exitTiles.has(tile))throw new Error('Invalid map exit');
+    exitTiles.add(tile);
+  }
   return map;
 }
 export function entityAt(map:MapData,x:number,y:number, actors:Record<string,Point>={}):Entity|undefined {
   return map.entities.find(e=>{
-    const p=actors[e.id]??e; const [w,h]=e.footprint??[1,1];
+    const p=Object.hasOwn(actors,e.id)?actors[e.id]!:e; const [w,h]=e.footprint??[1,1];
     return x>=p.x-Math.floor(w/2)&&x<p.x-Math.floor(w/2)+w&&y>p.y-h&&y<=p.y;
   });
 }
 /** Only NPCs can move; every occupied tile must remain free of terrain and other actors. */
 export function canPlaceActor(state:GameState,map:MapData,actorId:string,target:Point):boolean {
+  map=activeMap(map,state.flags);
   const actor=map.entities.find(e=>e.id===actorId);
   if(!actor||actor.kind!=='npc'||!Number.isSafeInteger(target.x)||!Number.isSafeInteger(target.y))return false;
   const [width,height]=actor.footprint??[1,1];
@@ -45,7 +77,17 @@ export function walkable(map:MapData,x:number,y:number,actors:Record<string,Poin
   if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=map.width||y>=map.height) return false;
   return !['w','t'].includes(map.rows[y]![x]!) && !entityAt(map,x,y,actors)?.solid;
 }
+/** Map arrivals must not overlap an NPC, including non-solid story actors. */
+export function safeMapEntry(map:MapData,point:Point,actors:Record<string,Point>={}):boolean {
+  if(!walkable(map,point.x,point.y,actors))return false;
+  return !map.entities.some(e=>{
+    if(e.kind!=='npc')return false;
+    const p=Object.hasOwn(actors,e.id)?actors[e.id]!:e; const [width,height]=e.footprint??[1,1];
+    return point.x>=p.x-Math.floor(width/2)&&point.x<p.x-Math.floor(width/2)+width&&point.y>p.y-height&&point.y<=p.y;
+  });
+}
 export function movePlayer(state:GameState,map:MapData,direction:Direction):GameState {
+  map=activeMap(map,state.flags);
   const result=structuredClone(state); result.player.facing=direction;
   const d=DELTA[direction];const x=state.player.x+d.x,y=state.player.y+d.y;
   if(walkable(map,x,y,state.actors)) {
@@ -55,6 +97,7 @@ export function movePlayer(state:GameState,map:MapData,direction:Direction):Game
   return result;
 }
 export function interact(state:GameState,map:MapData):{state:GameState;script?:string;lamp?:string;newlyLit?:boolean} {
+  map=activeMap(map,state.flags);
   const d=DELTA[state.player.facing]; const e=entityAt(map,state.player.x+d.x,state.player.y+d.y,state.actors);
   if(e?.kind==='npc')return {state,script:e.script};
   if(e?.kind==='lamp') {
@@ -64,8 +107,9 @@ export function interact(state:GameState,map:MapData):{state:GameState;script?:s
   return {state};
 }
 export function nearLitLamp(state:GameState,map:MapData):boolean {
+  map=activeMap(map,state.flags);
   return map.entities.some(e=>{
-    const p=state.actors[e.id]??e;
+    const p=Object.hasOwn(state.actors,e.id)?state.actors[e.id]!:e;
     return e.kind==='lamp'&&state.lamps.includes(e.id)&&Math.abs(p.x-state.player.x)+Math.abs(p.y-state.player.y)<=1;
   });
 }
@@ -78,12 +122,13 @@ export function reachable(map:MapData,start:Point,actors:Record<string,Point>={}
   }
   return seen;
 }
-/** Match interaction's actual front-cell lookup against the final actor layout. */
+/** Match interactions against the final actor layout and keep every exit reachable. */
 export function requiredInteractionsReachable(map:MapData,start:Point,actors:Record<string,Point>={}):boolean {
   const seen=reachable(map,start,actors);
+  if(map.exits.some(exit=>!seen.has(`${exit.x},${exit.y}`)||!safeMapEntry(map,exit,actors)))return false;
   return map.required.every(id=>{
     const entity=map.entities.find(e=>e.id===id);if(!entity)return false;
-    const p=actors[id]??entity;const [width,height]=entity.footprint??[1,1];
+    const p=Object.hasOwn(actors,id)?actors[id]!:entity;const [width,height]=entity.footprint??[1,1];
     const left=p.x-Math.floor(width/2),top=p.y-height+1;
     for(let y=top;y<top+height;y++)for(let x=left;x<left+width;x++) {
       if(entityAt(map,x,y,actors)?.id!==id)continue;
