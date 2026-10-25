@@ -242,6 +242,102 @@ export async function sheet({ outDir = defaultOutput } = {}) {
     composite.stamp(garden, x, y + 8);
   });
   await writeFile(path.join(outDir, 'sheets/idle-garden.png'), encodePNG(upscale(composite, 3, colors)));
+  // M1 battle audit is separate from the accepted M0 character/environment
+  // sheets. It shows every new pose and preserves the game's native scale.
+  const battle = new PixelCanvas(480, 390, colors).fill('stone4');
+  ['char.ella', 'char.shade', 'char.faux_sword'].forEach((id, index) => {
+    const asset = byId[id], x = index * 160;
+    if (!asset) return;
+    label(battle, id, x + 5, 4);
+    battle.rect(x + 4, 13, 152, 37, 'leaf2');
+    [...new Set(asset.meta.animations.idle.frames)].forEach((frame, pose) => paintFrame(battle, asset, frame, x + 12 + pose * 36, 48 - asset.meta.size[1]));
+    label(battle, 'IDLE - 6 SEC', x + 5, 55);
+  });
+  ['portrait.ella', 'portrait.shade'].forEach((id, index) => {
+    const asset = byId[id], x = index * 160;
+    if (!asset) return;
+    label(battle, id, x + 5, 69);
+    battle.rect(x + 4, 78, 152, 52, 'stone3');
+    paintFrame(battle, asset, 0, x + 54, 80);
+  });
+  if (byId['prop.pillar']) {
+    label(battle, 'PROP.PILLAR', 325, 69);
+    battle.rect(324, 78, 152, 52, 'leaf2');
+    paintFrame(battle, byId['prop.pillar'], 0, 392, 103);
+  }
+  ['astral.morning_star', 'astral.laurel', 'astral.ash_hand', 'astral.faux_sword'].forEach((id, index) => {
+    const asset = byId[id], x = index % 2 * 240, y = 138 + Math.floor(index / 2) * 54;
+    if (!asset) return;
+    label(battle, id, x + 5, y);
+    battle.rect(x + 4, y + 9, 232, 40, 'earth3');
+    [...new Set(asset.meta.animations.idle.frames)].forEach((frame, pose) => paintFrame(battle, asset, frame, x + 16 + pose * 56, y + 13));
+  });
+  ['fx.hit', 'fx.heal', 'fx.summon'].forEach((id, index) => {
+    const asset = byId[id], y = 248 + index * 46;
+    if (!asset) return;
+    label(battle, `${id} - ONCE`, 5, y);
+    battle.rect(4, y + 9, 472, 35, 'water0');
+    for (let frame = 0; frame < asset.meta.frames; frame++) paintFrame(battle, asset, frame, 24 + frame * 72, y + 42 - asset.meta.size[1]);
+  });
+  await writeFile(path.join(outDir, 'sheets/m1-battle.png'), encodePNG(upscale(battle, 3, colors)));
+
+  const battleCharacters = new PixelCanvas(384, 528, colors).fill('stone4');
+  ['char.ella', 'char.shade', 'char.faux_sword'].forEach((id, character) => {
+    const asset = byId[id];
+    if (!asset) return;
+    ['down', 'up', 'left', 'right'].forEach((direction, index) => {
+      const y = (character * 4 + index) * 44;
+      label(battleCharacters, `${id} ${direction}`, 5, y + 1);
+      label(battleCharacters, 'IDLE', 118, y + 1); label(battleCharacters, 'WALK', 253, y + 1);
+      battleCharacters.rect(4, y + 9, 376, 34, 'leaf2');
+      const top = y + 42 - asset.meta.size[1];
+      [...new Set(asset.meta.animations[`idle_${direction}`].frames)].forEach((frame, pose) => paintFrame(battleCharacters, asset, frame, 9 + pose * 44, top));
+      asset.meta.animations[`walk_${direction}`].frames.forEach((frame, pose) => paintFrame(battleCharacters, asset, frame, 202 + pose * 44, top));
+    });
+  });
+  await writeFile(path.join(outDir, 'sheets/m1-battle-characters.png'), encodePNG(upscale(battleCharacters, 3, colors)));
+
+  const silhouettes = new PixelCanvas(480, 172, colors).fill('stone4');
+  const cast = ['char.finn', 'char.ella', 'char.shade', 'char.faux_sword', 'astral.morning_star', 'astral.laurel', 'astral.ash_hand', 'astral.faux_sword'];
+  label(silhouettes, 'BATTLE CAST - SHARED NATIVE PIXEL SCALE', 5, 4);
+  silhouettes.rect(4, 21, 472, 64, 'earth3').rect(4, 99, 472, 64, 'leaf2');
+  cast.forEach((id, index) => {
+    const asset = byId[id];
+    if (!asset) return;
+    const x = 30 + index * 59 - asset.meta.anchor[0];
+    paintFrame(silhouettes, asset, 0, x, 76 - asset.meta.anchor[1], true);
+    paintFrame(silhouettes, asset, 0, x, 154 - asset.meta.anchor[1]);
+    label(silhouettes, String(index + 1), 27 + index * 59, 88);
+  });
+  await writeFile(path.join(outDir, 'sheets/m1-battle-silhouettes.png'), encodePNG(upscale(silhouettes, 3, colors)));
+  const actions = new PixelCanvas(480, 752, colors).fill('stone4');
+  ['astral.morning_star', 'astral.laurel', 'astral.ash_hand', 'astral.faux_sword'].forEach((id, index) => {
+    const asset = byId[id], top = index * 124;
+    if (!asset) return;
+    label(actions, `${id} - ATTACK 12 FPS 500MS`, 5, top + 2);
+    ['attack_right', 'attack_left', 'hurt'].forEach((tag, row) => {
+      const clip = asset.meta.animations[tag], y = top + 12 + row * 36;
+      if (!clip) return;
+      label(actions, tag === 'hurt' ? 'HURT' : row === 0 ? 'ATTACK R' : 'ATTACK L', 5, y + 13);
+      actions.rect(64, y, 412, 34, 'earth3');
+      clip.frames.forEach((frame, pose) => paintFrame(actions, asset, frame, 76 + pose * 64, y + 1));
+    });
+  });
+  ['char.ella', 'char.shade', 'char.faux_sword'].forEach((id, index) => {
+    const asset = byId[id], x = index * 160;
+    if (!asset?.meta.animations.hurt) return;
+    label(actions, `${id} HURT`, x + 5, 504);
+    actions.rect(x + 4, 515, 152, 40, 'leaf2');
+    asset.meta.animations.hurt.frames.forEach((frame, pose) => paintFrame(actions, asset, frame, x + 25 + pose * 68, 551 - asset.meta.size[1]));
+  });
+  ['fx.leaf_hit', 'fx.ash_hit', 'fx.strike'].forEach((id, index) => {
+    const asset = byId[id], y = 568 + index * 60;
+    if (!asset) return;
+    label(actions, `${id} - ONCE 12 FPS 500MS`, 5, y);
+    actions.rect(4, y + 10, 472, 43, 'water0');
+    asset.meta.animations.once.frames.forEach((frame, pose) => paintFrame(actions, asset, frame, 20 + pose * 76, y + 46 - asset.meta.size[1]));
+  });
+  await writeFile(path.join(outDir, 'sheets/m1-battle-actions.png'), encodePNG(upscale(actions, 3, colors)));
   return path.join(outDir, 'sheets/m0.png');
 }
 

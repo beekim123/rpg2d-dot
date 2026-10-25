@@ -7,9 +7,10 @@ node tools/art.mjs build
 node tools/art.mjs verify
 node tools/art.mjs sheet
 node --test --test-concurrency=1 tests/art.test.mjs
+node --test --test-concurrency=1 tests/art-battle.test.mjs
 ```
 
-`source/characters/*.json` 保存每帧完整字符画；程序素材模块导出 `assets: [{meta, draw(canvas, {frame, seed})}]`。程序图像同样接受尺寸、调色板和 alpha 校验。`lib/png.mjs` 使用 Node zlib 编码 RGBA8 PNG，并解码全部五种 PNG 行过滤器；CRC 和解压尺寸都会验证。
+`source/characters/*.json` 保存每帧完整字符画；`source/characters/prologue.mjs` 用完整字符画基底和明确的逐像素差分保存新人物的待机、脚步姿势。程序素材模块导出 `assets: [{meta, draw(canvas, {frame, seed})}]`。程序图像同样接受尺寸、调色板和 alpha 校验。`lib/png.mjs` 使用 Node zlib 编码 RGBA8 PNG，并解码全部五种 PNG 行过滤器；CRC 和解压尺寸都会验证。
 
 `export/manifest.json` 是游戏唯一图像索引。每个 PNG 横向排列等宽帧，第 n 帧的裁切区域为 `[n * size[0], 0, size[0], size[1]]`。`file` 相对于 `art/export/`。`hash` 是 PNG 字节的 SHA-256。`verify` 重新绘制并比较整个清单和全部 PNG 字节，也检查实际解码尺寸、alpha 与调色板。
 
@@ -38,3 +39,35 @@ node --test --test-concurrency=1 tests/art.test.mjs
 `walk_<方向>` 仍为 8 fps；原有 16 张行走图像与索引保持不变。`idle` 是朝下待机的别名。右向待机由左向精确镜像导出。
 
 对照表 `export/sheets/m0.png` 展示所有素材及调色板；`m0-characters.png` 展示全部角色待机及行走姿势、草地上的辨识度和纯色剪影；`idle-environment.png` 展示全部植物与灯柱帧；`idle-garden.png` 展示同一片地面组合在四个时间点的姿势，均放大 3 倍。帧图已目视检查；实际游戏组合截图由主集成流程检查。M0 素材通过管线技术校验不等同于 M1 正式美术或用户验收。
+
+## M1 战斗素材候选
+
+基础批次新增 13 个素材、132 帧；战斗动作补充又新增 3 个素材、86 帧，当前总计 32 素材、302 帧。原有 16 素材的 PNG 不变；芬恩、霍伯、树、花、灌木、灯柱另有固定字节哈希回归测试。人物和伴星为原生像素尺寸，头像单独按 48×48 绘制，不放大地图小人。
+
+| ID | 帧大小 | 锚点 | 帧与用途 |
+|---|---|---|---|
+| char.ella | 16×24 | 8,24 | 34 帧；深棕粗辫、绿披风、钢护肩；四向 idle / walk + hurt |
+| char.shade | 24×32 | 12,32 | 34 帧；高个黑斗篷、月牙黑面具、单只灰手套；四向 idle / walk + hurt |
+| char.faux_sword | 16×24 | 8,24 | 34 帧；紫布衣、月牙面具、露出肤色的士兵本体；四向 idle / walk + hurt |
+| portrait.ella / portrait.shade | 48×48 | 24,48 | 各 1 帧；idle `[0]` |
+| astral.morning_star | 24×32 | 12,32 | 18 帧；灯罩头、暖金白甲、灯笼内四芒星核；拳臂伸展 |
+| astral.laurel | 24×32 | 12,32 | 18 帧；叶冠、枝臂、收腰叶裙、暖白四芒星核；开冠送叶 |
+| astral.ash_hand | 32×32 | 16,32 | 18 帧；分指大灰手套、灰烟像素、手心星核；攥拳、张指、侧拍 |
+| astral.faux_sword | 24×32 | 12,32 | 18 帧；冷灰无脸持剑人形、深色折线裂核；抬剑、斜劈、收剑 |
+| fx.hit | 16×16 | 8,8 | 5 帧；once `[0,1,2,3,4]`，12 fps，约 417ms |
+| fx.heal | 24×24 | 12,12 | 6 帧；once `[0,1,2,3,4,5]`，8 fps，750ms |
+| fx.summon | 32×32 | 16,16 | 6 帧；once `[0,1,2,3,4,5]`，10 fps，600ms |
+| fx.leaf_hit | 24×24 | 12,12 | 6 帧；once `[0,1,2,3,4,5]`，12 fps，500ms；绿叶放射命中 |
+| fx.ash_hit | 24×24 | 12,12 | 6 帧；once `[0,1,2,3,4,5]`，12 fps，500ms；灰色冲击与碎屑 |
+| fx.strike | 32×24 | 16,12 | 12 帧；right / once `[0,1,2,3,4,5]`，left `[6,7,8,9,10,11]`，均 12 fps、500ms |
+| prop.pillar | 16×24 | 8,24 | 1 帧；练习场石柱，idle `[0]`，碰撞由地图定义 |
+
+三位新人物的帧布局一致：下向 `0–7`、上向 `8–15`、左向 `16–23`、右向 `24–31`。每段前 4 帧为放松、呼吸、衣物微摆、短眨眼（蒙面角色用手套或面具小幅变化），后 4 帧为左右交替步态；`idle` 是 `idle_down` 的别名。待机沿用上文的 24 tick / 4 fps / 6 秒节奏，底部五行固定；行走为 8 fps。右向字符图由左向精确镜像导出。
+
+战斗人物另追加 `hurt=[32,33]`，10 fps / 200ms / 不循环；肩膀、护手或灰手套抬起护胸，底部五行保持与朝下待机完全相同。芬恩和霍伯的已验收源没有改动，也未给它们追加 hurt。
+
+伴星 `idle=[0,1,2,3]`，4 fps；全身仅浮动 1px，奇数帧增加自身亮色的一圈 1px 闪边，内部仍保留本命暗色描边。脚下 8 个稀疏光点组成环，中央透明，无实心阴影。特效只导出不循环的 `once` 标签，最后一帧完全透明；使用时按清单时长结束，不把它们当作 `idle` 循环。
+
+四颗伴星的动作布局统一：`attack_right=[4,5,6,7,8,9]`、`attack_left=[10,11,12,13,14,15]`，均 12 fps / 500ms / 不循环；`hurt=[16,17]`，10 fps / 200ms / 不循环。前两帧蓄势，第 3–4 帧出招，最后两帧收招；第 4 个姿势（右向图集帧 7、左向帧 13）适合配命中停顿。左向逐像素镜像右向，光环和脚点固定；攻击形状分别改变关节、叶冠、手指和剑的位置，不能以运行时平移 idle 替代。命中停顿及事件时长由表现层调度，不改变战斗结果。所有旧 idle / walk 索引保持原样。
+
+本批专用对照表为 `export/sheets/m1-battle.png`（基础素材与效果）、`m1-battle-characters.png`（三人四向全部姿势）、`m1-battle-silhouettes.png`（芬恩和七位本体/伴星同像素尺度剪影与草地对比）、`m1-battle-actions.png`（四伴星双向攻击和受击、三人物受击、三种新动作效果），均为 3 倍最近邻。美术代理已逐张目视检查；20 项美术测试及 `build → verify → sheet` 通过。状态仍为战斗表现候选，用户已要求重新设计的实景战斗表现，由主集成流程接入动作曲线、命中停顿并录制复审，尚未完成用户体验验收。
