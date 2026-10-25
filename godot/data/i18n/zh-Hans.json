@@ -198,5 +198,10 @@
   "battle.intent.reason.outside_skill_range": "射程不足",
   "battle.intent.reason.blocked_line_of_sight": "障碍遮挡",
   "battle.intent.reason.skill_condition_lost": "条件失效",
-  "battle.intent.reason.empty_cell": "目标离格"
+  "battle.intent.reason.empty_cell": "目标离格",
+  "map.finn_house": "芬恩家",
+  "map.town": "灯谷镇",
+  "map.lamp_shop": "霍伯的灯铺",
+  "map.bakery": "面包房",
+  "map.wheat_road": "镇外麦田路"
 }

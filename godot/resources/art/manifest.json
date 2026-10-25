@@ -3851,6 +3851,56 @@
       "hash": "292e0b3e828ae77368ff8fd0809d99f464a72d179cfe79c92921e6910c51a8a5"
     },
     {
+      "id": "prop.shadow_path",
+      "file": "prop.shadow_path.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        8
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "2682a28db52769516c1a7ed7f61ad79c32d6fb4ab333a933957e8f3ec45e8a0d"
+    },
+    {
+      "id": "prop.shadow_wood",
+      "file": "prop.shadow_wood.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        8
+      ],
+      "anchor": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "85f69f8d0c74e647f3c293369fc2557f7d5e914b323d05fe400522c1f888a739"
+    },
+    {
       "id": "prop.sign",
       "file": "prop.sign.png",
       "category": "prop",

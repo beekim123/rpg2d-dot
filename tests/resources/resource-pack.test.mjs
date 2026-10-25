@@ -18,11 +18,19 @@ async function fixture(t) {
   const manifest = { format: 'astra.art/1', assets };
   await put(sourceRoot, 'resources/art/export/manifest.json', manifest);
   for (const asset of assets) await put(sourceRoot, `resources/art/export/${asset.file}`, `original:${asset.id}`);
-  await put(sourceRoot, 'content/maps/lantern-test.json', { id: 'lantern-test' });
+  const registry = {
+    format: 'astra.content-registry/1',
+    maps: { 'lantern.test': 'maps/lantern-test.json', 'lv.finn_house': 'maps/prologue/lv-finn_house.json' },
+    locales: { 'zh-Hans': 'i18n/zh-Hans/ui.json' },
+    bootstrap: { map: 'lv.finn_house', locale: 'zh-Hans' },
+  };
+  await put(sourceRoot, 'content/registry.json', registry);
+  await put(sourceRoot, 'content/maps/lantern-test.json', { id: 'lantern.test' });
+  await put(sourceRoot, 'content/maps/prologue/lv-finn_house.json', { id: 'lv.finn_house' });
   await put(sourceRoot, 'content/i18n/zh-Hans/ui.json', { title: '伴星' });
   await put(sourceRoot, 'third_party/fonts/fusion-pixel-12px/fusion-pixel-12px-proportional-zh_hans.otf.woff2', 'font');
   await put(sourceRoot, 'third_party/fonts/fusion-pixel-12px/LICENSES/nested/OFL.txt', 'font permission');
-  return { root, sourceRoot, targetRoot, put, manifest, options: { sourceRoot, targetRoot } };
+  return { root, sourceRoot, targetRoot, put, manifest, registry, options: { sourceRoot, targetRoot } };
 }
 
 async function index(f) { return JSON.parse(await readFile(join(f.targetRoot, 'resource-pack.json'), 'utf8')); }
@@ -33,7 +41,10 @@ test('pack is deterministic, complete, and verify never repairs modified copies'
   const pack = await index(f);
   assert.equal(pack.format, 'astra.resource-pack/1');
   assert.equal(pack.bootstrap.player, 'char.finn');
-  assert.equal(pack.maps['lantern-test'], 'res://data/maps/lantern-test.json');
+  assert.equal(pack.bootstrap.map, 'lv.finn_house');
+  assert.equal(pack.maps['lv.finn_house'], 'res://data/maps/prologue/lv-finn_house.json');
+  assert.equal(JSON.parse(await readFile(join(f.targetRoot, 'data/maps/prologue/lv-finn_house.json'), 'utf8')).id, 'lv.finn_house');
+  assert.equal(pack.maps['lantern.test'], 'res://data/maps/lantern-test.json');
   assert.equal(pack.locales['zh-Hans'], 'res://data/i18n/zh-Hans.json');
   assert.ok(pack.files.some(file => file.path.endsWith('LICENSES/nested/OFL.txt')));
   assert.ok(pack.files.every(file => /^[a-f0-9]{64}$/.test(file.sha256) && file.bytes > 0));
@@ -117,4 +128,81 @@ test('output directory symlinks and missing pack indices fail verification witho
   await symlink(join(f.root, 'external-art'), join(f.targetRoot, 'resources/art'));
   await assert.rejects(syncResources(f.options), /symbolic link/i);
   await assert.rejects(access(join(f.root, 'external-art/char.finn.png')));
+});
+
+
+test('registered map and locale additions drive the package without tool changes', async t => {
+  const f = await fixture(t);
+  f.registry.maps['lv.garden'] = 'maps/optional/garden.json';
+  f.registry.locales.en = 'i18n/en/ui.json';
+  f.registry.bootstrap = { map: 'lv.garden', locale: 'en' };
+  await f.put(f.sourceRoot, 'content/maps/optional/garden.json', { id: 'lv.garden' });
+  await f.put(f.sourceRoot, 'content/i18n/en/ui.json', { title: 'ASTRA' });
+  await f.put(f.sourceRoot, 'content/registry.json', f.registry);
+  await syncResources(f.options);
+  const pack = await index(f);
+  assert.equal(pack.maps['lv.garden'], 'res://data/maps/optional/garden.json');
+  assert.equal(pack.locales.en, 'res://data/i18n/en.json');
+  assert.deepEqual(pack.bootstrap, { map: 'lv.garden', locale: 'en', player: 'char.finn', shadow: 'prop.shadow', panel: 'ui.panel' });
+  assert.equal((await syncResources({ ...f.options, verify: true })).mismatches.length, 0);
+});
+
+test('invalid registry shapes and paths fail before creating a package', async t => {
+  const cases = [
+    [registry => { registry.format = 'astra.content-registry/99'; }, /invalid content registry/i],
+    [registry => { registry.maps = []; }, /invalid.*maps/i],
+    [registry => { registry.maps = null; }, /invalid.*maps/i],
+    [registry => { registry.locales = []; }, /invalid.*locales/i],
+    [registry => { registry.bootstrap = null; }, /invalid.*bootstrap/i],
+    [registry => { registry.maps['lv.finn_house'] = '../outside.json'; }, /unsafe.*map path/i],
+    [registry => { registry.maps['lv.finn_house'] = 'maps/../i18n/zh-Hans/ui.json'; }, /unsafe.*map path/i],
+    [registry => { registry.maps['lv.finn_house'] = '/maps/prologue/lv-finn_house.json'; }, /unsafe.*map path/i],
+    [registry => { registry.maps['lv.finn_house'] = 'maps\\outside.json'; }, /unsafe.*map path/i],
+    [registry => { registry.maps['lv.finn_house'] = 'i18n/zh-Hans/ui.json'; }, /unsafe.*map path/i],
+    [registry => { registry.maps['../escape'] = 'maps/lantern-test.json'; }, /invalid.*map id/i],
+    [registry => { registry.locales['zh-Hans'] = 'maps/lantern-test.json'; }, /unsafe.*locale path/i],
+    [registry => { registry.locales['zh-Hans'] = 'i18n/en/ui.json'; }, /unsafe.*locale path/i],
+    [registry => { registry.locales['zh-Hans'] = 'i18n/zh-Hans/../ui.json'; }, /unsafe.*locale path/i],
+  ];
+  for (const [mutate, expected] of cases) {
+    const f = await fixture(t); mutate(f.registry);
+    await f.put(f.sourceRoot, 'content/registry.json', f.registry);
+    await assert.rejects(syncResources(f.options), expected);
+    await assert.rejects(access(join(f.targetRoot, 'resource-pack.json')));
+    await assert.rejects(access(join(f.targetRoot, 'data/maps/lantern-test.json')));
+  }
+});
+
+test('unknown bootstrap maps and locales are rejected including inherited property names', async t => {
+  for (const bootstrap of [
+    { map: 'lv.missing', locale: 'zh-Hans' },
+    { map: 'constructor', locale: 'zh-Hans' },
+    { map: 'lv.finn_house', locale: 'en' },
+    { map: 'lv.finn_house', locale: 'toString' },
+  ]) {
+    const f = await fixture(t); f.registry.bootstrap = bootstrap;
+    await f.put(f.sourceRoot, 'content/registry.json', f.registry);
+    await assert.rejects(syncResources(f.options), /unknown bootstrap (map|locale)/i);
+    await assert.rejects(access(join(f.targetRoot, 'resource-pack.json')));
+  }
+});
+
+test('map internal IDs must agree with registration keys', async t => {
+  const f = await fixture(t);
+  await f.put(f.sourceRoot, 'content/maps/prologue/lv-finn_house.json', { id: 'lv.other_house' });
+  await assert.rejects(syncResources(f.options), /map id mismatch.*lv.finn_house/i);
+  await assert.rejects(access(join(f.targetRoot, 'resource-pack.json')));
+});
+
+test('changed registration is detected read-only and removes only owned obsolete maps on sync', async t => {
+  const f = await fixture(t); await syncResources(f.options);
+  delete f.registry.maps['lantern.test'];
+  await f.put(f.sourceRoot, 'content/registry.json', f.registry);
+  await f.put(f.targetRoot, 'data/maps/user-draft.json', { id: 'user.draft' });
+  const result = await syncResources({ ...f.options, verify: true });
+  assert.ok(result.mismatches.some(message => message.includes('index')));
+  await access(join(f.targetRoot, 'data/maps/lantern-test.json'));
+  assert.deepEqual((await syncResources(f.options)).removed, ['res://data/maps/lantern-test.json']);
+  await assert.rejects(access(join(f.targetRoot, 'data/maps/lantern-test.json')));
+  await access(join(f.targetRoot, 'data/maps/user-draft.json'));
 });

@@ -60,6 +60,43 @@ async function readSource(root, source) {
   if (bytes.length > MAX_FILE_BYTES) throw new Error(`Resource exceeds repository file budget: ${source}`);
   return bytes;
 }
+const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+
+async function registeredContent(root) {
+  const registry = JSON.parse((await readSource(root, 'content/registry.json')).toString('utf8'));
+  if (!isRecord(registry) || registry.format !== 'astra.content-registry/1') throw new Error('Invalid content registry');
+  for (const field of ['maps', 'locales', 'bootstrap']) {
+    if (!isRecord(registry[field])) throw new Error(`Invalid content registry ${field}`);
+  }
+  if (typeof registry.bootstrap.map !== 'string' || !Object.hasOwn(registry.maps, registry.bootstrap.map)) {
+    throw new Error(`Unknown bootstrap map: ${registry.bootstrap.map}`);
+  }
+  if (typeof registry.bootstrap.locale !== 'string' || !Object.hasOwn(registry.locales, registry.bootstrap.locale)) {
+    throw new Error(`Unknown bootstrap locale: ${registry.bootstrap.locale}`);
+  }
+  const maps = Object.create(null), locales = Object.create(null), contentBytes = new Map();
+  for (const id of Object.keys(registry.maps).sort(order)) {
+    if (!/^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/.test(id)) throw new Error(`Invalid registered map ID: ${id}`);
+    const relative = registry.maps[id];
+    if (!validRelative(relative) || !/^maps\/(?:[\w.-]+\/)*[\w.-]+\.json$/.test(relative)) {
+      throw new Error(`Unsafe registered map path: ${relative}`);
+    }
+    const source = `content/${relative}`, bytes = await readSource(root, source);
+    const map = JSON.parse(bytes.toString('utf8'));
+    if (!isRecord(map) || map.id !== id) throw new Error(`Map ID mismatch: ${id} registered as ${relative}`);
+    contentBytes.set(source, bytes); maps[id] = destinationFor(source);
+  }
+  for (const id of Object.keys(registry.locales).sort(order)) {
+    const relative = registry.locales[id];
+    if (!/^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/.test(id) || !validRelative(relative) || relative !== `i18n/${id}/ui.json`) {
+      throw new Error(`Unsafe registered locale path: ${id} => ${relative}`);
+    }
+    const source = `content/${relative}`;
+    contentBytes.set(source, await readSource(root, source)); locales[id] = destinationFor(source);
+  }
+  return { maps, locales, bootstrap: registry.bootstrap, contentBytes };
+}
+
 async function fontSources(root, relative = FONT_ROOT) {
   const directory = await safePath(root, relative), result = [];
   const entries = (await readdir(directory, { withFileTypes: true })).sort((a, b) => order(a.name, b.name));
@@ -99,7 +136,8 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
   const manifestBytes = await readSource(sourceRoot, manifestSource);
   const manifest = JSON.parse(manifestBytes.toString('utf8'));
   if (manifest.format !== 'astra.art/1' || !Array.isArray(manifest.assets)) throw new Error('Invalid art manifest');
-  const sources = [manifestSource, 'content/maps/lantern-test.json', 'content/i18n/zh-Hans/ui.json'];
+  const content = await registeredContent(sourceRoot);
+  const sources = [manifestSource, ...content.contentBytes.keys()];
   const ids = new Set();
   for (const asset of manifest.assets) {
     if (!asset || !/^[\w.-]+\.png$/.test(asset.file)) throw new Error(`Unsafe asset path: ${asset?.file}`);
@@ -116,7 +154,7 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
     const resourcePath = destinationFor(source);
     if (destinations.has(resourcePath)) throw new Error(`Duplicate resource destination: ${resourcePath}`);
     destinations.add(resourcePath);
-    const bytes = source === manifestSource ? manifestBytes : await readSource(sourceRoot, source);
+    const bytes = source === manifestSource ? manifestBytes : content.contentBytes.get(source) ?? await readSource(sourceRoot, source);
     const file = await safePath(targetRoot, resourceRelative(resourcePath));
     prepared.push({ file, bytes, record: { source, path: resourcePath, sha256: hash(bytes), bytes: bytes.length } });
   }
@@ -124,9 +162,9 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
     format: 'astra.resource-pack/1',
     art_manifest: 'res://resources/art/manifest.json',
     font: destinationFor(fontSource),
-    maps: { 'lantern-test': 'res://data/maps/lantern-test.json' },
-    locales: { 'zh-Hans': 'res://data/i18n/zh-Hans.json' },
-    bootstrap: { map: 'lantern-test', locale: 'zh-Hans', player: 'char.finn', shadow: 'prop.shadow', panel: 'ui.panel' },
+    maps: content.maps,
+    locales: content.locales,
+    bootstrap: { map: content.bootstrap.map, locale: content.bootstrap.locale, player: 'char.finn', shadow: 'prop.shadow', panel: 'ui.panel' },
     files: prepared.map(item => item.record),
   };
   const indexPath = await safePath(targetRoot, 'resource-pack.json');

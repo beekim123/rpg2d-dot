@@ -78,3 +78,5 @@ node --test --test-concurrency=1 tests/resources/art-battle.test.mjs
 当前制作库为71素材、607帧，包含新增镇民、头像、日常伴星和室内/麦田设施；地图与剧情接入状态独立记录，不能因素材存在就算完整序章完成。新内容分别在 `source/characters/townsfolk.mjs`、`source/portraits/townsfolk.mjs`、`source/astrals/daily-life.mjs` 和 `source/environment/prologue-*.mjs`。
 
 本目录是唯一美术制作源。Godot运行副本由 `npm run godot:sync` 复制到 `godot/resources/art/`；运行时只通过资源服务和语义ID访问，禁止在规则代码中导入绘图模块。资源校验与副本哈希校验均通过后，仍需逐页看图和检查实际游戏画面。
+
+原生G1使用地面匹配的阴影：`prop.shadow_path`为土路暗金色、`prop.shadow_wood`为木地板/桥的棕色，均16×8、锚点8,8，由`source/props/ground-shadows.mjs`绘制。原草地阴影保留；只选择对应PNG，不在运行时调色。当前73项素材609帧。

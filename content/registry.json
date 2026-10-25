@@ -1,0 +1,18 @@
+{
+  "format": "astra.content-registry/1",
+  "maps": {
+    "lantern.test": "maps/lantern-test.json",
+    "lv.finn_house": "maps/prologue/lv-finn_house.json",
+    "lv.town": "maps/prologue/lv-town.json",
+    "lv.lamp_shop": "maps/prologue/lv-lamp_shop.json",
+    "lv.bakery": "maps/prologue/lv-bakery.json",
+    "lv.wheat_road": "maps/prologue/lv-wheat_road.json"
+  },
+  "locales": {
+    "zh-Hans": "i18n/zh-Hans/ui.json"
+  },
+  "bootstrap": {
+    "map": "lv.finn_house",
+    "locale": "zh-Hans"
+  }
+}

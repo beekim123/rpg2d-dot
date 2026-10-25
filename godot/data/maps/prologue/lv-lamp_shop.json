@@ -1,0 +1,107 @@
+{
+  "id": "lv.lamp_shop",
+  "name": "map.lamp_shop",
+  "width": 16,
+  "height": 12,
+  "rows": [
+    "tttttttttttttttt",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tsssssssssssssst",
+    "tttttttstttttttt"
+  ],
+  "spawn": {
+    "x": 7,
+    "y": 9
+  },
+  "entities": [
+    {
+      "id": "lv.shop.bench",
+      "kind": "decoration",
+      "sprite": "prop.workbench",
+      "x": 7,
+      "y": 4,
+      "solid": true,
+      "footprint": [
+        3,
+        1
+      ]
+    },
+    {
+      "id": "lv.shop.shelf",
+      "kind": "decoration",
+      "sprite": "prop.bookshelf",
+      "x": 3,
+      "y": 3,
+      "solid": true,
+      "footprint": [
+        2,
+        1
+      ]
+    },
+    {
+      "id": "lv.shop.crate",
+      "kind": "decoration",
+      "sprite": "prop.crate",
+      "x": 3,
+      "y": 7,
+      "solid": true
+    },
+    {
+      "id": "lv.shop.barrel",
+      "kind": "decoration",
+      "sprite": "prop.barrel",
+      "x": 12,
+      "y": 4,
+      "solid": true
+    },
+    {
+      "id": "lv.lamp.shop",
+      "kind": "lamp",
+      "sprite": "prop.lamp",
+      "x": 12,
+      "y": 7,
+      "solid": true
+    },
+    {
+      "id": "lv.shop.hob",
+      "kind": "npc",
+      "sprite": "char.hob",
+      "x": 7,
+      "y": 6,
+      "solid": true,
+      "script": "lv.npc.hob.day",
+      "visibleWhen": {
+        "all": [
+          "p.aftermath_heard"
+        ]
+      }
+    }
+  ],
+  "required": [
+    "lv.lamp.shop"
+  ],
+  "exits": [
+    {
+      "pair": "lv.shop_door",
+      "x": 7,
+      "y": 11,
+      "to": "lv.town",
+      "at": {
+        "x": 19,
+        "y": 9
+      }
+    }
+  ],
+  "terrain": {
+    "path": "tile.wood_floor",
+    "border": "tile.wood_wall"
+  }
+}

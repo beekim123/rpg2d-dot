@@ -59,8 +59,24 @@ func binding(key: String) -> String:
 func map_data(map_id: String) -> Dictionary:
 	return _indexed_json("maps", map_id, _maps)
 
+func map_ids() -> Array[String]:
+	var ids: Array[String] = []
+	for map_id: String in _pack.get("maps", {}):
+		ids.append(map_id)
+	ids.sort()
+	return ids
+
 func locale(locale_id: String) -> Dictionary:
 	return _indexed_json("locales", locale_id, _locales)
+
+func shadow_for_terrain(terrain_asset_id: String) -> String:
+	match terrain_asset_id:
+		"tile.wood_floor", "tile.bridge":
+			return "prop.shadow_wood"
+		"tile.path":
+			return "prop.shadow_path"
+		_:
+			return binding("shadow")
 
 func texture(asset_id: String) -> Texture2D:
 	if not _textures.has(asset_id):

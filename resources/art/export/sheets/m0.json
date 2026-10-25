@@ -594,7 +594,7 @@
           "frames": 1
         },
         {
-          "id": "prop.sign",
+          "id": "prop.shadow_path",
           "page": 1,
           "cell": [
             120,
@@ -605,7 +605,7 @@
           "frames": 1
         },
         {
-          "id": "prop.stove",
+          "id": "prop.shadow_wood",
           "page": 1,
           "cell": [
             240,
@@ -616,7 +616,7 @@
           "frames": 1
         },
         {
-          "id": "prop.table",
+          "id": "prop.sign",
           "page": 1,
           "cell": [
             360,
@@ -632,10 +632,32 @@
       "image": "m0-3.png",
       "labels": [
         {
-          "id": "prop.tree",
+          "id": "prop.stove",
           "page": 2,
           "cell": [
             0,
+            24,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.table",
+          "page": 2,
+          "cell": [
+            120,
+            24,
+            120,
+            124
+          ],
+          "frames": 1
+        },
+        {
+          "id": "prop.tree",
+          "page": 2,
+          "cell": [
+            240,
             24,
             120,
             124
@@ -646,7 +668,7 @@
           "id": "prop.well",
           "page": 2,
           "cell": [
-            120,
+            360,
             24,
             120,
             124
@@ -657,8 +679,8 @@
           "id": "prop.windmill",
           "page": 2,
           "cell": [
-            240,
-            24,
+            0,
+            148,
             120,
             124
           ],
@@ -668,8 +690,8 @@
           "id": "prop.workbench",
           "page": 2,
           "cell": [
-            360,
-            24,
+            120,
+            148,
             120,
             124
           ],
@@ -679,7 +701,7 @@
           "id": "tile.bridge",
           "page": 2,
           "cell": [
-            0,
+            240,
             148,
             120,
             124
@@ -690,7 +712,7 @@
           "id": "tile.edge",
           "page": 2,
           "cell": [
-            120,
+            360,
             148,
             120,
             124
@@ -701,8 +723,8 @@
           "id": "tile.grass",
           "page": 2,
           "cell": [
-            240,
-            148,
+            0,
+            272,
             120,
             124
           ],
@@ -712,8 +734,8 @@
           "id": "tile.path",
           "page": 2,
           "cell": [
-            360,
-            148,
+            120,
+            272,
             120,
             124
           ],
@@ -723,7 +745,7 @@
           "id": "tile.rug",
           "page": 2,
           "cell": [
-            0,
+            240,
             272,
             120,
             124
@@ -734,7 +756,7 @@
           "id": "tile.stone_floor",
           "page": 2,
           "cell": [
-            120,
+            360,
             272,
             120,
             124
@@ -745,8 +767,8 @@
           "id": "tile.water",
           "page": 2,
           "cell": [
-            240,
-            272,
+            0,
+            396,
             120,
             124
           ],
@@ -756,8 +778,8 @@
           "id": "tile.wheat",
           "page": 2,
           "cell": [
-            360,
-            272,
+            120,
+            396,
             120,
             124
           ],
@@ -767,7 +789,7 @@
           "id": "tile.wood_floor",
           "page": 2,
           "cell": [
-            0,
+            240,
             396,
             120,
             124
@@ -778,7 +800,7 @@
           "id": "tile.wood_wall",
           "page": 2,
           "cell": [
-            120,
+            360,
             396,
             120,
             124
@@ -789,8 +811,8 @@
           "id": "ui.panel",
           "page": 2,
           "cell": [
-            240,
-            396,
+            0,
+            520,
             120,
             124
           ],
@@ -1384,7 +1406,7 @@
       "frames": 1
     },
     {
-      "id": "prop.sign",
+      "id": "prop.shadow_path",
       "page": 1,
       "cell": [
         120,
@@ -1395,7 +1417,7 @@
       "frames": 1
     },
     {
-      "id": "prop.stove",
+      "id": "prop.shadow_wood",
       "page": 1,
       "cell": [
         240,
@@ -1406,7 +1428,7 @@
       "frames": 1
     },
     {
-      "id": "prop.table",
+      "id": "prop.sign",
       "page": 1,
       "cell": [
         360,
@@ -1417,10 +1439,32 @@
       "frames": 1
     },
     {
-      "id": "prop.tree",
+      "id": "prop.stove",
       "page": 2,
       "cell": [
         0,
+        24,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.table",
+      "page": 2,
+      "cell": [
+        120,
+        24,
+        120,
+        124
+      ],
+      "frames": 1
+    },
+    {
+      "id": "prop.tree",
+      "page": 2,
+      "cell": [
+        240,
         24,
         120,
         124
@@ -1431,7 +1475,7 @@
       "id": "prop.well",
       "page": 2,
       "cell": [
-        120,
+        360,
         24,
         120,
         124
@@ -1442,8 +1486,8 @@
       "id": "prop.windmill",
       "page": 2,
       "cell": [
-        240,
-        24,
+        0,
+        148,
         120,
         124
       ],
@@ -1453,8 +1497,8 @@
       "id": "prop.workbench",
       "page": 2,
       "cell": [
-        360,
-        24,
+        120,
+        148,
         120,
         124
       ],
@@ -1464,7 +1508,7 @@
       "id": "tile.bridge",
       "page": 2,
       "cell": [
-        0,
+        240,
         148,
         120,
         124
@@ -1475,7 +1519,7 @@
       "id": "tile.edge",
       "page": 2,
       "cell": [
-        120,
+        360,
         148,
         120,
         124
@@ -1486,8 +1530,8 @@
       "id": "tile.grass",
       "page": 2,
       "cell": [
-        240,
-        148,
+        0,
+        272,
         120,
         124
       ],
@@ -1497,8 +1541,8 @@
       "id": "tile.path",
       "page": 2,
       "cell": [
-        360,
-        148,
+        120,
+        272,
         120,
         124
       ],
@@ -1508,7 +1552,7 @@
       "id": "tile.rug",
       "page": 2,
       "cell": [
-        0,
+        240,
         272,
         120,
         124
@@ -1519,7 +1563,7 @@
       "id": "tile.stone_floor",
       "page": 2,
       "cell": [
-        120,
+        360,
         272,
         120,
         124
@@ -1530,8 +1574,8 @@
       "id": "tile.water",
       "page": 2,
       "cell": [
-        240,
-        272,
+        0,
+        396,
         120,
         124
       ],
@@ -1541,8 +1585,8 @@
       "id": "tile.wheat",
       "page": 2,
       "cell": [
-        360,
-        272,
+        120,
+        396,
         120,
         124
       ],
@@ -1552,7 +1596,7 @@
       "id": "tile.wood_floor",
       "page": 2,
       "cell": [
-        0,
+        240,
         396,
         120,
         124
@@ -1563,7 +1607,7 @@
       "id": "tile.wood_wall",
       "page": 2,
       "cell": [
-        120,
+        360,
         396,
         120,
         124
@@ -1574,8 +1618,8 @@
       "id": "ui.panel",
       "page": 2,
       "cell": [
-        240,
-        396,
+        0,
+        520,
         120,
         124
       ],

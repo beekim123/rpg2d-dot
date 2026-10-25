@@ -3,13 +3,18 @@
   "art_manifest": "res://resources/art/manifest.json",
   "font": "res://resources/fonts/fusion-pixel-12px/fusion-pixel-12px-proportional-zh_hans.otf.woff2",
   "maps": {
-    "lantern-test": "res://data/maps/lantern-test.json"
+    "lantern.test": "res://data/maps/lantern-test.json",
+    "lv.bakery": "res://data/maps/prologue/lv-bakery.json",
+    "lv.finn_house": "res://data/maps/prologue/lv-finn_house.json",
+    "lv.lamp_shop": "res://data/maps/prologue/lv-lamp_shop.json",
+    "lv.town": "res://data/maps/prologue/lv-town.json",
+    "lv.wheat_road": "res://data/maps/prologue/lv-wheat_road.json"
   },
   "locales": {
     "zh-Hans": "res://data/i18n/zh-Hans.json"
   },
   "bootstrap": {
-    "map": "lantern-test",
+    "map": "lv.finn_house",
     "locale": "zh-Hans",
     "player": "char.finn",
     "shadow": "prop.shadow",
@@ -19,14 +24,44 @@
     {
       "source": "content/i18n/zh-Hans/ui.json",
       "path": "res://data/i18n/zh-Hans.json",
-      "sha256": "62561e520112147bedc48a413692f4fbc1395eeb1881fea2b2027eee1f627923",
-      "bytes": 9306
+      "sha256": "7cf0959bafaab152ab0872a810623bb92280fc8b56e85fd9fa583a3e99035a04",
+      "bytes": 9472
     },
     {
       "source": "content/maps/lantern-test.json",
       "path": "res://data/maps/lantern-test.json",
       "sha256": "899769e721ee9dca5324a0fa121e922f266a34c427424c895ee27967faea330e",
       "bytes": 3527
+    },
+    {
+      "source": "content/maps/prologue/lv-bakery.json",
+      "path": "res://data/maps/prologue/lv-bakery.json",
+      "sha256": "8273d0941e96f822d13f39b8dde67703fcc98d889ee4c5ce3de8ed35303df4e1",
+      "bytes": 2515
+    },
+    {
+      "source": "content/maps/prologue/lv-finn_house.json",
+      "path": "res://data/maps/prologue/lv-finn_house.json",
+      "sha256": "e411917e50c966f9aeff87d9a60a9798464dd391a61c63bb639cb405b6fd15ef",
+      "bytes": 2408
+    },
+    {
+      "source": "content/maps/prologue/lv-lamp_shop.json",
+      "path": "res://data/maps/prologue/lv-lamp_shop.json",
+      "sha256": "a8d065289fc9e17a755bdf3fdf9daaa1f3836b7224f479803b34ce63c9aef980",
+      "bytes": 1844
+    },
+    {
+      "source": "content/maps/prologue/lv-town.json",
+      "path": "res://data/maps/prologue/lv-town.json",
+      "sha256": "8f318523b2ea3f074b467ae487c389277aa1d75d22b9aac758f04f2345ae960d",
+      "bytes": 13332
+    },
+    {
+      "source": "content/maps/prologue/lv-wheat_road.json",
+      "path": "res://data/maps/prologue/lv-wheat_road.json",
+      "sha256": "0d66372596e2d313f3cd53fc424e0544668e48e6b718845a0da1983f983cc0a1",
+      "bytes": 2369
     },
     {
       "source": "resources/art/export/astral.ash_hand.png",
@@ -181,8 +216,8 @@
     {
       "source": "resources/art/export/manifest.json",
       "path": "res://resources/art/manifest.json",
-      "sha256": "f1d01746e52199025740075b120024e875fe316b786730a61a83d97d2d5eb19f",
-      "bytes": 75701
+      "sha256": "5a471b96f112fa6df1c0f0bd9f030a0b8a06e316c258dca3ad5197a581ea1ebe",
+      "bytes": 76667
     },
     {
       "source": "resources/art/export/portrait.brio.png",
@@ -350,6 +385,18 @@
       "source": "resources/art/export/prop.shadow.png",
       "path": "res://resources/art/prop.shadow.png",
       "sha256": "292e0b3e828ae77368ff8fd0809d99f464a72d179cfe79c92921e6910c51a8a5",
+      "bytes": 87
+    },
+    {
+      "source": "resources/art/export/prop.shadow_path.png",
+      "path": "res://resources/art/prop.shadow_path.png",
+      "sha256": "2682a28db52769516c1a7ed7f61ad79c32d6fb4ab333a933957e8f3ec45e8a0d",
+      "bytes": 88
+    },
+    {
+      "source": "resources/art/export/prop.shadow_wood.png",
+      "path": "res://resources/art/prop.shadow_wood.png",
+      "sha256": "85f69f8d0c74e647f3c293369fc2557f7d5e914b323d05fe400522c1f888a739",
       "bytes": 87
     },
     {

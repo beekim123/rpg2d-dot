@@ -24,3 +24,5 @@ npm run dev
 `npm run godot:editor` 打开编辑器；`npm run build` 导出 Web，`npm run godot:test:web` 验证实际导出网页。`.godot/` 是可重建缓存，编辑器和导出包不提交。
 
 制作资源请回到 [`resources/`](../resources/README.md)，改地图与文本请回到 [`content/`](../content/README.md)。规则层应只处理状态和内容 ID；素材物理路径集中在资源服务，应用图标等引擎启动配置属于记录在案的入口例外。
+
+G1a已接入家、镇、灯铺、面包房、麦田路的双向出口；默认从芬恩家开始。`scripts/world/world_data.gd`只处理地图、碰撞、显隐和旅行规则，不依赖Node或资源路径；`world.gd`负责表现，`AssetCatalog`负责资源。`tests/world/`覆盖规则和真实场景完整旅行。
