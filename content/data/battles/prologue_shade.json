@@ -2,6 +2,7 @@
   "id": "prologue_shade",
   "width": 8,
   "height": 6,
+  "intentModes": { "shade": "unit" },
   "blocked": [
     {
       "x": 3,

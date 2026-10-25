@@ -3,6 +3,9 @@ export type Rating = 'E' | 'D' | 'C' | 'B' | 'A' | 'S';
 export type AstralType = 'close' | 'remote' | 'auto' | 'swarm' | 'set' | 'field';
 export type ActionWeight = 'light' | 'normal' | 'heavy';
 export type DamageTarget = 'body' | 'astral';
+export type IntentMode = 'point' | 'unit';
+export type IntentReason = 'actor_displaced' | 'actor_unavailable' | 'plan_blocked' | 'target_unavailable'
+  | 'outside_skill_range' | 'blocked_line_of_sight' | 'empty_cell' | 'skill_condition_lost';
 export interface StarChart { pow: number; spd: number; rch: number; end: number; prc: number; pot: number }
 
 export interface BattleActor {

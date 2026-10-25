@@ -1,9 +1,9 @@
-import type {ActionWeight,BattleActor,DamageTarget,Point} from './model.ts';
+import type {ActionWeight,BattleActor,DamageTarget,IntentMode,IntentReason,Point} from './model.ts';
 import {applySharedDamage,calculateDamage,manhattan,orderTimeline,rating,rescheduleActor,validateActor} from './math.ts';
 import {battleRules,getSkill,hasLineOfSight} from './skills.ts';
 
 export interface BattleGoal {kind:'survive_and_hit';actorId:string;enemyId:string;enemyActions:number}
-export interface BattleDefinition { id:string;width:number;height:number;blocked:Point[];actors:BattleActor[];goal?:BattleGoal;hpFloors?:Record<string,number> }
+export interface BattleDefinition { id:string;width:number;height:number;blocked:Point[];actors:BattleActor[];goal?:BattleGoal;hpFloors?:Record<string,number>;intentModes?:Record<string,IntentMode> }
 export interface BattleState extends BattleDefinition {
   phase:'active'|'won'|'lost';activeId:string;turnNumber:number;time:number;
   turnStart:BattleActor;bodySpent:number;astralSpent:number;
@@ -11,11 +11,14 @@ export interface BattleState extends BattleDefinition {
 }
 export type BattleCommand={actorId:string;type:'move_body'|'move_astral'|'manifest';to:Point}
   |{actorId:string;type:'undo'|'wait'|'recall'|'guard'}
-  |{actorId:string;type:'skill';skillId:string;targetId:string;target:DamageTarget};
+  |{actorId:string;type:'skill';skillId:string;targetId:string;target:DamageTarget}
+  |{actorId:string;type:'cancelled_skill';skillId:string;outcome:'miss'|'interrupted';reason:IntentReason};
 export type BattleEvent={type:'move';actorId:string;unit:'body'|'astral';from:Point;to:Point;path:Point[]}
   |{type:'tether_pull';actorId:string;from:Point;to:Point|null}
   |{type:'undo';actorId:string}|{type:'turn';actorId:string;time:number}|{type:'invalid';reason:string}
   |{type:'skill';actorId:string;skillId:string;targetId:string;target:DamageTarget;cost:number}
+  |{type:'cancelled_skill';actorId:string;skillId:string;cost:number;outcome:'miss'|'interrupted';reason:IntentReason}
+  |{type:'intent_status';actorId:string;status:'ready'|'interrupted';reason?:IntentReason}
   |{type:'damage';actorId:string;sourceId:string;target:DamageTarget;damage:number;absorbed:number;hp:number}
   |{type:'heal';actorId:string;sourceId:string;amount:number;hp:number}
   |{type:'shield';actorId:string;sourceId:string;amount:number;shield:number}
@@ -50,6 +53,22 @@ function pathTo(board:BattleDefinition,actor:BattleActor,unit:'body'|'astral',to
       seen.add(key(q));queue.push([...path,q]);
     }
   }return undefined;
+}
+/** One bounded flood per unit; callers can score legal endpoints without cloning a battle per cell. */
+export function reachableBattleMoves(state:BattleState,unit:DamageTarget):{to:Point;steps:number}[] {
+  const actor=state.actors.find(a=>a.id===state.activeId);if(!actor||actor.hp===0||state.phase!=='active')return [];
+  const from=unit==='body'?actor.body:actor.astral;if(!from)return [];
+  const allowance=unit==='body'?3:({E:1,D:2,C:3,B:4,A:5,S:6}[rating(actor.chart.spd)]);
+  const budget=allowance-(unit==='body'?state.bodySpent:state.astralSpent);
+  const found=[{to:{...from},steps:0}],seen=new Set([key(from)]);
+  for(let i=0;i<found.length;i++){
+    const at=found[i]!;if(at.steps>=budget)continue;
+    for(const d of directions){const to={x:at.to.x+d.x,y:at.to.y+d.y};
+      if(seen.has(key(to))||solid(state,to,actor.id,unit)||unit==='astral'&&manhattan(to,actor.body)>actor.reach)continue;
+      seen.add(key(to));found.push({to,steps:at.steps+1});
+    }
+  }
+  return found;
 }
 function pullWithinTether(state:BattleState,actor:BattleActor):BattleEvent|undefined {
   if(!actor.astral||manhattan(actor.body,actor.astral)<=actor.reach)return undefined;
@@ -148,6 +167,10 @@ export function createBattle(definition:BattleDefinition):BattleState {
     for(const p of [actor.body,actor.astral]){if(!p)continue;if(!inBounds(board,p)||board.blocked.some(b=>same(b,p))||occupied.has(key(p)))throw new Error('Colliding actors');occupied.add(key(p));}
   }
   validateGoal(board);
+  if(board.intentModes!==undefined){
+    if(!board.intentModes||typeof board.intentModes!=='object'||Array.isArray(board.intentModes))throw new Error('Invalid intent modes');
+    for(const [id,mode]of Object.entries(board.intentModes))if(!board.actors.some(a=>a.id===id&&a.team==='enemy')||!['point','unit'].includes(mode))throw new Error('Invalid intent mode');
+  }
   const active=orderTimeline(board.actors.filter(a=>a.hp>0))[0]??board.actors[0]!;
   const state:BattleState={...board,phase:'active',activeId:active.id,turnNumber:1,time:active.readyAt,turnStart:structuredClone(active),bodySpent:0,astralSpent:0,manifestUsed:false,enemyActions:{},hitEnemy:{}};
   state.phase=outcome(state);
@@ -195,6 +218,14 @@ export function applyBattleCommand(input:BattleState,command:BattleCommand):Batt
   if(command.type==='guard'){
     const before=actor.shield;actor.shield=Math.max(actor.shield,battleRules.guardShield);
     return finishAction(state,actor,'normal',[{type:'shield',actorId:actor.id,sourceId:actor.id,amount:actor.shield-before,shield:actor.shield}]);
+  }
+  if(command.type==='cancelled_skill'){
+    const skill=getSkill(command.skillId);
+    if(actor.team!=='enemy'||!skill||skill.effect!=='damage'||!(actor.skillIds??['basic_strike']).includes(skill.id))return invalid('skill_unavailable');
+    if(actor.will<skill.cost)return invalid('not_enough_will');
+    if(!['miss','interrupted'].includes(command.outcome)||!['actor_displaced','actor_unavailable','plan_blocked','target_unavailable','outside_skill_range','blocked_line_of_sight','empty_cell','skill_condition_lost'].includes(command.reason))return invalid('invalid_cancellation');
+    actor.will-=skill.cost;
+    return finishAction(state,actor,skill.weight,[{type:'cancelled_skill',actorId:actor.id,skillId:skill.id,cost:skill.cost,outcome:command.outcome,reason:command.reason}]);
   }
   if(command.type==='skill'){
     const skill=getSkill(command.skillId),target=state.actors.find(a=>a.id===command.targetId);

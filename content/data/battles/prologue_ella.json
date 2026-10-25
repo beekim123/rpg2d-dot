@@ -2,6 +2,7 @@
   "id": "prologue_ella",
   "width": 8,
   "height": 6,
+  "intentModes": { "faux_sword": "point" },
   "blocked": [
     {
       "x": 3,
