@@ -32,6 +32,7 @@ jobs:
       - run: npm run build
       - run: npm run reference:build
       - run: npx playwright install --with-deps chromium
+      - run: npm run workbench:test:web
       - run: npm run godot:test:web
       - run: npm run reference:test:web
       - uses: actions/upload-artifact@v4
@@ -42,3 +43,7 @@ jobs:
         with:
           name: astra-reference-web
           path: build/reference-web
+      - uses: actions/upload-artifact@v4
+        with:
+          name: astra-asset-workbench
+          path: build/asset-workbench

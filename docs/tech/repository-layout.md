@@ -22,10 +22,12 @@ rpg-astra/
 ├─ content/{data,maps,story,i18n} 游戏内容数据与文字
 ├─ third_party/fonts/           OFL字体及完整许可证（唯一允许的外部美术类资源）
 ├─ reference/web/               冻结的TypeScript/Canvas原型
-│  ├─ src/ / workbench/ / index.html
+│  ├─ src/ / index.html
 │  └─ README.md
+├─ workbench/                   独立HTML素材展示器，不依赖游戏源码
 ├─ tools/
 │  ├─ resources/                美术/声音构建校验、Godot资源包同步
+│  ├─ workbench/                同源资源打包与独立HTML预览
 │  ├─ godot/                    引擎启动、模板安装、导出预览
 │  ├─ qa/                       内容检查与参考自动路线
 │  ├─ lib/                      工具共同路径定义
@@ -37,7 +39,7 @@ rpg-astra/
 ├─ config/                      TypeScript/Vite/Vitest/Playwright配置
 ├─ docs/                        设计、计划、进度；docs/v2/status.md为交接入口
 ├─ artifacts/screenshots/       可分享的验证截图/录制
-├─ build/{godot-web,reference-web} 导出产物；忽略，不提交
+├─ build/{godot-web,reference-web,asset-workbench} 导出产物；忽略，不提交
 └─ .local/                      本地参考、缓存与迁移备份；忽略，不提交
 ```
 
@@ -69,3 +71,7 @@ rpg-astra/
 - `npm run reference:build` / `npm run reference:test:web`：冻结原型对照。
 
 目录移动不改变游戏数据ID、状态规则或素材像素；迁移后必须重新验证路径、同步、Godot启动和两套Web构建。
+
+## 独立HTML资源展示（2026-10-25用户纠正）
+
+素材工作台从reference/web抽离到workbench；它是持续维护的工具。制作源→PNG/清单→Godot受管包与工作台展示包，两者在构建时逐字节核对。HTML运行时没有游戏源码依赖；导出的单个index.html内嵌PNG、清单、字体/许可及合成器，可搬到仓库外双击打开或独立托管。旧网页仅保留兼容访问入口，不再拥有工作台实现。具体契约见../../workbench/README.md。

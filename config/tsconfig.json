@@ -23,7 +23,6 @@
   },
   "include": [
     "../reference/web/src",
-    "../reference/web/workbench",
     "../resources/audio/**/*.ts",
     "../tests/**/*.ts",
     "../tools/**/*.ts",

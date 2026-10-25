@@ -11,3 +11,5 @@
 Godot 的引擎设置与导出预设仍放在 `godot/`；GitHub Actions 仍放在 `.github/workflows/`，以符合各自工具的固定发现规则。
 
 `godot-version.txt` 是引擎与模板的共同版本锁；启动器、模板安装器和 CI 都读取它。升级时一起验证导入、原生测试与 Web 导出。
+
+`workbench.config.ts`用于独立HTML工作台的单worker浏览器验证。

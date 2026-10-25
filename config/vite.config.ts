@@ -1,6 +1,6 @@
 import {defineConfig} from 'vite';
 import {resolve,sep,extname} from 'node:path';
-import {cpSync,existsSync,createReadStream,statSync} from 'node:fs';
+import {cpSync,existsSync,createReadStream,statSync,mkdirSync,readFileSync} from 'node:fs';
 import {repoRoot} from '../tools/lib/paths.mjs';
 const webRoot=resolve(repoRoot,'reference/web');
 const output=resolve(repoRoot,'build/reference-web');
@@ -12,6 +12,10 @@ export default defineConfig({
     name:'astra-reference-resources',
     configureServer(server){
       server.middlewares.use((request,response,next)=>{
+        if(request.url?.split('?')[0]==='/workbench/'||request.url?.split('?')[0]==='/workbench/index.html'){
+          response.setHeader('Content-Type','text/html; charset=utf-8');
+          response.end(readFileSync(resolve(repoRoot,'build/asset-workbench/index.html')));return;
+        }
         if(!request.url?.startsWith('/art/export/'))return next();
         try{
           const name=decodeURIComponent(new URL(request.url,'http://localhost').pathname.slice('/art/export/'.length));
@@ -24,8 +28,10 @@ export default defineConfig({
     },
     closeBundle(){
       if(existsSync(artRoot))cpSync(artRoot,resolve(output,'art/export'),{recursive:true});
+      mkdirSync(resolve(output,'workbench'),{recursive:true});
+      cpSync(resolve(repoRoot,'build/asset-workbench/index.html'),resolve(output,'workbench/index.html'));
       cpSync(resolve(repoRoot,'third_party'),resolve(output,'third_party'),{recursive:true});
     },
   }],
-  build:{outDir:output,emptyOutDir:true,rollupOptions:{input:{game:resolve(webRoot,'index.html'),workbench:resolve(webRoot,'workbench/index.html')}}},
+  build:{outDir:output,emptyOutDir:true,rollupOptions:{input:{game:resolve(webRoot,'index.html')}}},
 });

@@ -12,7 +12,7 @@
 
 ## 运行 Godot
 
-需要 Node.js 22.12+（本机验证使用 Node 24）和 Godot 4.7.2。可以使用根目录的本机 `Godot.app`、`ASTRA_GODOT_BIN` 指定的编辑器，或 PATH 中的 Godot；编辑器不提交。
+需要 Node.js 22.13+（本机验证使用 Node 24）和 Godot 4.7.2。可以使用根目录的本机 `Godot.app`、`ASTRA_GODOT_BIN` 指定的编辑器，或 PATH 中的 Godot；编辑器不提交。
 
 ```sh
 npm ci
@@ -37,7 +37,8 @@ Web 产物在 `build/godot-web/`，预览地址为 `http://127.0.0.1:8060/`。�
 | [`godot/`](godot/README.md) | 原生场景、GDScript、运行时测试；资源和内容副本由工具同步 |
 | [`resources/`](resources/README.md) | 独立美术源、PNG 导出、声音合成器与曲谱 |
 | [`content/`](content/README.md) | 地图、角色/技能数据、剧情与多语言文本的唯一制作源 |
-| [`reference/web/`](reference/web/README.md) | 冻结的网页原型和素材工作台 |
+| [`reference/web/`](reference/web/README.md) | 冻结的网页原型 |
+| [`workbench/`](workbench/README.md) | 独立素材展示器，导出单个可离线HTML，与Godot资源逐字节一致 |
 | [`tools/`](tools/README.md)、[`tests/`](tests/README.md)、[`config/`](config/README.md) | 制作工具、分层验证、开发配置 |
 | [`docs/`](docs/README.md) | 设计、计划、进度与交接 |
 | [`artifacts/screenshots/`](artifacts/screenshots/) | 已检查的游戏截图与动态预览 |
@@ -56,6 +57,8 @@ npm run godot:test:web
 ```
 
 `check` 顺序检查类型、参考逻辑、资源、内容、自动路线、Godot 资源副本及原生行为；实际 Web 验收单独运行。浏览器测试需要 Playwright Chromium（`npx playwright install chromium`）；本机已有 Chrome 时可以设置 `PLAYWRIGHT_CHANNEL=chrome`。所有计算默认单 worker，启动前仍须遵守整机共享资源预算。
+
+`npm run workbench:dev` 打开独立素材工作台；`npm run workbench:build` 生成 `build/asset-workbench/index.html`，可以把这一个HTML搬走后直接双击使用。展示器不依赖游戏源码，详见 [工作台说明](workbench/README.md)。
 
 资源对照表在 [`resources/art/export/sheets/`](resources/art/export/sheets/)。数值和技术检查通过不代表正式美术、主观听审或用户体验验收。GitHub Actions 保留构建产物；Pages 尚未开启，没有公开试玩部署地址。
 

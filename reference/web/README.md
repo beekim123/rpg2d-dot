@@ -11,7 +11,7 @@ npm run reference:test
 npm run reference:test:web
 ```
 
-开发服务器的 `/workbench/` 提供素材与声音工作台，构建产物写入 `build/reference-web/`。Vite/Vitest/Playwright/TypeScript 配置集中在 `config/`。
+素材工作台已独立到`../../workbench/`（从仓库根看为`workbench/`）；旧`/workbench/`网址仅展示同一工具的构建副本。游戏构建产物写入 `build/reference-web/`。Vite/Vitest/Playwright/TypeScript 配置集中在 `config/`。
 
 - 方向键 / WASD 移动，Shift 跑步，Z / 空格 / 回车交互。
 - C / Tab 菜单，X / Esc 返回；灯柱提供手动存档，点灯自动存档。

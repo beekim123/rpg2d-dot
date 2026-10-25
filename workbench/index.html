@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="data:,">
+  <title>ASTRA · 素材工作台</title>
+  <!-- ASTRA:STYLE -->
+</head>
+<body data-ready="false">
+  <header class="masthead">
+    <p class="eyebrow">ASTRA / ORIGINAL RESOURCE LIBRARY</p>
+    <h1>伴星 · 素材工作台</h1>
+    <p class="intro">人物、伴星与灯谷的每一片像素。按游戏资源清单预览，可离线保存。</p>
+    <div class="snapshot-row"><p id="snapshot-meta">正在读取展示包…</p><a id="manifest-download" class="button-link" download="manifest.json">下载素材清单</a></div>
+    <p id="fatal" role="alert" hidden></p>
+  </header>
+  <main>
+    <section aria-labelledby="library-title">
+      <div class="section-heading"><h2 id="library-title">像素素材</h2><p id="result-count" aria-live="polite"></p></div>
+      <div class="toolbar">
+        <label class="search-control" for="search">查找<input id="search" type="search" placeholder="素材 ID，例如 char.finn" autocomplete="off" spellcheck="false"></label>
+        <label for="filter">分类<select id="filter"><option value="all">全部素材</option></select></label>
+        <label for="zoom">倍率<select id="zoom"><option value="1">1×</option><option value="2" selected>2×</option><option value="3">3×</option><option value="4">4×</option></select></label>
+        <button id="animate" type="button" aria-pressed="true">暂停动画</button>
+        <label class="check-control" for="anchor-toggle"><input id="anchor-toggle" type="checkbox">显示锚点</label>
+      </div>
+      <div id="library" class="library" aria-busy="true"></div>
+      <p id="empty" class="empty-state" hidden>没有匹配的素材。试试更短的 ID 或其他分类。</p>
+    </section>
+    <section class="sound-section" aria-labelledby="audio-title">
+      <div class="section-heading"><h2 id="audio-title">声音试听</h2><button id="audio-stop" type="button" disabled>停止试听</button></div>
+      <p>仓库中的原创合成曲目与音效。点击播放，一次试听一段。</p>
+      <div id="audio" class="audio-library"></div>
+      <p id="audio-status" class="status" aria-live="polite">尚未播放</p>
+      <p id="audio-source" class="source-note"></p>
+    </section>
+    <section aria-labelledby="palette-title"><h2 id="palette-title">共享调色板</h2><div id="palette" class="palette"></div></section>
+    <footer>
+      <details id="licenses"><summary>字体许可与展示包说明</summary><p>图像、动画清单和合成器随此页保存。字体及其来源许可全文如下。</p><div id="license-list"></div></details>
+      <p class="source-note">ASTRA · 原创资源展示包</p>
+    </footer>
+  </main>
+  <!-- ASTRA:DATA -->
+  <!-- ASTRA:SYNTH -->
+  <!-- ASTRA:VIEWER -->
+</body>
+</html>

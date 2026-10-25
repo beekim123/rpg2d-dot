@@ -11,3 +11,5 @@
 `npm run check` 顺序运行资源、参考与 Godot 原生检查；`npm test` 指向 Godot 原生测试。`npm run reference:test` 保留 TypeScript 测试入口；`npm run reference:test:web` 与 `npm run godot:test:web` 分别验证两个运行时，不能互相代替。
 
 测试结果必须标明是候选、技术校验还是正式体验验收。截图写入 `artifacts/screenshots/`，临时报告与导出缓存不提交。运行时遵守整机最多两个计算 worker 的共享预算，默认只用一个。
+
+`workbench/`独立验证展示包的资源字节、隔离边界与安全嵌入，并在仓库外通过file://测试真实HTML。

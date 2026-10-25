@@ -1,0 +1,16 @@
+{
+  "confirm": "确认",
+  "cancel": "取消",
+  "step": "脚步",
+  "save": "存档",
+  "deny": "拒绝",
+  "lamp": "点灯",
+  "test_theme": "试奏 · 第一盏灯",
+  "battle_theme": "试奏 · 星域对决",
+  "battle_hit": "命中",
+  "battle_heal": "治疗",
+  "battle_guard": "护盾",
+  "battle_cast": "星术",
+  "battle_win": "胜利",
+  "battle_lose": "倒下"
+}
