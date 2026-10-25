@@ -259,3 +259,11 @@ test('rule table registry rejects malformed values and traversal before writing'
     await assert.rejects(access(join(f.targetRoot,'resource-pack.json')));
   }
 });
+
+test('original palette can be managed for exact-color native presentation effects', async t => {
+  const f=await fixture(t);const palette={format:'astra.palette/1',colors:[{char:'A',name:'ink',hex:'#1a1220',ramp:'outline'}]};
+  await f.put(f.sourceRoot,'resources/art/palette.json',palette);
+  await syncResources(f.options);
+  assert.equal((await index(f)).palette,'res://resources/art/palette.json');
+  assert.deepEqual(JSON.parse(await readFile(join(f.targetRoot,'resources/art/palette.json'),'utf8')),palette);
+});

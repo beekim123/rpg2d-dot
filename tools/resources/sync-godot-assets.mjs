@@ -17,6 +17,7 @@ function validRelative(relative) {
     relative.split('/').every(segment => /^[A-Za-z0-9_.-]+$/.test(segment) && segment !== '.' && segment !== '..');
 }
 function destinationFor(source) {
+  if (source === 'resources/art/palette.json') return 'res://resources/art/palette.json';
   if (!validRelative(source)) throw new Error(`Unsafe source path: ${source}`);
   if (/^resources\/art\/export\/(?:manifest\.json|[\w.-]+\.png)$/.test(source)) {
     return `res://resources/art/${source.split('/').at(-1)}`;
@@ -166,6 +167,14 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
   if (manifest.format !== 'astra.art/1' || !Array.isArray(manifest.assets)) throw new Error('Invalid art manifest');
   const content = await registeredContent(sourceRoot);
   const sources = [manifestSource, ...content.contentBytes.keys()];
+  const paletteSource='resources/art/palette.json';
+  const paletteBytes=await readOptional(await safePath(sourceRoot,paletteSource));
+  if(paletteBytes){
+    const palette=JSON.parse((await readSource(sourceRoot,paletteSource)).toString('utf8'));
+    if(!isRecord(palette)||palette.format!=='astra.palette/1'||!Array.isArray(palette.colors)||palette.colors.length<1||palette.colors.length>64||palette.colors.some(c=>!isRecord(c)||typeof c.ramp!=='string'||!/^#[0-9a-f]{6}$/i.test(c.hex)))throw new Error('Invalid original palette');
+    sources.push(paletteSource);
+  }
+
   const ids = new Set();
   for (const asset of manifest.assets) {
     if (!asset || !/^[\w.-]+\.png$/.test(asset.file)) throw new Error(`Unsafe asset path: ${asset?.file}`);
@@ -189,6 +198,7 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
   const pack = {
     format: 'astra.resource-pack/1',
     art_manifest: 'res://resources/art/manifest.json',
+    palette: paletteBytes ? destinationFor(paletteSource) : '',
     font: destinationFor(fontSource),
     maps: content.maps,
     locales: content.locales,

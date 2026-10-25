@@ -1,0 +1,61 @@
+extends SceneTree
+const Book = preload("res://scripts/resources/battle_catalog.gd")
+const Controls = preload("res://scripts/battle/presentation/battle_controls.gd")
+const Compare = preload("res://tests/battle/json_compare.gd")
+var checks: int = 0
+var failures: Array[String] = []
+func _initialize() -> void:
+	_run.call_deferred()
+func check(condition: bool, message: String) -> void:
+	checks += 1
+	if not condition:
+		failures.append(message)
+		push_error("FAIL: " + message)
+func _run() -> void:
+	var catalog: AssetCatalog = AssetCatalog.new()
+	check(catalog.load_pack(), "pack loads")
+	var maps: Dictionary = {}
+	for id: String in catalog.map_ids():
+		maps[id] = catalog.map_data(id)
+	var worlds: WorldData = WorldData.new()
+	worlds.configure(maps)
+	var book: Book = Book.new()
+	book.configure(catalog, worlds, catalog.locale(catalog.binding("locale")))
+	var controls: Controls = Controls.new()
+	var ready: bool = controls.setup(book.prepare("prologue_ella"))
+	check(ready, "battle controls prepare actual native teaching fight")
+	if ready:
+		var initial: Dictionary = controls.snapshot()
+		controls.choose("skills")
+		controls.choose("skill:laurel_heal")
+		controls.set_cursor(Vector2i(1, 3))
+		var full_heal: Dictionary = controls.preview()
+		check(full_heal.get("ok", false) and full_heal.get("effect") == "heal" and full_heal.get("heal") == 0, "zero healing keeps healing preview category")
+		check(Compare.equal(controls.snapshot(), initial), "zero-effect preview cannot consume a turn")
+		controls.cancel()
+		controls.choose("back")
+		check(controls.choose("move_body")["ok"], "body selection opens cursor mode")
+		controls.set_cursor(Vector2i(1, 4))
+		check(controls.preview().get("ok", false), "valid movement preview")
+		check(Compare.equal(controls.snapshot(), initial), "preview leaves game state unchanged")
+		check(controls.confirm()["ok"] and controls.snapshot()["battle"]["actors"][0]["body"]["y"] == 4, "confirm sends normal movement transaction")
+		check(controls.choose("undo")["ok"] and Compare.equal(controls.snapshot(), initial), "undo restores complete draft state")
+		controls.choose("skills")
+		controls.choose("skill:laurel_bolt")
+		controls.set_cursor(Vector2i(5, 2))
+		check(not controls.preview().get("ok", true), "out of range skill preview rejects")
+		check(not controls.confirm()["ok"] and Compare.equal(controls.snapshot(), initial), "invalid target does not spend turn or will")
+		controls.cancel()
+		controls.choose("back")
+		check(controls.choose("guard")["ok"], "guard commits a real main action")
+		check(controls.snapshot()["battle"]["activeId"] == "finn", "Finn follows Ella in timeline")
+		var ids: Array = controls.options().map(func(o: Dictionary) -> String: return o["id"])
+		check("items" in ids and "cheer" in ids and "skills" not in ids and "recall" not in ids, "starless menu exposes body assistance only")
+		controls.choose("cheer")
+		controls.set_cursor(Vector2i(1, 3))
+		check(controls.preview().get("ok", false) and controls.confirm()["ok"], "native cursor confirms Finn cheer")
+		check(controls.snapshot()["battle"]["actors"][0].get("cheered", false), "UI cheer reaches core state")
+		var before: Dictionary = controls.snapshot()
+		check(not controls.choose("skill:missing")["ok"] and Compare.equal(before, controls.snapshot()), "unknown UI command is safe")
+	print("BattleControls: %d checks, %d failures" % [checks, failures.size()])
+	quit(0 if failures.is_empty() else 1)

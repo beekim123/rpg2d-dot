@@ -13,6 +13,7 @@ var _maps: Dictionary = {}
 var _locales: Dictionary = {}
 var _stories: Dictionary = {}
 var _tables: Dictionary = {}
+var _palette: Dictionary = {}
 var _font: FontFile
 
 func load_pack() -> bool:
@@ -42,6 +43,7 @@ func load_pack() -> bool:
 	if manifest.get("format") != "astra.art/1":
 		push_error("Invalid ASTRA art manifest")
 		return false
+	_palette = _read_json_object(_pack["palette"]) if _pack.get("palette", "") != "" else {}
 	_art_root = manifest_path.get_base_dir()
 	definitions.clear()
 	_frames.clear()
@@ -179,3 +181,28 @@ func _read_json_object(path: String) -> Dictionary:
 		push_error("Resource pack file is not a JSON object: " + path)
 		return {}
 	return parsed
+
+func palette_dimmer(arena: Rect2) -> ShaderMaterial:
+	if not _palette.get("colors") is Array or _palette["colors"].is_empty() or _palette["colors"].size() > 64:
+		return null
+	var sources: PackedColorArray = PackedColorArray()
+	var shades: PackedColorArray = PackedColorArray()
+	var previous: Dictionary = {}
+	for entry: Dictionary in _palette["colors"]:
+		var color: Color = Color(entry["hex"])
+		sources.append(color)
+		shades.append(previous.get(entry["ramp"], color))
+		previous[entry["ramp"]] = color
+	var count: int = sources.size()
+	while sources.size() < 64:
+		sources.append(Color.BLACK)
+		shades.append(Color.BLACK)
+	var shader: Shader = Shader.new()
+	shader.code = "shader_type canvas_item; render_mode unshaded; uniform vec4 source_colors[64]; uniform vec4 shade_colors[64]; uniform int color_count; uniform vec4 arena_rect; varying vec2 world_position; void vertex(){world_position=(MODEL_MATRIX*vec4(VERTEX,0.0,1.0)).xy;} void fragment(){vec4 pixel=texture(TEXTURE,UV); bool outside=world_position.x<arena_rect.x || world_position.y<arena_rect.y || world_position.x>=arena_rect.x+arena_rect.z || world_position.y>=arena_rect.y+arena_rect.w; if(outside && pixel.a>0.0){for(int i=0;i<64;i++){if(i>=color_count){break;} if(distance(pixel.rgb,source_colors[i].rgb)<0.001){pixel.rgb=shade_colors[i].rgb;break;}}} COLOR=pixel;}"
+	var material: ShaderMaterial = ShaderMaterial.new()
+	material.shader = shader
+	material.set_shader_parameter("source_colors", sources)
+	material.set_shader_parameter("shade_colors", shades)
+	material.set_shader_parameter("color_count", count)
+	material.set_shader_parameter("arena_rect", Vector4(arena.position.x, arena.position.y, arena.size.x, arena.size.y))
+	return material

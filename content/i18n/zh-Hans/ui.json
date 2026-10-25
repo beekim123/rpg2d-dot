@@ -352,5 +352,12 @@
   "battle.preview.cheer": "下一次伤害 ×1.25",
   "battle.back": "返回",
   "battle.debug.enter": "F5 艾拉战 · F6 晨星战",
-  "battle.error.setup": "战场暂时无法展开。"
+  "battle.error.setup": "战场暂时无法展开。",
+  "battle.confirm": "确认目标",
+  "battle.prompt.items": "选择要投递的道具。",
+  "battle.description.guard": "护盾提高到20点，抵挡伤害。",
+  "battle.description.recall": "本体受伤降低，下回合回复更多心力。",
+  "battle.description.cheer": "队友下一次伤害强化，不叠加。",
+  "battle.starless.short": "无星者",
+  "battle.intent.no_attack": "暂无攻击"
 }

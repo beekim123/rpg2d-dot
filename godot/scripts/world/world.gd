@@ -3,6 +3,11 @@ extends Node2D
 ## Native map presentation; WorldData owns travel rules and AssetCatalog owns resource paths.
 
 signal map_entered(map_id: String, cell: Vector2i)
+signal battle_finished(battle_id: String, phase: String)
+
+const BattleBook = preload("res://scripts/resources/battle_catalog.gd")
+const BattleView = preload("res://scripts/battle/presentation/battle_view.gd")
+const BattleScene = preload("res://scenes/battle/battle_view.tscn")
 
 @export var initial_map_id: String = ""
 @export var persistence_enabled: bool = true
@@ -36,6 +41,12 @@ var _interlocutor_animation: Dictionary = {}
 var _save_controller: WorldSaveController = WorldSaveController.new()
 var _save_transfer: SaveTransfer
 var _restoring_state: bool = false
+var _battle: BattleView
+var _battle_book: BattleBook = BattleBook.new()
+var _battle_before: Dictionary = {}
+var _battle_camera: Vector2 = Vector2.ZERO
+var _battle_id: String = ""
+var _battle_materials: Dictionary = {}
 
 @onready var ground: TileMapLayer = $Ground
 @onready var edges: TileMapLayer = $Edges
@@ -99,6 +110,7 @@ func _ready() -> void:
 	_save_controller.configure(persistence, save_menu, _save_transfer, _strings, _saved_map_title, _can_persistence_action)
 	_save_controller.changed.connect(_on_save_presentation_changed)
 	persistence.changed.connect(_on_persistence_result)
+	_battle_book.configure(catalog, world_data, _strings)
 	controls_label.text = String(_strings["hint.explore"])
 	_install_input_actions()
 	var start_id: String = initial_map_id if not initial_map_id.is_empty() else catalog.binding("map")
@@ -106,9 +118,10 @@ func _ready() -> void:
 		push_error("Initial map could not be entered: " + start_id)
 		return
 	persistence.startup()
+	_start_battle_preview.call_deferred()
 
 func _physics_process(_delta: float) -> void:
-	if not loaded or dialogue_active() or menu_active() or persistence.is_busy():
+	if not loaded or battle_active() or dialogue_active() or menu_active() or persistence.is_busy():
 		return
 	if not player.is_moving:
 		for index: int in range(INPUT_ACTIONS.size()):
@@ -121,7 +134,7 @@ func _process(_delta: float) -> void:
 		_update_camera()
 
 func _input(event: InputEvent) -> void:
-	if not loaded or _save_controller.is_busy() or (event is InputEventKey and event.echo):
+	if not loaded or battle_active() or _save_controller.is_busy() or (event is InputEventKey and event.echo):
 		return
 	if event.is_action_pressed(&"save_menu"):
 		if menu_active():
@@ -137,7 +150,11 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not loaded or menu_active() or persistence.is_busy() or (event is InputEventKey and event.echo):
+	if not loaded or battle_active() or menu_active() or persistence.is_busy() or (event is InputEventKey and event.echo):
+		return
+	if event is InputEventKey and event.pressed and event.physical_keycode in [KEY_F5, KEY_F6]:
+		start_battle("prologue_ella" if event.physical_keycode == KEY_F5 else "prologue_shade")
+		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed(&"interact"):
 		if dialogue_active():
@@ -150,7 +167,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func request_move(direction: Vector2i) -> bool:
-	if not loaded or dialogue_active() or menu_active() or persistence.is_busy() or player.is_moving or not direction in DIRECTIONS:
+	if not loaded or battle_active() or dialogue_active() or menu_active() or persistence.is_busy() or player.is_moving or not direction in DIRECTIONS:
 		return false
 	player.face(direction)
 	if not is_walkable(player.grid_position + direction):
@@ -163,12 +180,12 @@ func request_move(direction: Vector2i) -> bool:
 	return true
 
 func enter_map(map_id: String, at: Vector2i = Vector2i(-1, -1)) -> bool:
-	if dialogue_active() or menu_active() or persistence.is_busy() or (is_instance_valid(player) and player.is_moving) or not world_data.validate_state(flags).is_empty():
+	if battle_active() or dialogue_active() or menu_active() or persistence.is_busy() or (is_instance_valid(player) and player.is_moving) or not world_data.validate_state(flags).is_empty():
 		return false
 	return _enter_validated_map(map_id, at)
 
 func interact() -> bool:
-	if not loaded or player.is_moving or dialogue_active() or menu_active() or persistence.is_busy():
+	if not loaded or battle_active() or player.is_moving or dialogue_active() or menu_active() or persistence.is_busy():
 		return false
 	var target: Dictionary = _interaction_target()
 	if target.is_empty():
@@ -290,7 +307,7 @@ func _assign_persistent_fields(state: Dictionary) -> void:
 	actor_memory = (state["actorMemory"] as Dictionary).duplicate(true)
 
 func _can_persistence_action() -> bool:
-	return loaded and is_instance_valid(player) and not player.is_moving and not dialogue_active() and not _restoring_state
+	return loaded and not battle_active() and is_instance_valid(player) and not player.is_moving and not dialogue_active() and not _restoring_state
 
 func _saved_map_title(map_id: String) -> String:
 	var source: Dictionary = world_data.get_map(map_id)
@@ -343,7 +360,7 @@ func dialogue_state() -> Dictionary:
 	}
 
 func apply_story_flags(candidate: Dictionary) -> bool:
-	if not loaded or player.is_moving or menu_active() or persistence.is_busy() or _restoring_state:
+	if not loaded or battle_active() or player.is_moving or menu_active() or persistence.is_busy() or _restoring_state:
 		return _reject_story_flags()
 	if candidate == flags:
 		return true
@@ -407,7 +424,7 @@ func _direction_for_facing(facing: String) -> Vector2i:
 	return direction
 
 func _refresh_interaction_hint() -> void:
-	if not loaded or dialogue_active() or menu_active():
+	if not loaded or battle_active() or dialogue_active() or menu_active():
 		return
 	var target: Dictionary = {} if player.is_moving else _interaction_target()
 	var key: String = "hint.explore"
@@ -511,6 +528,9 @@ func accessibility_state() -> Dictionary:
 	var sorted_lamps: Array[String] = lamps.duplicate()
 	sorted_lamps.sort()
 	return {
+		"battle_active": battle_active(),
+		"battle_id": _battle_id if battle_active() else "",
+		"battle_ui": JSON.stringify(_battle.ui_state()) if battle_active() and _battle.loaded else "{}",
 		"ready": loaded,
 		"map_id": String(map_data.get("id", "")),
 		"grid_x": player.grid_position.x if player != null else -1,
@@ -549,7 +569,7 @@ func _refresh_ground_shadow() -> void:
 func _publish_accessibility_state() -> void:
 	if not OS.has_feature("web") or not Engine.has_singleton("JavaScriptBridge"):
 		return
-	var payload: String = JSON.stringify({"state": accessibility_state(), "label": title_label.text})
+	var payload: String = JSON.stringify({"state": accessibility_state(), "label": String(_strings.get("battle.title." + _battle_id, title_label.text)) if battle_active() else title_label.text})
 	if payload == _last_accessibility_payload:
 		return
 	_last_accessibility_payload = payload
@@ -693,6 +713,9 @@ func _install_input_actions() -> void:
 			InputMap.action_add_event(action, event)
 
 func _update_camera() -> void:
+	if battle_active():
+		camera.position = _battle_camera
+		return
 	var focus: Vector2 = player.position - Vector2(0, 8)
 	camera.position = Vector2(_camera_axis(focus.x, int(map_data["width"]) * 16, 480), _camera_axis(focus.y, int(map_data["height"]) * 16, 270))
 
@@ -701,3 +724,89 @@ func _camera_axis(focus: float, map_pixels: int, viewport_pixels: int) -> int:
 		return floori(float(map_pixels) / 2.0)
 	var half_viewport: int = floori(float(viewport_pixels) / 2.0)
 	return clampi(roundi(focus), half_viewport, map_pixels - half_viewport)
+
+func battle_active() -> bool:
+	return is_instance_valid(_battle)
+
+func start_battle(id: String) -> bool:
+	if not _can_persistence_action() or menu_active() or _save_controller.is_busy():
+		return false
+	var prepared: Dictionary = _battle_book.prepare(id, flags)
+	if not prepared["ok"]:
+		controls_label.text = String(_strings["battle.error.setup"])
+		return false
+	var previous: Dictionary = snapshot_state()
+	var arena: Dictionary = prepared["arena"]
+	_restoring_state = true
+	var entered: bool = _enter_validated_map(prepared["presentation"]["map"], Vector2i(int(arena["x"]) + 1, int(arena["y"]) + 3))
+	_restoring_state = false
+	if not entered:
+		return false
+	_battle_camera = Vector2((float(arena["x"]) + float(arena["width"]) / 2) * 16, (float(arena["y"]) + float(arena["height"]) / 2) * 16)
+	camera.position = _battle_camera
+	camera.force_update_scroll()
+	var dim: ShaderMaterial = catalog.palette_dimmer(Rect2(Vector2(arena["x"] * 16, arena["y"] * 16), Vector2(arena["width"] * 16, arena["height"] * 16)))
+	_battle_materials.clear()
+	for node: CanvasItem in [ground, edges] + actors.get_children():
+		_battle_materials[node] = node.material
+		if dim != null:
+			node.material = dim
+	var view: BattleView = BattleScene.instantiate() as BattleView
+	if not view.setup(catalog, prepared, _strings, actors):
+		view.free()
+		_restore_battle_materials()
+		_restore_persistent_state(previous)
+		return false
+	_battle_before = previous
+	_battle_id = id
+	_battle = view
+	view.name = "BattleView"
+	view.changed.connect(_publish_accessibility_state)
+	view.close_requested.connect(close_battle)
+	add_child(view)
+	player.hide()
+	for entity: Dictionary in map_data["entities"]:
+		if entity["kind"] == "npc" or String(entity["sprite"]).begins_with("astral."):
+			var sprite: AnimatedSprite2D = find_entity(entity["id"])
+			if sprite != null:
+				sprite.hide()
+	$HUD.hide()
+	_publish_accessibility_state()
+	return true
+
+func close_battle() -> void:
+	if not battle_active():
+		return
+	var id: String = _battle_id
+	var phase: String = _battle.ui_state()["snapshot"]["battle"]["phase"]
+	var view: BattleView = _battle
+	_battle = null
+	remove_child(view)
+	view.queue_free()
+	$HUD.show()
+	_restore_battle_materials()
+	var saved: Dictionary = _battle_before
+	_battle_before = {}
+	_battle_id = ""
+	if not _restore_persistent_state(saved):
+		push_error("Battle preview could not restore its validated exploration snapshot")
+	_publish_accessibility_state()
+	battle_finished.emit(id, phase)
+
+func _start_battle_preview() -> void:
+	var requested: String = ""
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--battle="):
+			requested = argument.trim_prefix("--battle=")
+	if OS.has_feature("web") and Engine.has_singleton("JavaScriptBridge"):
+		var value: Variant = Engine.get_singleton("JavaScriptBridge").call("eval", "new URLSearchParams(window.location.search).get('battle') || ''", true)
+		if value is String:
+			requested = value
+	if requested in ["prologue_ella", "prologue_shade"]:
+		start_battle(requested)
+
+func _restore_battle_materials() -> void:
+	for node: Variant in _battle_materials:
+		if is_instance_valid(node):
+			node.material = _battle_materials[node]
+	_battle_materials.clear()

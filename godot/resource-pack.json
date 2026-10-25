@@ -1,6 +1,7 @@
 {
   "format": "astra.resource-pack/1",
   "art_manifest": "res://resources/art/manifest.json",
+  "palette": "res://resources/art/palette.json",
   "font": "res://resources/fonts/fusion-pixel-12px/fusion-pixel-12px-proportional-zh_hans.otf.woff2",
   "maps": {
     "lantern.test": "res://data/maps/lantern-test.json",
@@ -79,8 +80,8 @@
     {
       "source": "content/i18n/zh-Hans/ui.json",
       "path": "res://data/i18n/zh-Hans.json",
-      "sha256": "91a03fe5010e7dc424fb8061e84f570a6d166498bc8692689fe7eb7db521d527",
-      "bytes": 19302
+      "sha256": "0f4c205b434d599d8274877a1329553c08146c06f556e512bb488a3e6d8e03d2",
+      "bytes": 19713
     },
     {
       "source": "content/maps/lantern-test.json",
@@ -573,6 +574,12 @@
       "path": "res://resources/art/ui.panel.png",
       "sha256": "a0ba4fd96edaf013e64395ab85c6ba5bc9fad70abbe02c994ef427975245ab48",
       "bytes": 140
+    },
+    {
+      "source": "resources/art/palette.json",
+      "path": "res://resources/art/palette.json",
+      "sha256": "4a553533b8fbf0dffc8de3c62e83a2557e561ea688d8f9166eeb230ca2345ec5",
+      "bytes": 3631
     },
     {
       "source": "third_party/fonts/fusion-pixel-12px/LICENSES/ark-pixel/OFL.txt",
