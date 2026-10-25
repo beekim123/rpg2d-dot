@@ -71,3 +71,40 @@ test('HTTP viewer is isolated, keeps all categories, and resamples audio for a 1
   expect(requests).toEqual(['http://127.0.0.1:8787/']);expect(errors).toEqual([]);
   expect(resolve('build/asset-workbench/index.html')).not.toContain('reference/web');
 });
+
+test('pause commits a frame accumulated between throttled draws before returning',async({page})=>{
+  // Drive the real viewer across its 30Hz paint gate without relying on wall-clock luck.
+  await page.addInitScript(()=>{
+    let now=0;let serial=0;const callbacks:FrameRequestCallback[]=[];
+    Object.defineProperty(performance,'now',{value:()=>now});
+    window.requestAnimationFrame=(callback:FrameRequestCallback)=>{callbacks.push(callback);return ++serial;};
+    (window as unknown as {stepViewer:(time:number)=>void}).stepViewer=time=>{
+      now=time;const pending=callbacks.splice(0);for(const callback of pending)callback(time);
+    };
+  });
+  await page.goto('/');await loaded(page);
+  await page.evaluate(()=>{
+    const search=document.querySelector<HTMLInputElement>('#search')!;search.value='char.finn';search.dispatchEvent(new Event('input'));
+    const select=document.querySelector<HTMLSelectElement>('article[data-id="char.finn"] select[data-animation]')!;
+    select.value='walk_down';select.dispatchEvent(new Event('change'));
+  });
+  await page.evaluate(()=>new Promise<void>(resolve=>{
+    const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();resolve();}});
+    observer.observe(document.querySelector('article[data-id="char.finn"]')!);
+  }));
+  const frames=await page.evaluate(()=>{
+    const tick=(window as unknown as {stepViewer:(time:number)=>void}).stepViewer;
+    const canvas=document.querySelector<HTMLCanvasElement>('article[data-id="char.finn"] canvas')!;
+    const button=document.querySelector<HTMLButtonElement>('#animate')!;
+    tick(0);tick(100);const before=canvas.dataset.frame;
+    tick(130);button.click();const paused=canvas.dataset.frame;
+    tick(150);const after=canvas.dataset.frame;
+    tick(500);const later=canvas.dataset.frame;
+    button.click();tick(600);tick(650);const resumed=canvas.dataset.frame;
+    return {before,paused,after,later,resumed};
+  });
+  expect(frames.after).toBe(frames.paused);
+  expect(frames.later).toBe(frames.paused);
+  expect(frames.paused).not.toBe(frames.before);
+  expect(frames.resumed).not.toBe(frames.paused);
+});

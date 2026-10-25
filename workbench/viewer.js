@@ -139,7 +139,11 @@
     }
     filter.addEventListener('change', updateFilter); search.addEventListener('input', updateFilter);
     animationToggle.addEventListener('click', () => {
-      playing = !playing; animationToggle.textContent = playing ? '暂停动画' : '播放动画';
+      playing = !playing; lastTime = performance.now();
+      // Elapsed time advances every RAF, but painting is throttled to 30Hz. Flush
+      // the already accumulated frame now so a queued paint cannot jump after pause.
+      if (!playing) for (const card of visibleCards) if (!card.article.hidden) drawCard(card);
+      animationToggle.textContent = playing ? '暂停动画' : '播放动画';
       animationToggle.setAttribute('aria-pressed', String(playing)); document.body.dataset.playing = String(playing);
     });
     zoomSelect.addEventListener('change', () => { zoom = Number(zoomSelect.value); for (const card of cards) setZoom(card); });
