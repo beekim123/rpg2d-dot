@@ -27,6 +27,14 @@
     "battle.skills": "res://data/tables/battle-skills.json",
     "battle.support": "res://data/tables/battle-support.json"
   },
+  "cinematics": {
+    "prologue": "res://data/story/prologue-scenes.json"
+  },
+  "locale_bundles": {
+    "zh-Hans": {
+      "prologue": "res://data/i18n/zh-Hans/prologue.json"
+    }
+  },
   "audio": {
     "confirm": {
       "path": "res://resources/audio/confirm.wav",
@@ -164,6 +172,12 @@
       "bytes": 1567
     },
     {
+      "source": "content/i18n/zh-Hans/prologue.json",
+      "path": "res://data/i18n/zh-Hans/prologue.json",
+      "sha256": "5e8143f464649a1da1180bba894bb0e01111c663a7e159bfd3c32a3a97425e21",
+      "bytes": 14199
+    },
+    {
       "source": "content/i18n/zh-Hans/ui.json",
       "path": "res://data/i18n/zh-Hans.json",
       "sha256": "0f4c205b434d599d8274877a1329553c08146c06f556e512bb488a3e6d8e03d2",
@@ -178,32 +192,32 @@
     {
       "source": "content/maps/prologue/lv-bakery.json",
       "path": "res://data/maps/prologue/lv-bakery.json",
-      "sha256": "09969d1e4b7f63bc21a89cae1896a97cef5e1151e79fa9cdf570d6cf30d9be38",
-      "bytes": 2727
+      "sha256": "fcce1a4a0716a05f4bff79ef74666df666a0b7c588d31bdeb5e860df835e979b",
+      "bytes": 2850
     },
     {
       "source": "content/maps/prologue/lv-finn_house.json",
       "path": "res://data/maps/prologue/lv-finn_house.json",
-      "sha256": "426d78faf919f60eddf5c0a1614f2cb05dc23d8ef3c79d5593ae3469a7e551d0",
-      "bytes": 2609
+      "sha256": "8748d22577262f8713f380f2a9fc6977e44f41b3bdd389c0eee61275e3067eb4",
+      "bytes": 2785
     },
     {
       "source": "content/maps/prologue/lv-lamp_shop.json",
       "path": "res://data/maps/prologue/lv-lamp_shop.json",
-      "sha256": "9f8fbddbe102ed9135051082344d8fca94351cd824c75c468a31768d59b4dc24",
-      "bytes": 2009
+      "sha256": "a92a309ac0dcd122b2a9e953bac6b56a7ef1c68cf23e462a7f731f221608d7f1",
+      "bytes": 2136
     },
     {
       "source": "content/maps/prologue/lv-town.json",
       "path": "res://data/maps/prologue/lv-town.json",
-      "sha256": "919d68e6139076dcb74c4af7ab6247752ab1460cb457085d0a63d67747a66317",
-      "bytes": 13534
+      "sha256": "5206a63fe3643342d7c9b83767d8bf2c26831e9843e97f99958816b19455e698",
+      "bytes": 13595
     },
     {
       "source": "content/maps/prologue/lv-wheat_road.json",
       "path": "res://data/maps/prologue/lv-wheat_road.json",
-      "sha256": "422bc18976bbb545e90db9b405c1c94cca40014911b631ff8c5994ae16ca9da2",
-      "bytes": 2409
+      "sha256": "888ca2041cea3e5a3b58a8a77187cb7136d2293036441e814f85a5c27307645f",
+      "bytes": 2523
     },
     {
       "source": "content/story/lantern-vale.json",
@@ -216,6 +230,12 @@
       "path": "res://data/story/m0.json",
       "sha256": "90019ca0d4df93a2433ee5f5880e7ead8f03312cb91f467c512ecf37684f9d88",
       "bytes": 739
+    },
+    {
+      "source": "content/story/prologue-scenes.json",
+      "path": "res://data/story/prologue-scenes.json",
+      "sha256": "caede9c90b4397df55c958d31c3111a4296bcad3700233e0e6fdf1bfd18941fc",
+      "bytes": 12227
     },
     {
       "source": "resources/art/export/astral.ash_hand.png",

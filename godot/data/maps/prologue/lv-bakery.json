@@ -136,5 +136,15 @@
   "terrain": {
     "path": "tile.wood_floor",
     "border": "tile.wood_wall"
+  },
+  "anchors": {
+    "door": {
+      "x": 9,
+      "y": 13
+    },
+    "dough_entry": {
+      "x": 9,
+      "y": 9
+    }
   }
 }

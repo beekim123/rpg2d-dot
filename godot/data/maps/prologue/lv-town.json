@@ -654,6 +654,10 @@
     }
   },
   "anchors": {
+    "lamp_shop_front": {
+      "x": 19,
+      "y": 10
+    },
     "bakery_counter": {
       "x": 34,
       "y": 12

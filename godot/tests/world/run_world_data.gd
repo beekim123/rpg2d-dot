@@ -45,6 +45,10 @@ func _run() -> void:
 	_test_transitions()
 	_test_rejected_content()
 	_test_automatic_exit_reachability()
+	_test_anchor_structure()
+	_test_anchor_points()
+	_test_safe_anchors()
+	_test_prologue_safe_anchors()
 	print("WorldData: %d checks, %d failures" % [_checks, _failures.size()])
 	quit(0 if _failures.is_empty() else 1)
 
@@ -169,3 +173,119 @@ func _test_automatic_exit_reachability() -> void:
 	var return_trap: Dictionary = _door_corridor(5)
 	return_trap["room.a"]["spawn"] = {"x": 3, "y": 2}
 	_check(not rules.configure(return_trap).is_empty(), "each incoming landing must reach objectives even when spawn is on a door")
+
+func _anchor_fixture() -> Dictionary:
+	var maps: Dictionary = _fixture()
+	maps["room.a"]["anchors"] = {
+		"entry": {"x": 2, "y": 2},
+		"lamp_focus": {"x": 3, "y": 3},
+		"wall_focus": {"x": 0, "y": 2},
+		"guest_wait": {"x": 4, "y": 1},
+	}
+	maps["room.a"]["entities"].append({"id": "stage.guest", "kind": "npc", "sprite": "npc", "solid": false, "x": 4, "y": 1, "visibleWhen": {"all": ["stage.guest"]}})
+	return maps
+
+func _test_anchor_structure() -> void:
+	for problem: Dictionary in [
+		{"name": "array", "anchors": []},
+		{"name": "null", "anchors": null},
+		{"name": "number", "anchors": 7},
+		{"name": "empty_id", "anchors": {"": {"x": 2, "y": 2}}},
+		{"name": "non_string_id", "anchors": {2: {"x": 2, "y": 2}}},
+		{"name": "unstable_id", "anchors": {"bad anchor": {"x": 2, "y": 2}}},
+		{"name": "reserved_id", "anchors": {"__proto__": {"x": 2, "y": 2}}},
+		{"name": "point_type", "anchors": {"entry": [2, 2]}},
+		{"name": "missing_axis", "anchors": {"entry": {"x": 2}}},
+		{"name": "negative", "anchors": {"entry": {"x": -1, "y": 2}}},
+		{"name": "x_boundary", "anchors": {"entry": {"x": 7, "y": 2}}},
+		{"name": "y_boundary", "anchors": {"entry": {"x": 2, "y": 5}}},
+		{"name": "fraction", "anchors": {"entry": {"x": 2.5, "y": 2}}},
+		{"name": "boolean", "anchors": {"entry": {"x": true, "y": 2}}},
+		{"name": "string", "anchors": {"entry": {"x": "2", "y": 2}}},
+		{"name": "infinite", "anchors": {"entry": {"x": INF, "y": 2}}},
+	]:
+		var maps: Dictionary = _fixture()
+		maps["room.a"]["anchors"] = problem["anchors"]
+		var rules: WorldRules = WorldRules.new()
+		_check(rules.configure(_anchor_fixture()).is_empty(), "anchor validation baseline configures: " + problem["name"])
+		var before: Dictionary = rules.get_map("room.a")
+		_check(not rules.configure(maps).is_empty(), "reject invalid anchors: " + problem["name"])
+		_check(rules.get_map("room.a") == before, "invalid anchors retain previous configured world: " + problem["name"])
+	var empty: Dictionary = _fixture()
+	empty["room.a"]["anchors"] = {}
+	_check(WorldRules.new().configure(empty).is_empty(), "empty anchors remain optional")
+
+func _test_anchor_points() -> void:
+	var source: Dictionary = _anchor_fixture()
+	var before: Dictionary = source.duplicate(true)
+	var rules: WorldRules = WorldRules.new()
+	_check(rules.configure(source).is_empty(), "focus anchors may occupy furniture or unwalkable terrain")
+	_check(rules.has_method("anchor_point"), "WorldData exposes pure anchor_point lookup")
+	if not rules.has_method("anchor_point"):
+		return
+	var point: Dictionary = rules.call("anchor_point", "room.a", "entry")
+	_check(point == {"x": 2, "y": 2}, "known anchor resolves its authored coordinates")
+	_check(rules.call("anchor_point", "room.a", "lamp_focus") == {"x": 3, "y": 3}, "focus query does not silently move off an occupied cell")
+	_check(rules.call("anchor_point", "missing", "entry") == {}, "unknown anchor map returns empty dictionary")
+	_check(rules.call("anchor_point", "room.a", "missing") == {}, "unknown anchor ID returns empty dictionary")
+	_check(rules.call("anchor_point", "room.b", "entry") == {}, "map without anchors returns empty dictionary")
+	_check(source == before, "anchor lookup leaves source maps untouched")
+	point["x"] = 5
+	source["room.a"]["anchors"]["entry"]["y"] = 1
+	var view: Dictionary = rules.get_map("room.a")
+	view["anchors"]["entry"]["x"] = 4
+	_check(rules.call("anchor_point", "room.a", "entry") == {"x": 2, "y": 2}, "returned point, map view and source cannot mutate configured anchors")
+
+func _test_safe_anchors() -> void:
+	var source: Dictionary = _anchor_fixture()
+	var before: Dictionary = source.duplicate(true)
+	var rules: WorldRules = WorldRules.new()
+	_check(rules.configure(source).is_empty(), "safe anchor fixture configures")
+	_check(rules.has_method("safe_anchor"), "WorldData exposes safe_anchor validation")
+	if not rules.has_method("safe_anchor"):
+		return
+	var safe: Dictionary = rules.call("safe_anchor", "room.a", "entry")
+	_check(safe == {"ok": true, "map_id": "room.a", "position": Vector2i(2, 2), "reason": ""}, "safe anchor returns the authored position with transition-style fields")
+	for focus: Dictionary in [{"id": "lamp_focus", "position": Vector2i(3, 3)}, {"id": "wall_focus", "position": Vector2i(0, 2)}]:
+		var blocked: Dictionary = rules.call("safe_anchor", "room.a", focus["id"])
+		_check(not blocked.get("ok", true) and blocked.get("map_id") == "room.a" and blocked.get("position") == focus["position"] and not String(blocked.get("reason", "")).is_empty(), "unsafe anchor is rejected without substituting a nearby tile: " + focus["id"])
+	_check(rules.call("safe_anchor", "room.a", "guest_wait").get("ok", false), "hidden stage NPC leaves its anchor usable")
+	_check(rules.validate_state({"stage.guest": true}).is_empty(), "stage NPC fixture remains a valid world")
+	var occupied: Dictionary = rules.call("safe_anchor", "room.a", "guest_wait", {"stage.guest": true})
+	_check(not occupied.get("ok", true) and occupied.get("position") == Vector2i(4, 1), "visible non-solid stage NPC prevents arrival on its anchor")
+	_check(not rules.call("safe_anchor", "room.a", "entry", {"block.entry": true}).get("ok", true), "safe anchor rejects an invalid world phase even when its own tile is free")
+	_check(not rules.call("safe_anchor", "room.a", "entry", {"stage.guest": "yes"}).get("ok", true), "safe anchor rejects non-boolean phase flags")
+	for request: Dictionary in [{"map": "missing", "anchor": "entry"}, {"map": "room.a", "anchor": "missing"}]:
+		var absent: Dictionary = rules.call("safe_anchor", request["map"], request["anchor"])
+		_check(not absent.get("ok", true) and absent.get("map_id") == request["map"] and absent.get("position") is Vector2i and not String(absent.get("reason", "")).is_empty(), "unknown safe anchor fails closed: " + request["map"] + "/" + request["anchor"])
+	safe["position"] = Vector2i(1, 1)
+	_check(rules.call("safe_anchor", "room.a", "entry").get("position") == Vector2i(2, 2), "safe anchor result cannot mutate later queries")
+	_check(source == before, "safe anchor validation never changes map or entity state")
+
+func _test_prologue_safe_anchors() -> void:
+	var maps: Dictionary = {}
+	var expected: Dictionary = {
+		"lv.finn_house": ["bedside", "door", "ella_bedside"],
+		"lv.lamp_shop": ["door", "workbench_front"],
+		"lv.bakery": ["door", "dough_entry"],
+		"lv.town": ["lamp_shop_front"],
+		"lv.wheat_road": ["town_entry", "first_lamppost"],
+	}
+	var root_path: String = ProjectSettings.globalize_path("res://").path_join("../content/maps/prologue")
+	for map_id: String in expected:
+		var filename: String = map_id.replace("lv.", "lv-") + ".json"
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(root_path.path_join(filename)))
+		_check(parsed is Dictionary, "authored prologue map loads for anchor validation: " + map_id)
+		if not parsed is Dictionary:
+			return
+		maps[map_id] = parsed
+		for anchor_id: String in expected[map_id]:
+			_check(parsed.get("anchors", {}).has(anchor_id), "prologue safe anchor is authored: " + map_id + "/" + anchor_id)
+	var rules: WorldRules = WorldRules.new()
+	_check(rules.configure(maps).is_empty(), "authored prologue maps configure for safe anchor checks")
+	if not rules.has_method("safe_anchor"):
+		return
+	for flags: Dictionary in [{}, {"q.dough_started": true}, {"p.s02_done": true, "p.s03_done": true}, {"p.festival_started": true}, {"p.attack_started": true}, {"p.attack_started": true, "p.s09_done": true}, {"p.attack_started": true, "p.s09_done": true, "p.aftermath_heard": true}]:
+		for map_id: String in expected:
+			for anchor_id: String in expected[map_id]:
+				_check(rules.call("safe_anchor", map_id, anchor_id, flags).get("ok", false), "authored arrival remains safe for phase %s: %s/%s" % [str(flags), map_id, anchor_id])

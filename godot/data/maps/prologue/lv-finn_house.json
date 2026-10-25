@@ -140,5 +140,19 @@
   "terrain": {
     "path": "tile.wood_floor",
     "border": "tile.wood_wall"
+  },
+  "anchors": {
+    "bedside": {
+      "x": 5,
+      "y": 7
+    },
+    "door": {
+      "x": 7,
+      "y": 11
+    },
+    "ella_bedside": {
+      "x": 10,
+      "y": 7
+    }
   }
 }

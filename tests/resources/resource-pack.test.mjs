@@ -36,6 +36,26 @@ async function fixture(t) {
 
 async function index(f) { return JSON.parse(await readFile(join(f.targetRoot, 'resource-pack.json'), 'utf8')); }
 
+test('cinematics and independent locale bundles keep byte provenance and reject duplicate text keys',async t=>{
+  const f=await fixture(t);
+  f.registry.cinematics={prologue:'story/prologue-scenes.json'};
+  f.registry.locale_bundles={'zh-Hans':{prologue:'i18n/zh-Hans/prologue.json'}};
+  await f.put(f.sourceRoot,'content/registry.json',f.registry);
+  const scenes={format:'astra.prologue/1',scenes:[]},words={'prologue.line':'灯不会自己亮。'};
+  await f.put(f.sourceRoot,'content/story/prologue-scenes.json',scenes);
+  await f.put(f.sourceRoot,'content/i18n/zh-Hans/prologue.json',words);
+  await syncResources(f.options);const pack=await index(f);
+  assert.equal(pack.cinematics.prologue,'res://data/story/prologue-scenes.json');
+  assert.equal(pack.locale_bundles['zh-Hans'].prologue,'res://data/i18n/zh-Hans/prologue.json');
+  assert.deepEqual(JSON.parse(await readFile(join(f.targetRoot,'data/i18n/zh-Hans/prologue.json'),'utf8')),words);
+  const before=await readFile(join(f.targetRoot,'resource-pack.json'));
+  await f.put(f.sourceRoot,'content/i18n/zh-Hans/prologue.json',{title:'cannot silently replace old text'});
+  await assert.rejects(syncResources(f.options),/duplicate.*text/i);
+  assert.deepEqual(await readFile(join(f.targetRoot,'resource-pack.json')),before);
+  f.registry.locale_bundles['zh-Hans'].prologue='../outside.json';await f.put(f.sourceRoot,'content/registry.json',f.registry);
+  await assert.rejects(syncResources(f.options),/unsafe.*locale/i);
+});
+
 test('PCM16 audio is indexed by semantic ID, byte-identical and protected by read-only verify',async t=>{
   const f=await fixture(t),sha=b=>createHash('sha256').update(b).digest('hex');
   const wav=Buffer.alloc(48);wav.write('RIFF');wav.writeUInt32LE(40,4);wav.write('WAVEfmt ',8);wav.writeUInt32LE(16,16);

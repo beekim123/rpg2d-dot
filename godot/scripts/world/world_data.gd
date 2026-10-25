@@ -33,6 +33,32 @@ func get_map(map_id: String, flags: Dictionary = {}) -> Dictionary:
 		return {}
 	return _visible_copy(_maps[map_id], flags)
 
+## Authored focus points are not necessarily valid arrival cells.
+func anchor_point(map_id: String, anchor_id: String) -> Dictionary:
+	if not _maps.has(map_id):
+		return {}
+	var anchors: Dictionary = _maps[map_id].get("anchors", {})
+	if not anchors.has(anchor_id):
+		return {}
+	return anchors[anchor_id].duplicate(true)
+
+## Validate the exact authored cell; never replace it with a nearby free tile.
+func safe_anchor(map_id: String, anchor_id: String, flags: Dictionary = {}) -> Dictionary:
+	var failure: Dictionary = {"ok": false, "map_id": map_id, "position": Vector2i(-1, -1), "reason": "invalid_map_or_flags"}
+	if not _maps.has(map_id) or not _flags_valid(flags):
+		return failure
+	var anchor: Dictionary = anchor_point(map_id, anchor_id)
+	if anchor.is_empty():
+		failure["reason"] = "unknown_anchor"
+		return failure
+	var position: Vector2i = _point(anchor)
+	failure["position"] = position
+	var errors: Array[String] = validate_position(map_id, position, flags)
+	if not errors.is_empty():
+		failure["reason"] = errors[0]
+		return failure
+	return {"ok": true, "map_id": map_id, "position": position, "reason": ""}
+
 ## Query an already visibility-filtered view. NPCs win ties; source order stays stable.
 func interaction_target(map: Dictionary, cell: Vector2i, direction: Vector2i) -> Dictionary:
 	if not direction in DIRECTIONS or not _terrain_walkable(map, cell) or not map.get("entities") is Array:
@@ -160,6 +186,12 @@ func _structure_error(map_id: String, raw: Variant) -> String:
 				return prefix + "tile"
 	if not _point_in_bounds(map.get("spawn"), map):
 		return prefix + "spawn"
+	var anchors: Variant = map.get("anchors", {})
+	if not anchors is Dictionary:
+		return prefix + "anchors"
+	for anchor_id: Variant in anchors:
+		if not _flag_id_valid(anchor_id) or not _point_in_bounds(anchors[anchor_id], map):
+			return prefix + "anchor identity or coordinates"
 	if not map.get("entities") is Array or not map.get("required") is Array or not map.get("exits") is Array:
 		return prefix + "entity, objective or exit lists"
 	var terrain: Variant = map.get("terrain", {})

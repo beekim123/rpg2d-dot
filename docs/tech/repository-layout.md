@@ -77,3 +77,7 @@ rpg-astra/
 ## 独立HTML资源展示（2026-10-25用户纠正）
 
 素材工作台从reference/web抽离到workbench；它是持续维护的工具。制作源→PNG/清单→Godot受管包与工作台展示包，两者在构建时逐字节核对。HTML运行时没有游戏源码依赖；导出的单个index.html内嵌PNG、清单、字体/许可及合成器，可搬到仓库外双击打开或独立托管。旧网页仅保留兼容访问入口，不再拥有工作台实现。具体契约见../../workbench/README.md。
+
+### 主线内容分包（G4a）
+
+`content/registry.json`的`cinematics`登记独立主线分段文件，`locale_bundles`按语言登记增量文字表；与旧`stories`命令数组分开。同步器保留原始文件字节、拒绝越界路径和重复文字键，旧`ui.json`受管路径不变。Godot的AssetCatalog合并语言表、按语义ID提供主线副本，PrologueContent校验11场顺序、分段、文字/头像和跳过摘要；阶段推进不放在内容加载器。

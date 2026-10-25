@@ -107,6 +107,14 @@
     "grass": "tile.wheat"
   },
   "anchors": {
+    "town_entry": {
+      "x": 10,
+      "y": 1
+    },
+    "first_lamppost": {
+      "x": 11,
+      "y": 5
+    },
     "overlook": {
       "x": 18,
       "y": 17

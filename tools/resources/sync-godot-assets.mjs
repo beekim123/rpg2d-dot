@@ -32,8 +32,8 @@ function destinationFor(source) {
   }
   if (/^content\/story\/(?:[\w.-]+\/)*[\w.-]+\.json$/.test(source)) return `res://data/story/${source.slice('content/story/'.length)}`;
   if (/^content\/data\/(?:[\w.-]+\/)*[\w.-]+\.json$/.test(source)) return `res://data/tables/${source.slice('content/data/'.length)}`;
-  const locale = /^content\/i18n\/([\w-]+)\/ui\.json$/.exec(source);
-  if (locale) return `res://data/i18n/${locale[1]}.json`;
+  const locale = /^content\/i18n\/([\w-]+)\/([\w.-]+)\.json$/.exec(source);
+  if (locale) return locale[2]==='ui'?`res://data/i18n/${locale[1]}.json`:`res://data/i18n/${locale[1]}/${locale[2]}.json`;
   throw new Error(`Invalid managed source: ${source}`);
 }
 function resourceRelative(resourcePath) {
@@ -79,7 +79,7 @@ async function registeredContent(root) {
   if (typeof registry.bootstrap.locale !== 'string' || !Object.hasOwn(registry.locales, registry.bootstrap.locale)) {
     throw new Error(`Unknown bootstrap locale: ${registry.bootstrap.locale}`);
   }
-  const maps = Object.create(null), locales = Object.create(null), stories = Object.create(null), tables = Object.create(null), contentBytes = new Map();
+  const maps = Object.create(null), locales = Object.create(null), stories = Object.create(null), tables = Object.create(null), cinematics=Object.create(null), locale_bundles=Object.create(null), contentBytes = new Map();
   for (const id of Object.keys(registry.maps).sort(order)) {
     if (!/^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/.test(id)) throw new Error(`Invalid registered map ID: ${id}`);
     const relative = registry.maps[id];
@@ -98,6 +98,32 @@ async function registeredContent(root) {
     }
     const source = `content/${relative}`;
     contentBytes.set(source, await readSource(root, source)); locales[id] = destinationFor(source);
+  }
+  const bundleRegistry=Object.hasOwn(registry,'locale_bundles')?registry.locale_bundles:{};
+  if(!isRecord(bundleRegistry))throw new Error('Invalid locale bundle registry');
+  for(const localeId of Object.keys(bundleRegistry).sort(order)){
+    const bundles=bundleRegistry[localeId];
+    if(!Object.hasOwn(registry.locales,localeId)||!isRecord(bundles))throw new Error('Invalid locale bundle group');
+    const base=JSON.parse(contentBytes.get('content/'+registry.locales[localeId]).toString('utf8'));
+    if(!isRecord(base))throw new Error('Invalid base locale');
+    const seen=new Set(Object.keys(base));locale_bundles[localeId]=Object.create(null);
+    for(const id of Object.keys(bundles).sort(order)){
+      const relative=bundles[id];
+      if(!/^[a-z][a-z0-9_]*$/.test(id)||!validRelative(relative)||!relative.startsWith(`i18n/${localeId}/`)||!/^i18n\/[\w-]+\/[\w.-]+\.json$/.test(relative))throw new Error('Unsafe registered locale bundle path or ID');
+      const source='content/'+relative,bytes=await readSource(root,source),words=JSON.parse(bytes.toString('utf8'));
+      if(!isRecord(words)||Object.values(words).some(value=>typeof value!=='string'||value.length===0))throw new Error('Invalid locale bundle text');
+      for(const key of Object.keys(words)){if(seen.has(key))throw new Error('Duplicate locale text key: '+key);seen.add(key);}
+      contentBytes.set(source,bytes);locale_bundles[localeId][id]=destinationFor(source);
+    }
+  }
+  const cinematicRegistry=Object.hasOwn(registry,'cinematics')?registry.cinematics:{};
+  if(!isRecord(cinematicRegistry))throw new Error('Invalid cinematic registry');
+  for(const id of Object.keys(cinematicRegistry).sort(order)){
+    const relative=cinematicRegistry[id];
+    if(!/^[a-z][a-z0-9_]*$/.test(id)||!validRelative(relative)||!/^story\/(?:[\w.-]+\/)*[\w.-]+\.json$/.test(relative))throw new Error('Unsafe registered cinematic path or ID');
+    const source='content/'+relative,bytes=await readSource(root,source),data=JSON.parse(bytes.toString('utf8'));
+    if(!isRecord(data)||data.format!=='astra.prologue/1'||!Array.isArray(data.scenes))throw new Error('Invalid cinematic bundle');
+    contentBytes.set(source,bytes);cinematics[id]=destinationFor(source);
   }
   const storyRegistry = Object.hasOwn(registry, 'stories') ? registry.stories : {};
   if (!isRecord(storyRegistry)) throw new Error('Invalid content registry stories');
@@ -125,7 +151,7 @@ async function registeredContent(root) {
     if(!isRecord(JSON.parse(bytes.toString('utf8'))))throw new Error(`Invalid table object: ${id}`);
     contentBytes.set(source,bytes);tables[id]=destinationFor(source);
   }
-  return { maps, locales, stories, tables, bootstrap: registry.bootstrap, contentBytes };
+  return { maps, locales, stories, tables, cinematics, locale_bundles, bootstrap: registry.bootstrap, contentBytes };
 }
 
 async function fontSources(root, relative = FONT_ROOT) {
@@ -207,6 +233,8 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
     locales: content.locales,
     stories: content.stories,
     tables: content.tables,
+    cinematics: content.cinematics,
+    locale_bundles: content.locale_bundles,
     audio: Object.fromEntries((audio.manifest?.cues??[]).map(cue=>[cue.id,{path:destinationFor('resources/audio/export/'+cue.file),kind:cue.kind,frames:cue.frames,sample_rate:cue.sampleRate}])),
     bootstrap: { map: content.bootstrap.map, locale: content.bootstrap.locale, player: 'char.finn', shadow: 'prop.shadow', panel: 'ui.panel' },
     files: prepared.map(item => item.record),

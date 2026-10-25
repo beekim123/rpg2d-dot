@@ -1,0 +1,281 @@
+{
+  "format": "astra.prologue/1",
+  "scenes": [
+    {
+      "id": "prologue.01.legend",
+      "segments": [
+        {
+          "id": "main",
+          "lines": [
+            { "speaker": "name.narrator", "portrait": "", "text": "prologue.01.legend.01" },
+            { "speaker": "name.narrator", "portrait": "", "text": "prologue.01.legend.02" },
+            { "speaker": "name.narrator", "portrait": "", "text": "prologue.01.legend.03" },
+            { "speaker": "name.narrator", "portrait": "", "text": "prologue.01.legend.04" },
+            { "speaker": "name.narrator", "portrait": "", "text": "prologue.01.legend.05" },
+            { "speaker": "name.narrator", "portrait": "", "text": "prologue.01.legend.06" }
+          ],
+          "summary": "prologue.01.legend.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.02.lamps",
+      "segments": [
+        {
+          "id": "wake",
+          "lines": [
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.02.lamps.01" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.02.lamps.02" }
+          ],
+          "summary": "prologue.02.lamps.wake.summary"
+        },
+        {
+          "id": "borrow",
+          "lines": [
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.02.lamps.03" },
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.02.lamps.04" }
+          ],
+          "summary": "prologue.02.lamps.borrow.summary"
+        },
+        {
+          "id": "first_lamp",
+          "lines": [
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.02.lamps.05" },
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.02.lamps.06" }
+          ],
+          "summary": "prologue.02.lamps.first_lamp.summary"
+        },
+        {
+          "id": "complete",
+          "lines": [
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.02.lamps.07" }
+          ],
+          "summary": "prologue.02.lamps.complete.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.03.daily",
+      "segments": [
+        {
+          "id": "main",
+          "lines": [
+            { "speaker": "name.brio", "portrait": "portrait.brio", "text": "prologue.03.daily.01" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.03.daily.02" },
+            { "speaker": "name.brio", "portrait": "portrait.brio", "text": "prologue.03.daily.03" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.03.daily.04" },
+            { "speaker": "name.brio", "portrait": "portrait.brio", "text": "prologue.03.daily.05" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.03.daily.06" }
+          ],
+          "summary": "prologue.03.daily.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.04.ella_returns",
+      "segments": [
+        {
+          "id": "main",
+          "lines": [
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.04.ella_returns.01" },
+            { "speaker": "name.mili", "portrait": "portrait.mili", "text": "prologue.04.ella_returns.02" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.04.ella_returns.03" },
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.04.ella_returns.04" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.04.ella_returns.05" },
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.04.ella_returns.06" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.04.ella_returns.07" },
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.04.ella_returns.08" }
+          ],
+          "summary": "prologue.04.ella_returns.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.05.festival",
+      "segments": [
+        {
+          "id": "introduction",
+          "lines": [
+            { "speaker": "name.mayor_tolan", "portrait": "portrait.mayor_tolan", "text": "prologue.05.festival.01" },
+            { "speaker": "name.brio", "portrait": "portrait.brio", "text": "prologue.05.festival.02" },
+            { "speaker": "name.mayor_tolan", "portrait": "portrait.mayor_tolan", "text": "prologue.05.festival.03" }
+          ],
+          "summary": "prologue.05.festival.introduction.summary"
+        },
+        {
+          "id": "pendant",
+          "lines": [
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.05.festival.04" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.05.festival.05" },
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.05.festival.06" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.05.festival.07" },
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.05.festival.08" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.05.festival.09" }
+          ],
+          "summary": "prologue.05.festival.pendant.summary"
+        },
+        {
+          "id": "release",
+          "lines": [
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.05.festival.10" }
+          ],
+          "summary": "prologue.05.festival.release.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.06.ella_battle",
+      "segments": [
+        {
+          "id": "intro",
+          "lines": [
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.06.ella_battle.01" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.06.ella_battle.02" },
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.06.ella_battle.03" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.06.ella_battle.04" }
+          ],
+          "summary": "prologue.06.ella_battle.intro.summary"
+        },
+        {
+          "id": "hurt",
+          "lines": [
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.06.ella_battle.05" }
+          ],
+          "summary": "prologue.06.ella_battle.hurt.summary"
+        },
+        {
+          "id": "support",
+          "lines": [
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.06.ella_battle.06" }
+          ],
+          "summary": "prologue.06.ella_battle.support.summary"
+        },
+        {
+          "id": "victory",
+          "lines": [
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.06.ella_battle.07" }
+          ],
+          "summary": "prologue.06.ella_battle.victory.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.07.starpluck",
+      "segments": [
+        {
+          "id": "main",
+          "lines": [
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.07.starpluck.01" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.07.starpluck.02" },
+            { "speaker": "name.ella", "portrait": "portrait.ella", "text": "prologue.07.starpluck.03" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.07.starpluck.04" },
+            { "speaker": "name.shade", "portrait": "portrait.shade", "text": "prologue.07.starpluck.05" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.07.starpluck.06" }
+          ],
+          "summary": "prologue.07.starpluck.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.08.awakening",
+      "segments": [
+        {
+          "id": "inner",
+          "lines": [
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.08.awakening.01" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.08.awakening.02" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.08.awakening.03" }
+          ],
+          "summary": "prologue.08.awakening.inner.summary"
+        },
+        {
+          "id": "resolve",
+          "lines": [
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.08.awakening.04" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.08.awakening.05" }
+          ],
+          "summary": "prologue.08.awakening.resolve.summary"
+        },
+        {
+          "id": "card",
+          "lines": [
+            { "speaker": "name.narrator", "portrait": "", "text": "prologue.08.awakening.06" }
+          ],
+          "summary": "prologue.08.awakening.card.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.09.shade_battle",
+      "segments": [
+        {
+          "id": "intro",
+          "lines": [
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.09.shade_battle.01" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.09.shade_battle.02" }
+          ],
+          "summary": "prologue.09.shade_battle.intro.summary"
+        },
+        {
+          "id": "victory",
+          "lines": [
+            { "speaker": "name.shade", "portrait": "portrait.shade", "text": "prologue.09.shade_battle.03" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.09.shade_battle.04" }
+          ],
+          "summary": "prologue.09.shade_battle.victory.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.10.aftermath",
+      "segments": [
+        {
+          "id": "home",
+          "lines": [
+            { "speaker": "name.sela", "portrait": "portrait.sela", "text": "prologue.10.aftermath.01" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.10.aftermath.02" },
+            { "speaker": "name.sela", "portrait": "portrait.sela", "text": "prologue.10.aftermath.03" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.10.aftermath.04" },
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.10.aftermath.05" },
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.10.aftermath.06" }
+          ],
+          "summary": "prologue.10.aftermath.home.summary"
+        },
+        {
+          "id": "handover",
+          "lines": [
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.10.aftermath.07" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.10.aftermath.08" },
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.10.aftermath.09" },
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.10.aftermath.10" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.10.aftermath.11" },
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.10.aftermath.12" }
+          ],
+          "summary": "prologue.10.aftermath.handover.summary"
+        }
+      ]
+    },
+    {
+      "id": "prologue.11.departure",
+      "segments": [
+        {
+          "id": "gate",
+          "lines": [
+            { "speaker": "name.brio", "portrait": "portrait.brio", "text": "prologue.11.departure.01" },
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.11.departure.02" },
+            { "speaker": "name.brio", "portrait": "portrait.brio", "text": "prologue.11.departure.03" },
+            { "speaker": "name.hob", "portrait": "portrait.hob", "text": "prologue.11.departure.04" }
+          ],
+          "summary": "prologue.11.departure.gate.summary"
+        },
+        {
+          "id": "ending",
+          "lines": [
+            { "speaker": "name.finn", "portrait": "portrait.finn", "text": "prologue.11.departure.05" }
+          ],
+          "summary": "prologue.11.departure.ending.summary"
+        }
+      ]
+    }
+  ]
+}

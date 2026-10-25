@@ -11,6 +11,8 @@ var _frames: Dictionary = {}
 var _textures: Dictionary = {}
 var _maps: Dictionary = {}
 var _locales: Dictionary = {}
+var _locale_bundles: Dictionary = {}
+var _cinematics: Dictionary = {}
 var _stories: Dictionary = {}
 var _tables: Dictionary = {}
 var _palette: Dictionary = {}
@@ -32,6 +34,22 @@ func load_pack() -> bool:
 	if _pack.has("audio") and not _pack["audio"] is Dictionary:
 		push_error("Invalid resource pack audio index")
 		return false
+	for index: String in ["cinematics", "locale_bundles"]:
+		if not _pack.get(index, {}) is Dictionary:
+			push_error("Invalid resource pack index: " + index)
+			return false
+	for id: Variant in _pack.get("cinematics", {}):
+		if not id is String or not _pack["cinematics"][id] is String:
+			push_error("Invalid resource pack cinematic entry")
+			return false
+	for locale_id: Variant in _pack.get("locale_bundles", {}):
+		if not locale_id is String or not _pack["locales"].has(locale_id) or not _pack["locale_bundles"][locale_id] is Dictionary:
+			push_error("Invalid resource pack locale bundle group")
+			return false
+		for id: Variant in _pack["locale_bundles"][locale_id]:
+			if not id is String or not _pack["locale_bundles"][locale_id][id] is String:
+				push_error("Invalid resource pack locale bundle entry")
+				return false
 	if not _pack.get("files") is Array or not _pack.get("art_manifest") is String or not _pack.get("font") is String:
 		push_error("Missing resource pack file metadata")
 		return false
@@ -54,6 +72,8 @@ func load_pack() -> bool:
 	_textures.clear()
 	_maps.clear()
 	_locales.clear()
+	_locale_bundles.clear()
+	_cinematics.clear()
 	_stories.clear()
 	_tables.clear()
 	_audio.clear()
@@ -81,7 +101,22 @@ func map_ids() -> Array[String]:
 	return ids
 
 func locale(locale_id: String) -> Dictionary:
-	return _indexed_json("locales", locale_id, _locales)
+	var words: Dictionary = _indexed_json("locales", locale_id, _locales)
+	var groups: Dictionary = _pack.get("locale_bundles", {})
+	for id: String in groups.get(locale_id, {}):
+		var key: String = locale_id + ":" + id
+		if not _locale_bundles.has(key):
+			_locale_bundles[key] = _read_json_object(groups[locale_id][id])
+		var bundle: Dictionary = _locale_bundles[key]
+		for text_id: String in bundle:
+			if words.has(text_id):
+				push_error("Duplicate locale text key: " + text_id)
+				return {}
+		words.merge(bundle)
+	return words
+
+func cinematic_data(id: String) -> Dictionary:
+	return _indexed_json("cinematics", id, _cinematics)
 
 func story_scripts() -> Dictionary:
 	var scripts: Dictionary = {}

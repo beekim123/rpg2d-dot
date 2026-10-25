@@ -107,5 +107,15 @@
   "terrain": {
     "path": "tile.wood_floor",
     "border": "tile.wood_wall"
+  },
+  "anchors": {
+    "door": {
+      "x": 7,
+      "y": 10
+    },
+    "workbench_front": {
+      "x": 7,
+      "y": 5
+    }
   }
 }
