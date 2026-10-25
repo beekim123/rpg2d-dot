@@ -18,7 +18,7 @@ function damageTarget(target:DamageTarget):void {
   if(target!=='body'&&target!=='astral')throw new RangeError('Invalid damage target');
 }
 
-function validateActor(actor:BattleActor):void {
+export function validateActor(actor:BattleActor):void {
   if(!actor||typeof actor!=='object'||typeof actor.id!=='string'||!/^[\x21-\x7e]+$/.test(actor.id))throw new RangeError('Invalid actor id');
   if(actor.team!=='player'&&actor.team!=='enemy')throw new RangeError('Invalid actor team');
   if(!['close','remote','auto','swarm','set','field'].includes(actor.kind))throw new RangeError('Invalid astral type');
