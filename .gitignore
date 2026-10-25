@@ -1,0 +1,19 @@
+# 本机参考资料（第三方截图，不提交）
+.local/
+
+# 系统与编辑器
+.DS_Store
+*.log
+.env
+.env.*
+
+# 依赖与构建
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+
+# 美术 / 声音缓存
+art/.tmp/
+audio/.cache/
