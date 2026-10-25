@@ -33,6 +33,7 @@
 | S1 | [audio/audio-direction.md](audio/audio-direction.md) | 音乐与音效：程序合成、主题动机、曲目表、音效表、规格 |
 | T1 | [tech/architecture.md](tech/architecture.md) | 技术方向：Godot主线、历史网页参考、数据格式、测试与自动通关 |
 | T2 | [tech/repository-layout.md](tech/repository-layout.md) | 目录职责、资源制作源/受管副本、单向依赖与验证入口 |
+| T3 | [tech/save-format.md](tech/save-format.md) | 存档版本、迁移边界、原生与Web存储及失败保护 |
 | P1 | [plan/roadmap.md](plan/roadmap.md) | 里程碑（按顺序，不按日期） |
 | P2 | [plan/backlog.md](plan/backlog.md) | 任务池（开发者持续维护） |
 | P3 | [plan/progress.md](plan/progress.md) | 进度日志（开发者每次提交后追加） |

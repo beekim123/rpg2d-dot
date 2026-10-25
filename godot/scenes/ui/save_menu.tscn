@@ -1,0 +1,94 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/save_menu.gd" id="1_save"]
+
+[node name="SaveMenu" type="Control"]
+visible = false
+texture_filter = 1
+offset_right = 456.0
+offset_bottom = 218.0
+mouse_filter = 0
+script = ExtResource("1_save")
+
+[node name="Panel" type="NinePatchRect" parent="."]
+offset_right = 456.0
+offset_bottom = 218.0
+mouse_filter = 2
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Title" type="Label" parent="."]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 444.0
+offset_bottom = 24.0
+mouse_filter = 2
+clip_text = true
+theme_override_colors/font_color = Color(1, 0.8901961, 0.4196078, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="Slots" type="Control" parent="."]
+offset_left = 12.0
+offset_top = 34.0
+offset_right = 242.0
+offset_bottom = 178.0
+mouse_filter = 2
+
+[node name="Actions" type="Control" parent="."]
+offset_left = 254.0
+offset_top = 34.0
+offset_right = 444.0
+offset_bottom = 178.0
+mouse_filter = 2
+
+[node name="Status" type="Label" parent="."]
+offset_left = 12.0
+offset_top = 182.0
+offset_right = 444.0
+offset_bottom = 196.0
+mouse_filter = 2
+clip_text = true
+theme_override_colors/font_color = Color(1, 0.8901961, 0.4196078, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="Hint" type="Label" parent="."]
+offset_left = 12.0
+offset_top = 199.0
+offset_right = 444.0
+offset_bottom = 213.0
+mouse_filter = 2
+clip_text = true
+theme_override_colors/font_color = Color(0.8392157, 0.7647059, 0.6705883, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="ConfirmOverlay" type="Control" parent="."]
+visible = false
+z_index = 2
+offset_right = 456.0
+offset_bottom = 218.0
+mouse_filter = 0
+
+[node name="Prompt" type="NinePatchRect" parent="ConfirmOverlay"]
+offset_left = 42.0
+offset_top = 50.0
+offset_right = 414.0
+offset_bottom = 162.0
+mouse_filter = 2
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="Message" type="Label" parent="ConfirmOverlay/Prompt"]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 360.0
+offset_bottom = 54.0
+mouse_filter = 2
+autowrap_mode = 3
+clip_text = true
+max_lines_visible = 2
+theme_override_colors/font_color = Color(0.9490196, 0.9019608, 0.8117647, 1)
+theme_override_font_sizes/font_size = 12

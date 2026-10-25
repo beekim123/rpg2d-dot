@@ -5,6 +5,8 @@ extends Node2D
 signal map_entered(map_id: String, cell: Vector2i)
 
 @export var initial_map_id: String = ""
+@export var persistence_enabled: bool = true
+@export var save_root: String = "user://astra/saves"
 
 const DEFAULT_TERRAIN: Dictionary = {"grass": "tile.grass", "path": "tile.path", "bridge": "tile.bridge", "water": "tile.water", "border": "tile.grass"}
 const TERRAIN_ROLES: Array[String] = ["grass", "path", "bridge", "water", "border"]
@@ -17,6 +19,11 @@ var catalog: AssetCatalog = AssetCatalog.new()
 var world_data: WorldData = WorldData.new()
 var story_rules: StoryRules = StoryRules.new()
 var flags: Dictionary = {}
+var lamps: Array[String] = []
+var steps: int = 0
+var inventory: Dictionary = {"bread": 3}
+var actor_memory: Dictionary = {}
+var persistence: WorldPersistence = WorldPersistence.new()
 var player: GridActor
 var _entities: Dictionary = {}
 var _strings: Dictionary = {}
@@ -26,6 +33,9 @@ var _last_accessibility_payload: String = ""
 var _dialogue: WorldDialogue = WorldDialogue.new()
 var _interlocutor_id: String = ""
 var _interlocutor_animation: Dictionary = {}
+var _save_controller: WorldSaveController = WorldSaveController.new()
+var _save_transfer: SaveTransfer
+var _restoring_state: bool = false
 
 @onready var ground: TileMapLayer = $Ground
 @onready var edges: TileMapLayer = $Edges
@@ -37,6 +47,7 @@ var _interlocutor_animation: Dictionary = {}
 @onready var controls_panel: NinePatchRect = $HUD/ControlsPanel
 @onready var dialogue_box: DialogueBox = $HUD/DialogueBox
 @onready var speaking_marker: Label = $SpeakingMarker
+@onready var save_menu: SaveMenu = $HUD/SaveMenu
 
 func _ready() -> void:
 	if not catalog.load_pack():
@@ -77,14 +88,27 @@ func _ready() -> void:
 	_dialogue.closed.connect(_on_dialogue_closed)
 	dialogue_box.advance_requested.connect(_on_dialogue_advance)
 	dialogue_box.visibility_progress_changed.connect(_publish_accessibility_state)
+	var persistence_errors: Array[String] = persistence.configure(maps, save_root, persistence_enabled, snapshot_state, _restore_persistent_state, catalog.binding("map"))
+	if not persistence_errors.is_empty():
+		push_error("Save data could not configure: " + "; ".join(persistence_errors))
+		return
+	save_menu.configure(font, panel_texture, _strings)
+	_save_transfer = SaveTransfer.new()
+	_save_transfer.name = "SaveTransfer"
+	_save_transfer.setup(self, _strings)
+	_save_controller.configure(persistence, save_menu, _save_transfer, _strings, _saved_map_title, _can_persistence_action)
+	_save_controller.changed.connect(_on_save_presentation_changed)
+	persistence.changed.connect(_on_persistence_result)
 	controls_label.text = String(_strings["hint.explore"])
 	_install_input_actions()
 	var start_id: String = initial_map_id if not initial_map_id.is_empty() else catalog.binding("map")
 	if not enter_map(start_id):
 		push_error("Initial map could not be entered: " + start_id)
+		return
+	persistence.startup()
 
 func _physics_process(_delta: float) -> void:
-	if not loaded or dialogue_active():
+	if not loaded or dialogue_active() or menu_active() or persistence.is_busy():
 		return
 	if not player.is_moving:
 		for index: int in range(INPUT_ACTIONS.size()):
@@ -96,8 +120,24 @@ func _process(_delta: float) -> void:
 	if loaded:
 		_update_camera()
 
+func _input(event: InputEvent) -> void:
+	if not loaded or _save_controller.is_busy() or (event is InputEventKey and event.echo):
+		return
+	if event.is_action_pressed(&"save_menu"):
+		if menu_active():
+			close_save_menu()
+		else:
+			open_save_menu()
+		get_viewport().set_input_as_handled()
+	elif menu_active() and event.is_action_pressed(&"save_cancel"):
+		_save_controller.cancel()
+		get_viewport().set_input_as_handled()
+	elif menu_active() and event.is_action_pressed(&"save_confirm"):
+		_save_controller.confirm()
+		get_viewport().set_input_as_handled()
+
 func _unhandled_input(event: InputEvent) -> void:
-	if not loaded or (event is InputEventKey and event.echo):
+	if not loaded or menu_active() or persistence.is_busy() or (event is InputEventKey and event.echo):
 		return
 	if event.is_action_pressed(&"interact"):
 		if dialogue_active():
@@ -110,7 +150,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func request_move(direction: Vector2i) -> bool:
-	if not loaded or dialogue_active() or player.is_moving or not direction in DIRECTIONS:
+	if not loaded or dialogue_active() or menu_active() or persistence.is_busy() or player.is_moving or not direction in DIRECTIONS:
 		return false
 	player.face(direction)
 	if not is_walkable(player.grid_position + direction):
@@ -123,17 +163,19 @@ func request_move(direction: Vector2i) -> bool:
 	return true
 
 func enter_map(map_id: String, at: Vector2i = Vector2i(-1, -1)) -> bool:
-	if dialogue_active() or not world_data.validate_state(flags).is_empty():
+	if dialogue_active() or menu_active() or persistence.is_busy() or (is_instance_valid(player) and player.is_moving) or not world_data.validate_state(flags).is_empty():
 		return false
 	return _enter_validated_map(map_id, at)
 
 func interact() -> bool:
-	if not loaded or player.is_moving or dialogue_active():
+	if not loaded or player.is_moving or dialogue_active() or menu_active() or persistence.is_busy():
 		return false
 	var target: Dictionary = _interaction_target()
 	if target.is_empty():
 		controls_label.text = String(_strings["hint.no_target"])
 		return false
+	if target["kind"] == "lamp":
+		return open_save_menu() if String(target["id"]) in lamps else light_facing_lamp()
 	_interlocutor_id = String(target["id"]) if target["kind"] == "npc" else ""
 	_turn_interlocutor()
 	var started: bool = _dialogue.begin(String(target["script"]))
@@ -142,6 +184,139 @@ func interact() -> bool:
 		_interlocutor_id = ""
 		controls_label.text = String(_strings["hint.interaction_failed"])
 	return started
+
+func snapshot_state() -> Dictionary:
+	return {
+		"version": 3,
+		"mapId": String(map_data.get("id", "")),
+		"player": {"x": player.grid_position.x, "y": player.grid_position.y, "facing": player.facing} if is_instance_valid(player) else {"x": 0, "y": 0, "facing": "down"},
+		"followers": [],
+		"actors": {},
+		"actorMemory": actor_memory.duplicate(true),
+		"flags": flags.duplicate(true),
+		"lamps": lamps.duplicate(),
+		"steps": steps,
+		"inventory": inventory.duplicate(true),
+	}
+
+func restore_state(state: Dictionary) -> bool:
+	if not _can_persistence_action() or menu_active() or _save_controller.is_busy():
+		return false
+	return _restore_persistent_state(state)
+
+func save_slot(slot: int) -> Dictionary:
+	if not _can_persistence_action() or _save_controller.is_busy():
+		return persistence.report_failure("save.busy", "save")
+	return persistence.save_slot(slot)
+
+func load_slot(slot: int) -> Dictionary:
+	if not _can_persistence_action() or _save_controller.is_busy():
+		return persistence.report_failure("save.busy", "load")
+	return persistence.load_slot(slot)
+
+func import_save(text: String) -> Dictionary:
+	if not _can_persistence_action() or _save_controller.is_busy():
+		return persistence.report_failure("save.busy", "import")
+	return persistence.import_save(text)
+
+func export_save() -> Dictionary:
+	if not _can_persistence_action() or _save_controller.is_busy():
+		return persistence.report_failure("save.busy", "export")
+	return persistence.export_save()
+
+func start_new_game() -> Dictionary:
+	if not _can_persistence_action() or _save_controller.is_busy():
+		return persistence.report_failure("save.busy", "new")
+	return persistence.start_new_game()
+
+func menu_active() -> bool:
+	return _save_controller.is_active()
+
+func open_save_menu() -> bool:
+	return _save_controller.open() if _can_persistence_action() else false
+
+func close_save_menu() -> void:
+	_save_controller.close()
+
+func light_facing_lamp() -> bool:
+	if not _can_persistence_action() or menu_active() or _save_controller.is_busy():
+		return false
+	var target: Dictionary = _interaction_target()
+	if target.is_empty() or target["kind"] != "lamp":
+		persistence.report_failure("save.not_facing_lamp", "lamp")
+		return false
+	var result: Dictionary = persistence.codec.light_lamp(snapshot_state(), String(target["id"]))
+	if not bool(result.get("ok", false)):
+		persistence.report_failure(String(result.get("error", "save.unknown_lamp")), "lamp")
+		return false
+	if bool(result["newly_lit"]):
+		lamps.assign(result["state"]["lamps"])
+		_refresh_lamp_visuals()
+		var saved: Dictionary = persistence.autosave()
+		var message: String = "lamp.lit" if saved.get("ok",false) or not persistence.enabled else String(saved.get("error","save.io"))
+		controls_label.text = String(_strings.get(message,_strings["save.failed"]))
+	_publish_accessibility_state()
+	return true
+
+func _restore_persistent_state(state: Dictionary) -> bool:
+	if not _can_persistence_action():
+		return false
+	var validation: Dictionary = persistence.codec.validate(state)
+	if not bool(validation.get("ok", false)):
+		return false
+	var normalized: Dictionary = validation["state"]
+	var target_map: Dictionary = world_data.get_map(String(normalized["mapId"]), normalized["flags"])
+	if target_map.is_empty() or not _can_render_map(target_map):
+		return false
+	var previous: Dictionary = snapshot_state()
+	var position: Dictionary = normalized["player"]
+	_restoring_state = true
+	_assign_persistent_fields(normalized)
+	if not _enter_validated_map(String(normalized["mapId"]), Vector2i(int(position["x"]), int(position["y"]))):
+		_assign_persistent_fields(previous)
+		_restoring_state = false
+		return false
+	player.face(_direction_for_facing(String(position["facing"])))
+	_restoring_state = false
+	_refresh_interaction_hint()
+	_publish_accessibility_state()
+	return true
+
+func _assign_persistent_fields(state: Dictionary) -> void:
+	flags = (state["flags"] as Dictionary).duplicate(true)
+	lamps.assign(state["lamps"])
+	steps = int(state["steps"])
+	inventory = (state["inventory"] as Dictionary).duplicate(true)
+	actor_memory = (state["actorMemory"] as Dictionary).duplicate(true)
+
+func _can_persistence_action() -> bool:
+	return loaded and is_instance_valid(player) and not player.is_moving and not dialogue_active() and not _restoring_state
+
+func _saved_map_title(map_id: String) -> String:
+	var source: Dictionary = world_data.get_map(map_id)
+	return String(_strings.get(source.get("name", ""), ""))
+
+func _on_save_presentation_changed() -> void:
+	var show_controls: bool = not menu_active() and not dialogue_active()
+	controls_panel.visible = show_controls
+	controls_label.visible = show_controls
+	if show_controls:
+		_refresh_interaction_hint()
+	_publish_accessibility_state()
+
+func _on_persistence_result(result: Dictionary) -> void:
+	if not menu_active() and not dialogue_active():
+		controls_label.text = String(_strings.get(result.get("status", ""), _strings["save.failed"]))
+	_publish_accessibility_state()
+
+func _refresh_lamp_visuals() -> void:
+	for entity: Dictionary in map_data["entities"]:
+		if entity["kind"] != "lamp":
+			continue
+		var sprite: AnimatedSprite2D = find_entity(String(entity["id"]))
+		var animation: StringName = &"lit" if String(entity["id"]) in lamps else &"unlit"
+		if sprite != null and sprite.animation != animation:
+			sprite.play(animation)
 
 func confirm_dialogue() -> void:
 	if dialogue_active():
@@ -168,7 +343,7 @@ func dialogue_state() -> Dictionary:
 	}
 
 func apply_story_flags(candidate: Dictionary) -> bool:
-	if not loaded or player.is_moving:
+	if not loaded or player.is_moving or menu_active() or persistence.is_busy() or _restoring_state:
 		return _reject_story_flags()
 	if candidate == flags:
 		return true
@@ -221,20 +396,26 @@ func _on_dialogue_closed(error: String) -> void:
 	_publish_accessibility_state()
 
 func _interaction_target() -> Dictionary:
+	return world_data.interaction_target(map_data, player.grid_position, _direction_for_facing(player.facing))
+
+func _direction_for_facing(facing: String) -> Vector2i:
 	var direction: Vector2i = Vector2i.DOWN
-	match player.facing:
+	match facing:
 		"up": direction = Vector2i.UP
 		"left": direction = Vector2i.LEFT
 		"right": direction = Vector2i.RIGHT
-	return world_data.interaction_target(map_data, player.grid_position, direction)
+	return direction
 
 func _refresh_interaction_hint() -> void:
-	if not loaded or dialogue_active():
+	if not loaded or dialogue_active() or menu_active():
 		return
 	var target: Dictionary = {} if player.is_moving else _interaction_target()
 	var key: String = "hint.explore"
 	if not target.is_empty():
-		key = "hint.talk" if target["kind"] == "npc" else "hint.inspect"
+		if target["kind"] == "lamp":
+			key = "hint.lamp_menu" if String(target["id"]) in lamps else "hint.light_lamp"
+		else:
+			key = "hint.talk" if target["kind"] == "npc" else "hint.inspect"
 	controls_label.text = String(_strings[key])
 
 func _turn_interlocutor() -> void:
@@ -291,6 +472,7 @@ func _enter_validated_map(map_id: String, at: Vector2i) -> bool:
 		destination = Vector2i(int(spawn["x"]), int(spawn["y"]))
 	if not world_data.is_safe_entry(candidate, destination):
 		return false
+	var previous_map: String = String(map_data.get("id", ""))
 	var facing: String = player.facing if is_instance_valid(player) else "down"
 	_restore_interlocutor()
 	loaded = false
@@ -319,10 +501,15 @@ func _enter_validated_map(map_id: String, at: Vector2i) -> bool:
 	_refresh_interaction_hint()
 	_publish_accessibility_state()
 	map_entered.emit(map_id, destination)
+	if not _restoring_state and not previous_map.is_empty() and previous_map != map_id:
+		persistence.autosave()
 	return true
 
 func accessibility_state() -> Dictionary:
 	var dialogue: Dictionary = dialogue_state()
+	var menu: Dictionary = _save_controller.snapshot()
+	var sorted_lamps: Array[String] = lamps.duplicate()
+	sorted_lamps.sort()
 	return {
 		"ready": loaded,
 		"map_id": String(map_data.get("id", "")),
@@ -335,9 +522,16 @@ func accessibility_state() -> Dictionary:
 		"dialogue_text": dialogue["text"],
 		"dialogue_revealed": dialogue["revealed"],
 		"dialogue_script": dialogue["script"],
+		"lamps": lamps.size(),
+		"lit_lamps": ",".join(sorted_lamps),
+		"save_menu": menu["open"],
+		"save_status": persistence.last_status,
+		"save_slot": menu["slot"],
+		"save_confirming": menu["confirming"],
 	}
 
 func _on_player_step_finished(cell: Vector2i) -> void:
+	steps = mini(steps + 1, SaveCodec.MAX_INTEGER)
 	var result: Dictionary = world_data.transition(String(map_data["id"]), cell, flags)
 	if bool(result.get("ok", false)):
 		# transition has already validated all layouts and exits for these flags.
@@ -460,7 +654,9 @@ func _build_entities() -> void:
 	for entity: Dictionary in map_data["entities"]:
 		var entity_id: String = entity["id"]
 		var asset_id: String = entity["sprite"]
-		var animation: StringName = &"unlit" if entity["kind"] == "lamp" else &"idle"
+		var animation: StringName = &"idle"
+		if entity["kind"] == "lamp":
+			animation = &"lit" if String(entity["id"]) in lamps else &"unlit"
 		var sprite: AnimatedSprite2D = catalog.animated_sprite(asset_id, animation, int(entity_id.hash()))
 		sprite.name = entity_id
 		sprite.position = GridActor.cell_feet(Vector2i(int(entity["x"]), int(entity["y"])))
@@ -480,7 +676,13 @@ func _install_input_actions() -> void:
 			var event: InputEventKey = InputEventKey.new()
 			event.physical_keycode = code
 			InputMap.action_add_event(action, event)
-	var dialogue_actions: Dictionary = {&"interact": [KEY_Z, KEY_SPACE, KEY_ENTER, KEY_KP_ENTER], &"dialogue_reveal": [KEY_X]}
+	var dialogue_actions: Dictionary = {
+		&"interact": [KEY_Z, KEY_SPACE, KEY_ENTER, KEY_KP_ENTER],
+		&"dialogue_reveal": [KEY_X],
+		&"save_menu": [KEY_C, KEY_TAB],
+		&"save_cancel": [KEY_X, KEY_ESCAPE],
+		&"save_confirm": [KEY_Z],
+	}
 	for action: StringName in dialogue_actions:
 		if InputMap.has_action(action):
 			continue

@@ -39,19 +39,23 @@ func interaction_target(map: Dictionary, cell: Vector2i, direction: Vector2i) ->
 		return {}
 	var front: Vector2i = cell + direction
 	var preferred: Dictionary = {}
+	var lamp: Dictionary = {}
 	var fallback: Dictionary = {}
 	for value: Variant in map["entities"]:
 		if not value is Dictionary or not _entity_geometry_valid(value, map):
 			return {}
 		var entity: Dictionary = value
-		if not _text(entity.get("script")) or not _entity_rect(entity).has_point(front):
+		if (entity.get("kind") != "lamp" and not _text(entity.get("script"))) or not _entity_rect(entity).has_point(front):
 			continue
 		if entity.get("kind") == "npc":
 			if preferred.is_empty():
 				preferred = entity
+		elif entity.get("kind") == "lamp":
+			if lamp.is_empty():
+				lamp = entity
 		elif fallback.is_empty():
 			fallback = entity
-	return (preferred if not preferred.is_empty() else fallback).duplicate(true)
+	return (preferred if not preferred.is_empty() else lamp if not lamp.is_empty() else fallback).duplicate(true)
 
 ## Flag transactions must preserve routes from the player's actual position, not only spawn.
 func validate_position(map_id: String, cell: Vector2i, flags: Dictionary = {}) -> Array[String]:

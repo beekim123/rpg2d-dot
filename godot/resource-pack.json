@@ -28,8 +28,8 @@
     {
       "source": "content/i18n/zh-Hans/ui.json",
       "path": "res://data/i18n/zh-Hans.json",
-      "sha256": "81489b3d833ff924297f6e8a8564b3befec0d3cfd24c0913ff4113dc256c0d4d",
-      "bytes": 14082
+      "sha256": "f4b4797c4bd13f0bd32291f5610d8db376132162d7ebfc4e1d4bfb806dd01d60",
+      "bytes": 17681
     },
     {
       "source": "content/maps/lantern-test.json",

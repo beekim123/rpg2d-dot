@@ -6,7 +6,7 @@
 
 ## 当前状态
 
-**Godot 是后续主工程**，入口为 [`godot/project.godot`](godot/project.godot)。已完成G0、G1a及G1b：原生五图、双向门、碰撞、待机动画、室内镜头、中文对话/调查与安全剧情旗标。Godot 战斗、灯柱/存档和完整序章尚未完成；详细顺序见 [Godot 迁移计划](docs/plan/godot-migration.md)。
+**Godot 是后续主工程**，入口为 [`godot/project.godot`](godot/project.godot)。已完成G0与G1探索闭环的本机技术验收：原生五图、对话/调查、灯柱、3手动+1自动存档及JSON导入导出。Godot 战斗与完整序章尚未完成；详细顺序见 [Godot 迁移计划](docs/plan/godot-migration.md)。
 
 原 TypeScript/Canvas 原型收进 [`reference/web/`](reference/web/README.md)，保留已完成的探索和两场战斗候选，用于回放对照。它的历史 M0/M1 记录不能代表 Godot 的完成状态。
 
@@ -21,7 +21,7 @@ npm run godot:import
 npm run dev
 ```
 
-方向键或 WASD 按格移动。`npm run godot:editor` 打开编辑器；目前从芬恩家出发，可经灯谷镇进入灯铺、面包房与麦田路；可面对镇民或家具按Z/空格/回车交互，X快显本句；点灯/存档尚未接入。
+方向键或 WASD 按格移动。`npm run godot:editor` 打开编辑器；目前从芬恩家出发，可经灯谷镇进入灯铺、面包房与麦田路；可面对镇民或家具按Z/空格/回车交互，X快显本句；面对灯柱按Z点亮，再次交互打开存档；C/Tab也可打开菜单，已亮灯旁可以手动保存。
 
 ```sh
 npm run build
@@ -63,3 +63,5 @@ npm run godot:test:web
 资源对照表在 [`resources/art/export/sheets/`](resources/art/export/sheets/)。数值和技术检查通过不代表正式美术、主观听审或用户体验验收。GitHub Actions 保留构建产物；Pages 尚未开启，没有公开试玩部署地址。
 
 工作规则见 [AGENTS.md](AGENTS.md)，最近结果和下一步见 [进度日志](docs/plan/progress.md) 与 [交接状态](docs/v2/status.md)。
+
+存档规则与迁移边界见 [存档格式](docs/tech/save-format.md)。读取或导入会保留手动槽；新旅途需要确认，替换自动继续点。浏览器跨地址/设备迁移请用导出JSON。
