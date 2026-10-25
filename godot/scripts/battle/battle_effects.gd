@@ -35,7 +35,7 @@ func resolve_skill(state: Dictionary, actor: Dictionary, command: Dictionary) ->
 	actor["will"] = int(actor["will"]) - int(skill["cost"])
 	if skill["effect"] == "damage":
 		var power: int = int(skill["power"]) * (marks if skill.get("consumeMarks", false) else 1)
-		var calculated: Dictionary = math.calculate_damage({"power": power, "attackerPower": actor["chart"]["pow"], "defenderEndurance": target["chart"]["end"], "distance": Grid.distance(actor["body"], actor["astral"]), "reach": actor["reach"], "target": unit, "recalled": target["mode"] == "recalled"})
+		var calculated: Dictionary = math.calculate_damage({"power": power, "attackerPower": actor["chart"]["pow"], "defenderEndurance": target["chart"]["end"], "distance": Grid.distance(actor["body"], actor["astral"]), "reach": actor["reach"], "target": unit, "recalled": target["mode"] == "recalled", "damageMultiplier": skills.damage_multiplier(actor)})
 		if not calculated["ok"]:
 			return _error("numeric_overflow")
 		var origin: Dictionary = actor["astral"].duplicate(true)
@@ -48,6 +48,9 @@ func resolve_skill(state: Dictionary, actor: Dictionary, command: Dictionary) ->
 			events.append({"type": "marks", "actorId": target["id"], "marks": target["lampMarks"]})
 		if skill.get("knockback", 0) > 0:
 			knockback(state, actor["id"], target, unit, origin, int(skill["knockback"]), events)
+		if actor.get("cheered", false):
+			actor.erase("cheered")
+			events.append({"type": "cheer_used", "actorId": actor["id"]})
 	else:
 		var strength: int = int(skill["power"]) + int(floorf(float(actor["chart"]["prc"]) / float(skills.rule("precisionDivisor"))))
 		if strength > MathRules.MAX_SAFE_INTEGER:

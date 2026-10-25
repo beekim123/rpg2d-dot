@@ -82,7 +82,7 @@ func plan_turn(input: Dictionary) -> Array:
 							continue
 						if Grid.distance(astral_move["to"], at) > skill["range"] or not skills.line_of_sight(astral_move["to"], at, body_state["blocked"]).get("value", false):
 							continue
-						var calculated: Dictionary = math.calculate_damage({"power": int(skill["power"]) * (int(target.get("lampMarks", 0)) if skill.get("consumeMarks", false) else 1), "attackerPower": current["chart"]["pow"], "defenderEndurance": target["chart"]["end"], "distance": Grid.distance(current["body"], astral_move["to"]), "reach": current["reach"], "target": unit, "recalled": target["mode"] == "recalled"})
+						var calculated: Dictionary = math.calculate_damage({"power": int(skill["power"]) * (int(target.get("lampMarks", 0)) if skill.get("consumeMarks", false) else 1), "attackerPower": current["chart"]["pow"], "defenderEndurance": target["chart"]["end"], "distance": Grid.distance(current["body"], astral_move["to"]), "reach": current["reach"], "target": unit, "recalled": target["mode"] == "recalled", "damageMultiplier": skills.damage_multiplier(current)})
 						if not calculated["ok"]:
 							continue
 						var damage: int = mini(int(target["hp"]), maxi(0, int(calculated["value"]) - int(target["shield"])))

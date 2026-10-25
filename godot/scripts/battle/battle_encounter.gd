@@ -100,6 +100,17 @@ func plan_player_turn(input: Variant) -> Array:
 	var actor: Dictionary = Planner.find_actor(state, state["activeId"])
 	if actor["team"] != "player":
 		return []
+	if actor["kind"] == "starless":
+		for item_id: String in _planner.skills.item_ids():
+			for target: Dictionary in state["actors"]:
+				var command: Dictionary = {"type": "item", "actorId": actor["id"], "itemId": item_id, "targetId": target["id"]}
+				if _engine.apply_command(state, command)["ok"]:
+					return [command]
+		for target: Dictionary in state["actors"]:
+			var command: Dictionary = {"type": "cheer", "actorId": actor["id"], "targetId": target["id"]}
+			if _engine.apply_command(state, command)["ok"]:
+				return [command]
+		return [{"type": "guard", "actorId": actor["id"]}]
 	if state.has("goal") and actor["id"] == state["goal"]["actorId"] and state["goal"]["enemyId"] in state["hitEnemy"].get(actor["id"], []):
 		return [{"type": "guard", "actorId": actor["id"]}]
 	return _planner.plan_turn(state)

@@ -1,9 +1,11 @@
 extends RefCounted
 ## Injected immutable skill catalog and bounded supercover rays, independent of scenes.
 const MathRules = preload("res://scripts/battle/battle_math.gd")
+const Support = preload("res://scripts/battle/battle_support.gd")
 const MAX_CELL: int = 63
 var _definitions: Dictionary = {}
 var _rules: Dictionary = {}
+var _support: Support
 
 func configure(data: Variant) -> String:
 	if not data is Dictionary or not data.get("rules") is Dictionary or not data.get("skills") is Array or data["skills"].is_empty():
@@ -32,6 +34,13 @@ func configure(data: Variant) -> String:
 			if rules["collisionDamagePerCell"] > 0 and float(entry["knockback"]) > floorf(float(MathRules.MAX_SAFE_INTEGER) / float(rules["collisionDamagePerCell"])):
 				return "collision_overflow"
 		definitions[entry["id"]] = entry.duplicate(true)
+	var support: Support
+	if data.has("support"):
+		support = Support.new()
+		var error: String = support.configure(data["support"])
+		if not error.is_empty():
+			return error
+	_support = support
 	_definitions = definitions
 	_rules = rules.duplicate(true)
 	return ""
@@ -87,3 +96,20 @@ static func _integer(value: Variant, minimum: int = 0, maximum: int = MathRules.
 
 static func _point(value: Variant) -> bool:
 	return value is Dictionary and _integer(value.get("x"), 0, MAX_CELL) and _integer(value.get("y"), 0, MAX_CELL)
+
+func support_action(state: Dictionary, actor: Dictionary, command: Dictionary) -> Dictionary:
+	if _support == null:
+		return {"ok": false, "error": "support_unavailable"}
+	return _support.resolve(state, actor, command, line_of_sight)
+
+func valid_inventory(inventory: Variant) -> bool:
+	return _support.valid_inventory(inventory) if _support != null else inventory is Dictionary and inventory.is_empty()
+
+func item_ids() -> Array:
+	return _support.item_ids() if _support != null else []
+
+func damage_multiplier(actor: Dictionary) -> float:
+	return _support.multiplier() if _support != null and actor.get("cheered", false) else 1.0
+
+func has_support() -> bool:
+	return _support != null

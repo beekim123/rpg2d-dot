@@ -40,7 +40,7 @@
     "workbench:test": "node --test --test-concurrency=1 tests/workbench/*.test.mjs",
     "workbench:test:web": "node tools/run.mjs playwright test --config config/workbench.config.ts",
     "resources:refresh": "npm run art:build && npm run art:verify && npm run art:sheet && npm run godot:sync && npm run workbench:build",
-    "godot:test:battle": "node tools/godot/cli.mjs test-battle && node tools/godot/cli.mjs test-battle-movement && node tools/godot/cli.mjs test-battle-skills && node tools/godot/cli.mjs test-battle-encounter && node tools/godot/cli.mjs test-battle-retry",
+    "godot:test:battle": "node tools/godot/cli.mjs test-battle && node tools/godot/cli.mjs test-battle-movement && node tools/godot/cli.mjs test-battle-skills && node tools/godot/cli.mjs test-battle-encounter && node tools/godot/cli.mjs test-battle-retry && node tools/godot/cli.mjs test-battle-support",
     "battle:fixtures:verify": "node --experimental-strip-types tools/qa/battle-fixtures.ts --verify && node --experimental-strip-types tools/qa/battle-movement-fixtures.ts --verify && node --experimental-strip-types tools/qa/battle-skill-fixtures.ts --verify && node --experimental-strip-types tools/qa/battle-encounter-fixtures.ts --verify",
     "battle:fixtures:write": "node --experimental-strip-types tools/qa/battle-fixtures.ts --write && node --experimental-strip-types tools/qa/battle-movement-fixtures.ts --write && node --experimental-strip-types tools/qa/battle-skill-fixtures.ts --write && node --experimental-strip-types tools/qa/battle-encounter-fixtures.ts --write"
   },

@@ -71,6 +71,9 @@ func calculate_damage(input: Variant) -> Dictionary:
 	var opening: Variant = input.get("openingMultiplier", rules["defaultOpeningMultiplier"])
 	if not _number(opening):
 		return _error("invalid_opening_multiplier")
+	var multiplier: Variant = input.get("damageMultiplier", 1.0)
+	if not _number(multiplier):
+		return _error("invalid_damage_multiplier")
 	var tether: Dictionary = tether_factor(input.get("distance"), input.get("reach"))
 	if not tether["ok"]:
 		return tether
@@ -78,15 +81,15 @@ func calculate_damage(input: Variant) -> Dictionary:
 	if input["target"] == "body":
 		target = float(rules["recalledBodyMultiplier"] if input.get("recalled", false) else rules["bodyMultiplier"])
 	# Preserve JS evaluation order; round exactly once, after all multipliers.
-	var raw: float = float(input["power"]) * (float(rules["basePowerFactor"]) + float(input["attackerPower"]) / float(rules["powerDivisor"])) * float(tether["value"]) * target * float(opening) * (1.0 - float(input["defenderEndurance"]) / float(rules["enduranceDivisor"]))
+	var raw: float = float(input["power"]) * (float(rules["basePowerFactor"]) + float(input["attackerPower"]) / float(rules["powerDivisor"])) * float(tether["value"]) * target * float(opening) * float(multiplier) * (1.0 - float(input["defenderEndurance"]) / float(rules["enduranceDivisor"]))
 	return _rounded(raw)
 
 func validate_actor(actor: Variant) -> Dictionary:
 	if _balance.is_empty() or not actor is Dictionary:
 		return _error("invalid_actor")
-	if not _ascii_id(actor.get("id")) or actor.get("team") not in ["player", "enemy"] or actor.get("kind") not in ["close", "remote", "auto", "swarm", "set", "field"]:
+	if not _ascii_id(actor.get("id")) or actor.get("team") not in ["player", "enemy"] or actor.get("kind") not in ["close", "remote", "auto", "swarm", "set", "field", "starless"]:
 		return _error("invalid_actor_identity")
-	if actor.get("mode") not in ["manifested", "recalled", "extinguished"]:
+	if actor.get("mode") not in (["absent", "extinguished"] if actor.get("kind") == "starless" else ["manifested", "recalled", "extinguished"]):
 		return _error("invalid_astral_mode")
 	for key: String in ["order", "readyAt", "reach", "maxWill", "shield"]:
 		if not _integer(actor.get(key)):
@@ -102,6 +105,14 @@ func validate_actor(actor: Variant) -> Dictionary:
 	for key: String in ["pow", "spd", "rch", "end", "prc", "pot"]:
 		if not _chart_value(actor["chart"].get(key)):
 			return _error("invalid_actor_chart_" + key)
+	if actor["kind"] == "starless":
+		if actor["astral"] != null or actor["reach"] != 0 or actor["maxWill"] != 0 or not actor.get("skillIds", []) is Array or not actor.get("skillIds", []).is_empty() or (actor["hp"] > 0 and actor["mode"] != "absent"):
+			return _error("invalid_starless_actor")
+		for key: String in ["pow", "rch", "end", "prc", "pot"]:
+			if actor["chart"][key] != 0:
+				return _error("starless_has_no_star_chart")
+	if actor.has("cheered") and (not actor["cheered"] is bool or (actor["kind"] == "starless" and actor["cheered"])):
+		return _error("invalid_cheer_state")
 	if actor.has("lampMarks") and not _integer(actor["lampMarks"], 0, 3):
 		return _error("invalid_lamp_marks")
 	if actor.has("skillIds"):
@@ -118,7 +129,7 @@ func apply_shared_damage(actor: Variant, target: Variant, amount: Variant) -> Di
 	var valid: Dictionary = validate_actor(actor)
 	if not valid["ok"]:
 		return valid
-	if not _target(target) or not _integer(amount) or actor["kind"] not in ["close", "remote"]:
+	if not _target(target) or not _integer(amount) or actor["kind"] not in ["close", "remote", "starless"]:
 		return _error("invalid_shared_damage")
 	if target == "astral" and (actor["mode"] != "manifested" or actor["astral"] == null):
 		return _error("astral_unavailable")

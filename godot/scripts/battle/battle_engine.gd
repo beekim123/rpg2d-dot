@@ -121,6 +121,13 @@ func apply_command(input: Variant, command: Variant) -> Dictionary:
 		actor["mode"] = "recalled"
 		actor["astral"] = null
 		return _finish_action(input, state, actor, "light", [{"type": "recall", "actorId": actor["id"]}])
+	if type in ["item", "cheer"]:
+		if _skill_book == null:
+			return _invalid(input, "support_unavailable")
+		var supported: Dictionary = _skill_book.support_action(state, actor, command)
+		if not supported["ok"]:
+			return _invalid(input, supported["error"])
+		return _finish_action(input, state, actor, supported["weight"], supported["events"])
 	if type in ["guard", "skill", "cancelled_skill"] and _skill_book == null:
 		return _invalid(input, "skill_data_unavailable")
 	if type == "guard":
@@ -191,7 +198,7 @@ func _definition_error(board: Variant) -> String:
 	for actor: Variant in board["actors"]:
 		if not _math.validate_actor(actor)["ok"]:
 			return "invalid_actor"
-		if ids.has(actor["id"]) or actor["kind"] not in ["close", "remote"]:
+		if ids.has(actor["id"]) or actor["kind"] not in ["close", "remote", "starless"]:
 			return "invalid_g2_actor"
 		ids[actor["id"]] = true
 		for skill: String in actor.get("skillIds", []):
@@ -201,7 +208,7 @@ func _definition_error(board: Variant) -> String:
 			return "invalid_body_position"
 		if actor["hp"] == 0:
 			continue
-		if actor["mode"] not in ["manifested", "recalled"]:
+		if actor["mode"] not in (["absent"] if actor["kind"] == "starless" else ["manifested", "recalled"]):
 			return "invalid_manifestation"
 		if actor["astral"] != null and (actor["reach"] == 0 or Grid.distance(actor["body"], actor["astral"]) > actor["reach"]):
 			return "invalid_tether"
@@ -214,6 +221,11 @@ func _definition_error(board: Variant) -> String:
 			if occupied.has(key):
 				return "colliding_actors"
 			occupied[key] = true
+	if board.has("inventory") and (_skill_book == null or not _skill_book.valid_inventory(board["inventory"])):
+		return "invalid_inventory"
+	for actor: Dictionary in board["actors"]:
+		if actor.get("cheered", false) and (_skill_book == null or not _skill_book.has_support()):
+			return "support_unavailable"
 	return _goal_error(board)
 
 func _goal_error(board: Dictionary) -> String:
@@ -300,6 +312,8 @@ static func _wall_at(board: Dictionary, point: Dictionary) -> bool:
 	return board["blocked"].any(func(wall: Dictionary) -> bool: return Grid.same(wall, point))
 
 static func _restore_will(actor: Dictionary) -> void:
+	if actor["kind"] == "starless":
+		return
 	actor["will"] = mini(int(actor["maxWill"]), int(actor["will"]) + (4 if actor["mode"] == "recalled" else 2))
 
 static func _integer(value: Variant, minimum: int = 0, maximum: int = BattleMath.MAX_SAFE_INTEGER) -> bool:
