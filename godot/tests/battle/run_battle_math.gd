@@ -1,5 +1,6 @@
 extends SceneTree
 ## Shared oracle plus native-only non-JSON boundaries. No scenes or asset service.
+const Compare = preload("res://tests/battle/json_compare.gd")
 const BattleMath = preload("res://scripts/battle/battle_math.gd")
 var _checks: int = 0
 var _failures: Array[String] = []
@@ -21,25 +22,7 @@ func _matches(actual: Dictionary, expected: Dictionary) -> bool:
 	return _json_equal(actual.get("value"), expected.get("value"))
 
 func _json_equal(actual: Variant, expected: Variant) -> bool:
-	if (actual is int or actual is float) and (expected is int or expected is float):
-		return actual == expected
-	if typeof(actual) != typeof(expected):
-		return false
-	if actual is Dictionary:
-		if actual.size() != expected.size():
-			return false
-		for key: Variant in expected:
-			if not actual.has(key) or not _json_equal(actual[key], expected[key]):
-				return false
-		return true
-	if actual is Array:
-		if actual.size() != expected.size():
-			return false
-		for index: int in expected.size():
-			if not _json_equal(actual[index], expected[index]):
-				return false
-		return true
-	return actual == expected
+	return Compare.equal(actual, expected)
 
 func _run() -> void:
 	_check(_json_equal({"hp": [70]}, {"hp": [70.0]}), "JSON numeric int/float compare by exact value")

@@ -9,6 +9,7 @@ rpg-astra/
 ├─ godot/                       Godot 原生主工程
 │  ├─ project.godot / export_presets.cfg
 │  ├─ scenes/                   场景与原生UI
+│  ├─ scripts/battle/           确定性战斗数学、状态与格子规则；不依赖场景或素材
 │  ├─ scripts/world/            探索表现、格子角色
 │  ├─ scripts/resources/        唯一资源访问服务
 │  ├─ resource-pack.json        自动生成的资源索引与哈希
@@ -33,6 +34,7 @@ rpg-astra/
 │  ├─ lib/                      工具共同路径定义
 │  └─ run.mjs                   单worker工具启动器
 ├─ tests/
+│  ├─ fixtures/battle/           跨运行时共享回放，显式生成/只读校验
 │  ├─ resources/                独立资源管线测试
 │  ├─ reference/                旧网页逻辑与浏览器回归
 │  └─ godot-web/                Godot导出网页版验收

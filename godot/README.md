@@ -1,6 +1,6 @@
 # Godot 原生主工程
 
-使用 Godot 4.7.2、GDScript、Compatibility 渲染和单线程 Web 导出。入口为 [`project.godot`](project.godot)。G0 已有地图/按格移动/碰撞/待机；完整探索与战斗按 [迁移计划](../docs/plan/godot-migration.md) 继续。
+使用 Godot 4.7.2、GDScript、Compatibility 渲染和单线程 Web 导出。入口为 [`project.godot`](project.godot)。G0/G1探索技术检查点已完成，G2战斗纯规则正在移植；完整战斗与序章按 [迁移计划](../docs/plan/godot-migration.md) 继续。
 
 | 路径 | 职责与修改方式 |
 |---|---|
@@ -28,3 +28,5 @@ npm run dev
 G1a已接入家、镇、灯铺、面包房、麦田路的双向出口；默认从芬恩家开始。`scripts/world/world_data.gd`只处理地图、碰撞、显隐和旅行规则，不依赖Node或资源路径；`world.gd`负责表现，`AssetCatalog`负责资源。`tests/world/`覆盖规则和真实场景完整旅行。
 
 G2a的 `scripts/battle/battle_math.gd` 以RefCounted实现伤害、星距、共享HP及时间轴数学。先用 `configure(balance)` 注入内容数值，调用返回 `{ok,value}` 或 `{ok:false,error}`；失败不修改输入。共享测试数据在根目录 `tests/fixtures/battle/`，不复制进游戏资源包；运行 `npm run godot:test:battle`。G2后续移动/技能/意图尚在迁移中，战斗UI在G3接入。
+
+G2b新增 `battle_engine.gd` 的状态事务和 `battle_grid.gd` 的稳定有界搜索。先 `configure(balance, skill_ids)`，再 `create_battle(definition)`；`apply_command(state, command)` 返回 `{ok,state,events}`，`reachable_moves(state, unit)` 为只读预览。已支持两单位移动/撤销/显现/收回/待机；攻击技能、固定意图与完整两战在G2c–G2e接入。规则仍未挂接探索场景，不会改变探索存档。
