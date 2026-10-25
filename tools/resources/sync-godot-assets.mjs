@@ -28,6 +28,7 @@ function destinationFor(source) {
     return `res://data/maps/${source.slice('content/maps/'.length)}`;
   }
   if (/^content\/story\/(?:[\w.-]+\/)*[\w.-]+\.json$/.test(source)) return `res://data/story/${source.slice('content/story/'.length)}`;
+  if (/^content\/data\/(?:[\w.-]+\/)*[\w.-]+\.json$/.test(source)) return `res://data/tables/${source.slice('content/data/'.length)}`;
   const locale = /^content\/i18n\/([\w-]+)\/ui\.json$/.exec(source);
   if (locale) return `res://data/i18n/${locale[1]}.json`;
   throw new Error(`Invalid managed source: ${source}`);
@@ -75,7 +76,7 @@ async function registeredContent(root) {
   if (typeof registry.bootstrap.locale !== 'string' || !Object.hasOwn(registry.locales, registry.bootstrap.locale)) {
     throw new Error(`Unknown bootstrap locale: ${registry.bootstrap.locale}`);
   }
-  const maps = Object.create(null), locales = Object.create(null), stories = Object.create(null), contentBytes = new Map();
+  const maps = Object.create(null), locales = Object.create(null), stories = Object.create(null), tables = Object.create(null), contentBytes = new Map();
   for (const id of Object.keys(registry.maps).sort(order)) {
     if (!/^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/.test(id)) throw new Error(`Invalid registered map ID: ${id}`);
     const relative = registry.maps[id];
@@ -112,7 +113,16 @@ async function registeredContent(root) {
     }
     contentBytes.set(source, bytes); stories[id] = destinationFor(source);
   }
-  return { maps, locales, stories, bootstrap: registry.bootstrap, contentBytes };
+  const tableRegistry=Object.hasOwn(registry,'tables')?registry.tables:{};
+  if(!isRecord(tableRegistry))throw new Error('Invalid content registry tables');
+  for(const id of Object.keys(tableRegistry).sort(order)){
+    const relative=tableRegistry[id];
+    if(!/^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/.test(id)||!validRelative(relative)||!/^data\/(?:[\w.-]+\/)*[\w.-]+\.json$/.test(relative))throw new Error(`Unsafe registered table path or ID: ${id}`);
+    const source=`content/${relative}`,bytes=await readSource(root,source);
+    if(!isRecord(JSON.parse(bytes.toString('utf8'))))throw new Error(`Invalid table object: ${id}`);
+    contentBytes.set(source,bytes);tables[id]=destinationFor(source);
+  }
+  return { maps, locales, stories, tables, bootstrap: registry.bootstrap, contentBytes };
 }
 
 async function fontSources(root, relative = FONT_ROOT) {
@@ -183,6 +193,7 @@ export async function syncResources({ sourceRoot = defaultRoot, targetRoot = joi
     maps: content.maps,
     locales: content.locales,
     stories: content.stories,
+    tables: content.tables,
     bootstrap: { map: content.bootstrap.map, locale: content.bootstrap.locale, player: 'char.finn', shadow: 'prop.shadow', panel: 'ui.panel' },
     files: prepared.map(item => item.record),
   };

@@ -18,5 +18,14 @@
   "stories": {
     "m0": "story/m0.json",
     "lantern_vale": "story/lantern-vale.json"
+  },
+  "tables": {
+    "battle.balance": "data/battle-balance.json",
+    "battle.skills": "data/battle-skills.json",
+    "battle.support": "data/battle-support.json",
+    "battle.extensions": "data/battle-native-extensions.json",
+    "battle.presentation": "data/battle-presentation.json",
+    "battle.prologue_ella": "data/battles/prologue_ella.json",
+    "battle.prologue_shade": "data/battles/prologue_shade.json"
   }
 }

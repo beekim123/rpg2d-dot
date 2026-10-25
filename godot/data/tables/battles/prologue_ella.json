@@ -1,0 +1,88 @@
+{
+  "id": "prologue_ella",
+  "width": 8,
+  "height": 6,
+  "intentModes": { "faux_sword": "point" },
+  "blocked": [
+    {
+      "x": 3,
+      "y": 1
+    },
+    {
+      "x": 3,
+      "y": 4
+    }
+  ],
+  "actors": [
+    {
+      "id": "ella",
+      "team": "player",
+      "order": 0,
+      "body": {
+        "x": 1,
+        "y": 3
+      },
+      "astral": {
+        "x": 2,
+        "y": 3
+      },
+      "kind": "remote",
+      "mode": "manifested",
+      "hp": 140,
+      "maxHp": 140,
+      "will": 12,
+      "maxWill": 12,
+      "shield": 0,
+      "chart": {
+        "pow": 50,
+        "spd": 50,
+        "rch": 65,
+        "end": 60,
+        "prc": 65,
+        "pot": 65
+      },
+      "reach": 5,
+      "readyAt": 0,
+      "skillIds": [
+        "laurel_bolt",
+        "laurel_heal",
+        "laurel_shield"
+      ],
+      "lampMarks": 0
+    },
+    {
+      "id": "faux_sword",
+      "team": "enemy",
+      "order": 0,
+      "body": {
+        "x": 6,
+        "y": 2
+      },
+      "astral": {
+        "x": 5,
+        "y": 2
+      },
+      "kind": "close",
+      "mode": "manifested",
+      "hp": 65,
+      "maxHp": 65,
+      "will": 8,
+      "maxWill": 8,
+      "shield": 0,
+      "chart": {
+        "pow": 40,
+        "spd": 35,
+        "rch": 25,
+        "end": 25,
+        "prc": 20,
+        "pot": 10
+      },
+      "reach": 2,
+      "readyAt": 0,
+      "skillIds": [
+        "basic_strike"
+      ],
+      "lampMarks": 0
+    }
+  ]
+}

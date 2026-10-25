@@ -17,6 +17,15 @@
     "lantern_vale": "res://data/story/lantern-vale.json",
     "m0": "res://data/story/m0.json"
   },
+  "tables": {
+    "battle.balance": "res://data/tables/battle-balance.json",
+    "battle.extensions": "res://data/tables/battle-native-extensions.json",
+    "battle.presentation": "res://data/tables/battle-presentation.json",
+    "battle.prologue_ella": "res://data/tables/battles/prologue_ella.json",
+    "battle.prologue_shade": "res://data/tables/battles/prologue_shade.json",
+    "battle.skills": "res://data/tables/battle-skills.json",
+    "battle.support": "res://data/tables/battle-support.json"
+  },
   "bootstrap": {
     "map": "lv.finn_house",
     "locale": "zh-Hans",
@@ -26,10 +35,52 @@
   },
   "files": [
     {
+      "source": "content/data/battle-balance.json",
+      "path": "res://data/tables/battle-balance.json",
+      "sha256": "0cddb0e79f3d85207cc6dae7788ba155a12e668ef9ccb8ef022fa1271804748d",
+      "bytes": 578
+    },
+    {
+      "source": "content/data/battle-native-extensions.json",
+      "path": "res://data/tables/battle-native-extensions.json",
+      "sha256": "5ec25ca98bb5de8825279abcb71734ef552a328d360d4ee96d318fea39a92818",
+      "bytes": 483
+    },
+    {
+      "source": "content/data/battle-presentation.json",
+      "path": "res://data/tables/battle-presentation.json",
+      "sha256": "4f1ad6b9d3bd230ea8523f225ea4fe5b6367cf3c1b316f72ee9b0359b543576c",
+      "bytes": 937
+    },
+    {
+      "source": "content/data/battle-skills.json",
+      "path": "res://data/tables/battle-skills.json",
+      "sha256": "934105d4c8be9e4d471550295a94e9abb480bc895f14a1846ee8d55e626b0617",
+      "bytes": 883
+    },
+    {
+      "source": "content/data/battle-support.json",
+      "path": "res://data/tables/battle-support.json",
+      "sha256": "b4600bae3a2f3b40d03de106568c9ab7571747b28d5d396da250a110a83d4215",
+      "bytes": 301
+    },
+    {
+      "source": "content/data/battles/prologue_ella.json",
+      "path": "res://data/tables/battles/prologue_ella.json",
+      "sha256": "7da4ec6a39ea7688d92d7a136fcee6effc25f5ea58466810b4291b11e4bf5fa4",
+      "bytes": 1437
+    },
+    {
+      "source": "content/data/battles/prologue_shade.json",
+      "path": "res://data/tables/battles/prologue_shade.json",
+      "sha256": "7a8c752381c0a1eb7c70c38e5a56df5bb3a0123d94c035a3d8ab02c0842581e6",
+      "bytes": 1567
+    },
+    {
       "source": "content/i18n/zh-Hans/ui.json",
       "path": "res://data/i18n/zh-Hans.json",
-      "sha256": "f4b4797c4bd13f0bd32291f5610d8db376132162d7ebfc4e1d4bfb806dd01d60",
-      "bytes": 17681
+      "sha256": "91a03fe5010e7dc424fb8061e84f570a6d166498bc8692689fe7eb7db521d527",
+      "bytes": 19302
     },
     {
       "source": "content/maps/lantern-test.json",

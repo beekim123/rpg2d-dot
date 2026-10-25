@@ -1,0 +1,13 @@
+{
+  "battles": {
+    "prologue_ella": { "map": "lv.town", "arena": "square", "title": "battle.title.prologue_ella", "music": "battle_theme" },
+    "prologue_shade": { "map": "lv.town", "arena": "square", "title": "battle.title.prologue_shade", "music": "battle_theme" }
+  },
+  "actors": {
+    "finn": { "body": "char.finn", "astral": "astral.morning_star", "portrait": "portrait.finn", "name": "name.finn" },
+    "ella": { "body": "char.ella", "astral": "astral.laurel", "portrait": "portrait.ella", "name": "name.ella" },
+    "shade": { "body": "char.shade", "astral": "astral.ash_hand", "portrait": "portrait.shade", "name": "name.shade" },
+    "faux_sword": { "body": "char.faux_sword", "astral": "astral.faux_sword", "name": "name.faux_sword" }
+  },
+  "effects": { "damage": "fx.hit", "heal": "fx.heal", "shield": "fx.heal", "manifest": "fx.summon", "recall": "fx.summon", "laurel_bolt": "fx.leaf_hit", "enemy_hit": "fx.ash_hit" }
+}

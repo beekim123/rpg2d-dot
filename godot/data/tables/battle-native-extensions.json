@@ -1,0 +1,15 @@
+{
+  "prologue_ella": {
+    "actors": [
+      {
+        "id": "finn", "team": "player", "order": 1,
+        "body": { "x": 0, "y": 4 }, "astral": null,
+        "kind": "starless", "mode": "absent",
+        "hp": 75, "maxHp": 75, "will": 0, "maxWill": 0, "shield": 0,
+        "chart": { "pow": 0, "spd": 40, "rch": 0, "end": 0, "prc": 0, "pot": 0 },
+        "reach": 0, "readyAt": 0, "skillIds": [], "lampMarks": 0
+      }
+    ],
+    "inventory": { "bread": 3, "star_candy": 1 }
+  }
+}

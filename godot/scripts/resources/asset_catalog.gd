@@ -12,6 +12,7 @@ var _textures: Dictionary = {}
 var _maps: Dictionary = {}
 var _locales: Dictionary = {}
 var _stories: Dictionary = {}
+var _tables: Dictionary = {}
 var _font: FontFile
 
 func load_pack() -> bool:
@@ -23,6 +24,9 @@ func load_pack() -> bool:
 		if not _pack.get(index) is Dictionary:
 			push_error("Missing resource pack index: " + index)
 			return false
+	if _pack.has("tables") and not _pack["tables"] is Dictionary:
+		push_error("Invalid resource pack table index")
+		return false
 	if not _pack.get("files") is Array or not _pack.get("art_manifest") is String or not _pack.get("font") is String:
 		push_error("Missing resource pack file metadata")
 		return false
@@ -45,6 +49,7 @@ func load_pack() -> bool:
 	_maps.clear()
 	_locales.clear()
 	_stories.clear()
+	_tables.clear()
 	_font = null
 	for asset: Dictionary in manifest.get("assets", []):
 		definitions[String(asset["id"])] = asset
@@ -81,6 +86,12 @@ func story_scripts() -> Dictionary:
 				return {}
 			scripts[script_id] = bundle[script_id]
 	return scripts
+
+func table_data(table_id: String) -> Dictionary:
+	return _indexed_json("tables", table_id, _tables)
+
+func has_table(table_id: String) -> bool:
+	return (_pack.get("tables", {}) as Dictionary).has(table_id)
 
 func shadow_for_terrain(terrain_asset_id: String) -> String:
 	match terrain_asset_id:

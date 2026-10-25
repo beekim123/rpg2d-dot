@@ -1,0 +1,7 @@
+{
+  "rules": { "cheerMultiplier": 1.25, "cheerRange": 4, "cheerWeight": "normal", "inventoryLimit": 9 },
+  "items": [
+    { "id": "bread", "effect": "heal", "amount": 30, "range": 3, "weight": "normal" },
+    { "id": "star_candy", "effect": "will", "amount": 4, "range": 3, "weight": "normal" }
+  ]
+}

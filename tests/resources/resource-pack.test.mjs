@@ -238,3 +238,24 @@ test('story registration rejects unsafe paths and malformed bundles before writi
   await f.put(f.sourceRoot,'content/story/village.json',['not a keyed script dictionary']);
   await assert.rejects(syncResources(f.options), /story bundle/i);
 });
+
+test('registered rule tables are byte-identical managed content, independent from game scripts', async t => {
+  const f=await fixture(t);f.registry.tables={'battle.skills':'data/battle-skills.json'};
+  const data={rules:{guardShield:20},skills:[{id:'basic_strike',power:16}]};
+  await f.put(f.sourceRoot,'content/data/battle-skills.json',data);
+  await f.put(f.sourceRoot,'content/registry.json',f.registry);
+  await syncResources(f.options);
+  assert.equal((await index(f)).tables?.['battle.skills'],'res://data/tables/battle-skills.json');
+  assert.deepEqual(JSON.parse(await readFile(join(f.targetRoot,'data/tables/battle-skills.json'),'utf8')),data);
+  await f.put(f.targetRoot,'data/tables/battle-skills.json',{changed:true});
+  assert.ok((await syncResources({...f.options,verify:true})).mismatches.some(v=>v.includes('battle-skills.json')));
+});
+
+test('rule table registry rejects malformed values and traversal before writing', async t => {
+  for(const tables of [[],null,{'battle.skills':'../outside.json'},{'battle.skills':'maps/lantern-test.json'},{'bad/id':'data/battle.json'}]){
+    const f=await fixture(t);f.registry.tables=tables;
+    await f.put(f.sourceRoot,'content/registry.json',f.registry);
+    await assert.rejects(syncResources(f.options),/table|unsafe/i);
+    await assert.rejects(access(join(f.targetRoot,'resource-pack.json')));
+  }
+});
