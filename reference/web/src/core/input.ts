@@ -17,6 +17,8 @@ export class Input {
   consume(): Action | undefined { return this.queue.shift(); }
   get running(): boolean { return this.held.has('ShiftLeft') || this.held.has('ShiftRight'); }
   direction(): 'up'|'down'|'left'|'right'|undefined {
+    // Newer held keys must not bypass earlier queued scene/menu transitions.
+    if(this.queue.length>0)return undefined;
     for (const code of this.held) { const a=bindings[code]; if(a==='up'||a==='down'||a==='left'||a==='right') return a; }
     return undefined;
   }

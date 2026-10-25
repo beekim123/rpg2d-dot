@@ -27,6 +27,7 @@ export class Game {
   private audio=new AudioPlayer();
   private store:SaveStore;
   private tick=0;
+  private processedInputs=0;
   private selection=0;
   private line:Say|undefined;
   private script='';
@@ -65,8 +66,8 @@ export class Game {
   }
   private update():void {
     this.tick++;
-    if(this.moveRemaining>0)this.moveRemaining--;
-    const action=this.input.consume();if(action)this.action(action);
+    if(this.moveRemaining>0&&--this.moveRemaining===0)this.syncStatus();
+    const action=this.input.consume();if(action){this.action(action);this.processedInputs++;this.syncStatus();}
     if(this.scenes.current==='battle'&&this.battle){this.battle.update();this.syncStatus();if(this.battle.exitRequested){this.battle=undefined;if(this.beforeBattle)this.restore(this.beforeBattle);this.beforeBattle=undefined;this.audio.music('test_theme');}}
     if(this.scenes.current==='dialogue') {if(this.tick%2===0)this.letters++;if(this.input.held.has('KeyX'))this.letters+=3;}
     if(this.scenes.current==='map'&&this.moveRemaining===0){
@@ -157,6 +158,9 @@ export class Game {
   private notify(key:string):void {this.toast=t(key);this.toastUntil=this.tick+180;this.syncStatus();}
   private syncStatus():void {
     this.canvas.dataset.scene=this.scenes.current;
+    this.canvas.dataset.inputProcessed=String(this.processedInputs);
+    this.canvas.dataset.moving=String(this.moveRemaining>0);
+    this.canvas.dataset.selection=String(this.selection);
     if(this.battle){const b=this.battle.controller;this.canvas.dataset.battleActor=b.actor.id;this.canvas.dataset.battleMode=b.mode;this.canvas.dataset.battleTurn=String(b.encounter.battle.turnNumber);this.canvas.dataset.battleBody=`${b.actor.body.x},${b.actor.body.y}`;this.canvas.dataset.battleBusy=String(this.battle.busy);this.canvas.dataset.intentMode=Object.values(b.encounter.intents)[0]?.mode??'';this.canvas.dataset.battleState=JSON.stringify(b.encounter.battle);this.canvas.dataset.battleSpeed=String(this.battle.speed);}
     this.canvas.dataset.position=`${this.state.player.x},${this.state.player.y}`;
     this.canvas.dataset.lamps=String(this.state.lamps.length);
