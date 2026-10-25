@@ -1,40 +1,64 @@
 import { describe, expect, it } from 'vitest';
-import { cues, renderCue } from '../src/audio/synth.ts';
+import { cues, cueKinds, renderCue } from '../src/audio/synth.ts';
 import { SoundLimiter } from '../src/audio/limiter.ts';
 
-function measure(samples: Float32Array): { peak: number; rmsDb: number; finite: boolean } {
+function measure(samples: Float32Array, activeOnly = false): { peak: number; rmsDb: number; finite: boolean } {
   let sumSquares = 0;
   let peak = 0;
   let finite = true;
-  for (const sample of samples) {
+  let first = 0;
+  let last = samples.length - 1;
+  if (activeOnly) {
+    while (first < last && Math.abs(samples[first] ?? 0) < 0.0001) first++;
+    while (last > first && Math.abs(samples[last] ?? 0) < 0.0001) last--;
+  }
+  for (let i = 0; i < samples.length; i++) {
+    const sample = samples[i] ?? 0;
     finite &&= Number.isFinite(sample);
     peak = Math.max(peak, Math.abs(sample));
-    sumSquares += sample * sample;
+    if (i >= first && i <= last) sumSquares += sample * sample;
   }
-  return { peak, rmsDb: 20 * Math.log10(Math.sqrt(sumSquares / samples.length)), finite };
+  return { peak, rmsDb: 20 * Math.log10(Math.sqrt(sumSquares / (last - first + 1))), finite };
 }
 
 describe('deterministic code-synthesized cues', () => {
-  it.each(['confirm', 'cancel', 'step', 'save', 'deny', 'lamp', 'test_theme'] as const)(
+  it.each([
+    'confirm', 'cancel', 'step', 'save', 'deny', 'lamp', 'test_theme',
+    'battle_theme', 'battle_hit', 'battle_heal', 'battle_guard', 'battle_cast', 'battle_win', 'battle_lose',
+  ] as const)(
     '%s renders audible, repeatable samples with headroom and no boundary clicks',
     (id) => {
+      expect(cues).toContain(id);
       const first = renderCue(id);
       const second = renderCue(id);
-      expect(cues).toContain(id);
       expect(first).toBeInstanceOf(Float32Array);
       expect(first.length).toBeGreaterThan(1000);
       expect(Buffer.from(first.buffer).equals(Buffer.from(second.buffer))).toBe(true);
-      const { peak, rmsDb, finite } = measure(first);
+      const music = cueKinds[id] === 'music';
+      const { peak, rmsDb, finite } = measure(first, !music);
       expect(finite).toBe(true);
       expect(peak).toBeLessThanOrEqual(10 ** (-1 / 20));
-      expect(rmsDb).toBeGreaterThanOrEqual(id === 'test_theme' ? -22 : -21);
-      expect(rmsDb).toBeLessThanOrEqual(id === 'test_theme' ? -18 : -15);
+      expect(rmsDb).toBeGreaterThanOrEqual(music ? -22 : -21);
+      expect(rmsDb).toBeLessThanOrEqual(music ? -18 : -15);
       expect(first[0]).toBe(0);
       expect(first[first.length - 1]).toBe(0);
       expect(Math.abs(first[1] ?? 1)).toBeLessThan(0.001);
       expect(Math.abs(first[first.length - 2] ?? 1)).toBeLessThan(0.001);
     },
   );
+
+  it('identifies both loops for full-buffer music measurement and battle stingers as effects', () => {
+    expect(cueKinds).toMatchObject({
+      test_theme: 'music', battle_theme: 'music',
+      battle_hit: 'effect', battle_heal: 'effect', battle_guard: 'effect',
+      battle_cast: 'effect', battle_win: 'effect', battle_lose: 'effect',
+    });
+  });
+
+  it('keeps the battle theme an eight-bar, sixteen-second loop', () => {
+    expect(cues).toContain('battle_theme');
+    expect(renderCue('battle_theme').length).toBe(44100 * 16);
+  });
 
   it('keeps the four-bar test theme eight seconds long at supported sample rates', () => {
     for (const sampleRate of [22050, 44100, 48000]) {

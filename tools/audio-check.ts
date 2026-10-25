@@ -1,9 +1,10 @@
 import { createHash } from 'node:crypto';
-import { cues, renderCue } from '../src/audio/synth.ts';
+import { cues, cueKinds, renderCue } from '../src/audio/synth.ts';
 
 const sampleRate = 44100;
 let failed = false;
 const report = cues.map((id) => {
+  const music = cueKinds[id] === 'music';
   const samples = renderCue(id, sampleRate);
   const second = renderCue(id, sampleRate);
   const bytes = Buffer.from(samples.buffer, samples.byteOffset, samples.byteLength);
@@ -12,7 +13,7 @@ const report = cues.map((id) => {
   let peak = 0;
   let firstActive = 0;
   let lastActive = samples.length - 1;
-  if (id !== 'test_theme') {
+  if (!music) {
     while (firstActive < lastActive && Math.abs(samples[firstActive] ?? 0) < 0.0001) firstActive++;
     while (lastActive > firstActive && Math.abs(samples[lastActive] ?? 0) < 0.0001) lastActive--;
   }
@@ -30,12 +31,12 @@ const report = cues.map((id) => {
   const last = samples[samples.length - 1] ?? 0;
   const seam = Math.abs(first - last);
   const slope = Math.abs(((samples[1] ?? 0) - first) - (last - (samples[samples.length - 2] ?? 0)));
-  const target = id === 'test_theme' ? -20 : -18;
-  const tolerance = id === 'test_theme' ? 2 : 3;
+  const target = music ? -20 : -18;
+  const tolerance = music ? 2 : 3;
   const passed = deterministic && finite && peakDb <= -1 && Math.abs(rmsDb - target) <= tolerance && seam < 0.001 && slope < 0.001;
   failed ||= !passed;
   return {
-    cue: id, seconds: (samples.length / sampleRate).toFixed(2), deterministic,
+    cue: id, kind: cueKinds[id], seconds: (samples.length / sampleRate).toFixed(2), deterministic,
     'peak dBFS': peakDb.toFixed(2), 'RMS dBFS': rmsDb.toFixed(2),
     seam: seam.toExponential(2), slope: slope.toExponential(2),
     sha256: createHash('sha256').update(bytes).digest('hex'), result: passed ? 'PASS' : 'FAIL',
