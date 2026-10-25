@@ -11,8 +11,17 @@
 
 ## 当前状态
 
-设计阶段。设计文档见 [`docs/`](docs/README.md)，开发规则见 [`AGENTS.md`](AGENTS.md)，进度见 [`docs/plan/progress.md`](docs/plan/progress.md)。
+M0 地基开发中：工程、中文字体和固定步进基础已搭好；尚未成为可玩序章。设计文档见 [`docs/`](docs/README.md)，开发规则见 [`AGENTS.md`](AGENTS.md)，进度见 [`docs/plan/progress.md`](docs/plan/progress.md)。
 
 ## 运行
 
-（开发开始后补充）
+需要 Node.js 22.12+（开发验证使用 Node 24）。
+
+```sh
+npm ci
+npm run dev
+```
+
+浏览器打开终端给出的本机网址。`npm run check` 顺序执行类型、单 worker 测试、构建；`npm run build` 输出静态网页到 `dist/`。所有资源随构建打包，不访问外部服务。
+
+当前 CI 验证已实现的工程功能，后续随资源与内容管线逐项增加检查。尚未开启在线部署。
