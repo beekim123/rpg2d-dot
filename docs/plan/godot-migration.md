@@ -23,11 +23,11 @@
 | 网页存档 | 保留旧文件，支持 JSON 导出/导入迁移 | 字段版本、剧情旗标和物品不能丢失；不假定两个运行时共用存储 |
 | 现有 Vitest / 浏览器测试 | 保留作参考和资源检查 | 另外建立 Godot headless 与导出网页版测试，不能把旧测试数字冒充 Godot 测试 |
 
-Godot 工程使用 `godot/assets/` 与 `godot/data/` 的受控副本，源仍在根目录 `art/`、`content/`、`audio/`。同步脚本只复制自身管理的文件，不手工维护两份内容；资源同步必须可验证。这样不会让 Godot 扫描根目录的 Node 依赖和编辑器程序。
+Godot 工程使用 `godot/resources/` 与 `godot/data/` 的受控副本，源仍在`resources/art/`、`content/`、`resources/audio/`。同步脚本只复制自身管理的文件，不手工维护两份内容；资源同步必须可验证。这样不会让 Godot 扫描根目录的 Node 依赖和编辑器程序。
 
-## G0 · 原生起步与导出链路（当前正在开始）
+## G0 · 原生起步与导出链路（技术验证完成）
 
-**产物**：`godot/project.godot`、`godot/scenes/main.tscn`、`godot/scripts/` 下的素材目录/格子角色/地图脚本、`godot/tests/run_smoke.gd`、`tools/sync-godot-assets.mjs`、Web导出预设。
+**产物**：`godot/project.godot`、`godot/scenes/main.tscn`、`godot/scripts/` 下的素材目录/格子角色/地图脚本、`godot/tests/run_smoke.gd`、`tools/resources/sync-godot-assets.mjs`、Web导出预设。
 
 - [x] 从用户放入的编辑器读取真实版本：4.7.2 官方版。
 - [x] 将编辑器、`.godot` 缓存和导出目录加入忽略规则。
@@ -42,7 +42,7 @@ Godot 工程使用 `godot/assets/` 与 `godot/data/` 的受控副本，源仍在
 示例验证命令（实际执行使用项目工具封装，路径保持相对）：
 
 ```sh
-node tools/sync-godot-assets.mjs
+node tools/resources/sync-godot-assets.mjs
 ./Godot.app/Contents/MacOS/Godot --headless --path godot --render-thread safe --editor --import --quit
 ./Godot.app/Contents/MacOS/Godot --headless --path godot --render-thread safe --script tests/run_smoke.gd
 ```
@@ -93,8 +93,8 @@ node tools/sync-godot-assets.mjs
 - 全机并发预算仍适用：默认1计算worker，Godot工作线程限制1，不按CPU核数扩展；启动前核对已有进程。
 - 不提交编辑器、模板、`.godot` 缓存、导出包、密钥或单个超过2MB的文件；不删除既有分支、不改写历史。
 - 每个可运行增量独立测试/记录/提交；分开记录候选、技术审核、用户验收。
-- **当前阶段**：Godot G0技术验证完成；正在按用户要求整理全仓目录与资源包管理。
-- **最近下一步/执行人**：当前开发代理完成G0原生场景与匹配Web模板验证，然后进入G1。当前无需用户操作。
+- **当前阶段**：Godot G0技术验证完成；全仓目录与资源包管理完成，整理后123项原生检查及实际Web验收通过。
+- **最近下一步/执行人**：当前开发代理完成全仓目录整理与资源服务解耦并重新验证启动/导出，然后进入G1。当前无需用户操作。
 
 ## 官方依据
 

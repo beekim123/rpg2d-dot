@@ -1,0 +1,17 @@
+import {spawnSync} from 'node:child_process';
+import {mkdirSync,existsSync,readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {repoRoot as root} from '../lib/paths.mjs';
+const action=process.argv[2]??'test';
+const actions={import:['--headless','--editor','--import','--quit'],test:['--headless','--script','tests/run_smoke.gd'],export:['--headless','--export-debug','Web','../build/godot-web/index.html'],run:[],editor:['--editor']};
+if(!Object.hasOwn(actions,action))throw new Error('Use import, test, export, run or editor');
+const bundled=resolve(root,'Godot.app/Contents/MacOS/Godot');
+const executable=process.env.ASTRA_GODOT_BIN??(existsSync(bundled)?bundled:'godot');
+mkdirSync(resolve(root,'.local'),{recursive:true});mkdirSync(resolve(root,'build/godot-web'),{recursive:true});
+const env={...process.env};for(const key of ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','VECLIB_MAXIMUM_THREADS','RAYON_NUM_THREADS','UV_THREADPOOL_SIZE'])env[key]='1';
+const version=readFileSync(resolve(root,'config/godot-version.txt'),'utf8').trim();
+const probe=spawnSync(executable,['--version'],{cwd:root,env,encoding:'utf8'});
+if(probe.error)throw probe.error;
+if(probe.status!==0||!probe.stdout.trim().startsWith(`${version}.`))throw new Error(`Expected Godot ${version}; found ${probe.stdout.trim()||probe.stderr.trim()}`);
+const result=spawnSync(executable,['--path',resolve(root,'godot'),'--render-thread','safe','--log-file',resolve(root,'.local',`godot-${action}.log`),...actions[action]],{cwd:root,env,stdio:'inherit'});
+if(result.error)throw result.error;process.exit(result.status??1);

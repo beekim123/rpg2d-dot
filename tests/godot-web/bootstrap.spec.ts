@@ -6,13 +6,13 @@ test('Godot Web export boots, renders and accepts real movement with collision',
   await expect(canvas).toHaveAttribute('data-ready','true',{timeout:30000});
   await expect(canvas).toHaveAttribute('data-grid_x','8');await expect(canvas).toHaveAttribute('data-grid_y','12');
   await expect(canvas).toHaveAttribute('aria-label',/伴星 ASTRA/);
-  await page.screenshot({path:'docs/plan/screenshots/godot-g0-map.png'});
+  await page.screenshot({path:'artifacts/screenshots/godot-g0-map.png'});
   await canvas.click();
   for(const x of [9,10]){
     await page.keyboard.down('ArrowRight');await expect(canvas).toHaveAttribute('data-grid_x',String(x));await page.keyboard.up('ArrowRight');await expect(canvas).toHaveAttribute('data-moving','false');
   }
   await page.keyboard.down('ArrowUp');await expect(canvas).toHaveAttribute('data-facing','up');await page.keyboard.up('ArrowUp');
   await expect(canvas).toHaveAttribute('data-grid_y','12');await expect(canvas).toHaveAttribute('data-grid_x','10');
-  await page.screenshot({path:'docs/plan/screenshots/godot-g0-collision.png'});
+  await page.screenshot({path:'artifacts/screenshots/godot-g0-collision.png'});
   expect(errors).toEqual([]);
 });

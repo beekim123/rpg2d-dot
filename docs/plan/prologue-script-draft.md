@@ -341,7 +341,7 @@
 
 ### 已有能力与缺口
 
-2026-10-25 读取时，`src/systems/story.ts` 仅有 `say / set / if / move / end`，`move` 只支持 NPC 坐标变更；`src/systems/world.ts` 的 `GameState` 有布尔 flags、灯柱集合、背包及地图位置，但没有完整队伍、地图阶段或可持久化剧情续播结构。内容已有 `prologue_ella`、`prologue_shade` 两场候选配置。**下面名称是待实施语义，不是已存在指令，不可直接把伪指令塞进 v0 JSON。** 战斗交付后的实际接口为准。
+2026-10-25 读取时，`reference/web/src/systems/story.ts` 仅有 `say / set / if / move / end`，`move` 只支持 NPC 坐标变更；`reference/web/src/systems/world.ts` 的 `GameState` 有布尔 flags、灯柱集合、背包及地图位置，但没有完整队伍、地图阶段或可持久化剧情续播结构。内容已有 `prologue_ella`、`prologue_shade` 两场候选配置。**下面名称是待实施语义，不是已存在指令，不可直接把伪指令塞进 v0 JSON。** 战斗交付后的实际接口为准。
 
 | 需要的脚本语义 | 最小行为与引用检查 | 使用处 |
 |---|---|---|

@@ -31,12 +31,17 @@
 | A1 | [art/art-direction.md](art/art-direction.md) | 美术方向：参考图分析、调色板、规格、伴星视觉语言、禁止项 |
 | A2 | [art/art-pipeline.md](art/art-pipeline.md) | 代码绘图管线：源数据 → PNG → 清单 → 工作台（参考 ele-pushbox-arts） |
 | S1 | [audio/audio-direction.md](audio/audio-direction.md) | 音乐与音效：程序合成、主题动机、曲目表、音效表、规格 |
-| T1 | [tech/architecture.md](tech/architecture.md) | 技术方向：推荐技术栈、目录结构、数据格式、测试与自动通关 |
+| T1 | [tech/architecture.md](tech/architecture.md) | 技术方向：Godot主线、历史网页参考、数据格式、测试与自动通关 |
+| T2 | [tech/repository-layout.md](tech/repository-layout.md) | 目录职责、资源制作源/受管副本、单向依赖与验证入口 |
 | P1 | [plan/roadmap.md](plan/roadmap.md) | 里程碑（按顺序，不按日期） |
 | P2 | [plan/backlog.md](plan/backlog.md) | 任务池（开发者持续维护） |
 | P3 | [plan/progress.md](plan/progress.md) | 进度日志（开发者每次提交后追加） |
 | P4 | [plan/questions.md](plan/questions.md) | 需要用户拍板的问题（开发者记录，用户回答） |
+| P5 | [plan/godot-migration.md](plan/godot-migration.md) | 当前执行顺序：G0原生起步→G4完整序章，再接M2–M9 |
+| P6 | [v2/status.md](v2/status.md) | 当前结果、阶段、下一步与执行人 |
 | — | [prompts/gpt-kickoff.md](prompts/gpt-kickoff.md) | 给 GPT 的启动 / 续跑 / 自查提示词 |
+
+当前主工程是 `godot/`；资源制作源在 `resources/`，游戏内容在 `content/`，旧网页原型在 `reference/web/`。目录细则见 T2；设计文档本身保留原位置。
 
 仓库根目录的 [`AGENTS.md`](../AGENTS.md) 是开发者每次开工必须遵守的工作规则。
 

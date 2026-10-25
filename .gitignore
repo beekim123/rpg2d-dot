@@ -9,17 +9,16 @@
 
 # 依赖与构建
 node_modules/
-dist/
+/build/
 coverage/
 playwright-report/
 test-results/
 
 # 美术 / 声音缓存
-art/.tmp/
-audio/.cache/
+resources/art/.tmp/
+resources/audio/.cache/
 
 # Local Godot editor and generated engine caches
 /Godot.app/
 /.godot/
-/godot-build/
 godot/.godot/

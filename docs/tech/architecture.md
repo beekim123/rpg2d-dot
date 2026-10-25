@@ -29,44 +29,42 @@
 
 ## 2 目录结构
 
-```
+目录规范以 [repository-layout.md](repository-layout.md) 为准。按制作职责组织，避免引擎源码与绘图、合成代码互相依赖：
+
+```text
 /
-├─ AGENTS.md                 开发者工作规则
-├─ README.md                 项目简介、怎么运行
-├─ docs/                     设计文档（本目录）
-├─ src/
-│  ├─ core/                  主循环、时间、输入、场景栈、存档、随机数（带种子）
-│  ├─ render/                画布、精灵、图集、地图绘制、文字、调色板换色、特效
-│  ├─ audio/                 合成引擎、播放器
-│  ├─ scenes/                标题、地图、战斗、菜单、修行、剧情、结局……
-│  ├─ systems/               对话、剧情脚本解释器、任务、商店、成长、羁绊
-│  ├─ battle/                战斗引擎（纯逻辑）、AI、法则模块、伤害计算
-│  ├─ ui/                    界面组件（面板、列表、光标、对话框）
-│  └─ debug/                 调试菜单、调试网址参数
-├─ content/
-│  ├─ data/                  数据表：伴星、技能、敌人、道具、星饰、商店、修行、数值平衡
-│  ├─ maps/                  地图
-│  ├─ story/                 剧情脚本
-│  └─ i18n/                  多语言文字表
-├─ art/                      美术源数据和导出（见美术管线）
-├─ audio/                    声音源数据
-├─ tools/                    构建、校验、内容检查、平衡模拟
-├─ tests/                    测试
-├─ workbench/                HTML 工作台
-└─ third_party/              字体等第三方文件和许可证
+├─ godot/                    原生主工程：scenes、scripts、tests
+│  ├─ resources/ / data/     同步副本，不手工修改
+│  └─ resource-pack.json     受管理文件、语义入口与哈希索引
+├─ resources/
+│  ├─ art/                   source、lib、palette、PNG与清单导出
+│  └─ audio/                 纯合成器、音符与曲谱说明
+├─ content/                  data、maps、story、i18n；引擎无关制作源
+├─ reference/web/            冻结的Canvas原型及素材工作台
+├─ tools/                    resources、godot、qa、lib
+├─ tests/                    resources、reference、godot-web
+├─ config/                   TypeScript/Vite/Vitest/Playwright配置
+├─ artifacts/screenshots/    可分享的画面验证记录
+├─ third_party/fonts/        合规字体和全部许可
+├─ docs/                     原设计、计划与交接
+└─ build/                    Godot/参考网页导出；忽略，不提交
 ```
 
+规则代码只依赖数据和状态。表现层向资源服务请求语义ID；仅资源服务解析图像、字体、地图与多语言包的物理位置。`Godot.app`、缓存和第三方风格参考保留本机并忽略；不要把它们放进资源制作源。
+
 ## 3 运行时架构
+
+Godot 用固定物理帧、原生场景与输入动作承接下述职责；纯规则模块独立于节点和绘图。Node参考逻辑继续用于既定自动路线与跨引擎回放对照，Godot另行直接运行同样的状态/事件验证。
 
 - **主循环**：固定 60 Hz 逻辑更新 + 渲染。所有动画按帧计时，不依赖真实时间的抖动。
 - **场景栈**：标题 → 地图 → （战斗 / 菜单 / 对话 / 修行压在地图上面）。
 - **输入**：把键盘、手柄、鼠标统一抽象成"动作"（确认、取消、上下左右、菜单……）。
 - **游戏状态**：一个可序列化的大对象（剧情变量、队伍、背包、位置、已开宝箱……）。存档就是把它保存下来。
-- **素材**：启动时读取美术清单，按需加载图集。
+- **素材**：通过 `godot/scripts/resources/` 服务读取 `resource-pack.json` 和美术清单，按语义ID加载图集；绘图源不进入规则模块。
 - **逻辑与表现分离**：
   - 战斗：`battle/` 是纯函数式的状态机，输出事件列表；`scenes/battle` 负责把事件播成动画。
   - 剧情：脚本解释器产出指令，地图场景负责执行演出。
-  - 这样逻辑层可以在 Node 里单独跑（测试、平衡模拟、自动通关）。
+  - 原型逻辑继续在Node单独跑；迁移后原生逻辑在Godot headless单独跑，共享回放用于比较两者。
 
 ## 4 数据格式
 
@@ -114,7 +112,7 @@ flag set prologue.awakened
 
 ### 4.3 数据表
 
-伴星、技能、敌人、道具、星饰、商店、修行、平衡参数都写在 `content/data/`。每个表有 TypeScript 类型定义和校验，`tools/content-check` 检查所有引用的 id 都存在。
+伴星、技能、敌人、道具、星饰、商店、修行、平衡参数都写在 `content/data/`。表结构由内容校验与各运行时的类型/边界校验约束；`tools/qa/content-check.ts` 检查所有引用的 id 都存在。
 
 ### 4.4 多语言
 
@@ -142,6 +140,8 @@ flag set prologue.awakened
 
 ## 7 持续集成与发布
 
+当前默认 `dev` / `build` / `test` 进入Godot；网页参考使用 `reference:*` 命令。Godot导出写入 `build/godot-web/`，参考构建写入 `build/reference-web/`。
+
 - GitHub Actions：安装依赖 → 类型检查 → 测试 → 内容检查 → 美术校验 → 构建。
 - 主分支构建成功后部署到 GitHub Pages（需要用户在仓库设置中开启 Pages）。
 - README 里写清楚本地运行方法（例如 `npm install && npm run dev`）和在线试玩地址。
@@ -158,7 +158,7 @@ flag set prologue.awakened
 - 不加入运行时网络请求、统计、广告。
 - 不提交密钥、本机路径和大文件（单个文件超过 2 MB 要先想办法）。
 
-## M0 已采用的实现（2026-10-25）
+## M0 网页原型历史实现（2026-10-25）
 
 - 采用 TypeScript 严格模式、Vite 8、Vitest 5、Playwright；运行 Node 22.12+，CI Node 24。测试 maxWorkers=1，文件顺序执行。
 - 地图使用 JSON 的字符串行与实体表，便于检查与迁移；剧情 v0 使用带稳定文字 ID 的 JSON 指令（say/set/if/move/end）。
@@ -167,3 +167,7 @@ flag set prologue.awakened
 - 美术PNG与字体跟随静态发行包，运行时仅请求同源包内资源；“不访问网络”按不依赖外部服务解释，不阻止浏览器加载游戏自己的静态文件。
 
 - 2026-10-25：通过 `tools/run.mjs` 启动开发/构建/类型/测试工具，固定本机数值库、Rust构建和Node工作线程为1；Vitest/Playwright仍只开1测试worker。全机预算仍由开发代理在启动前核对，不按CPU核数扩并行。
+
+## 目录整理调整（2026-10-25）
+
+按用户要求将美术、合成音源与游戏源码分开：`resources/` 是唯一制作源，`content/` 是唯一内容源，Godot只接收可校验的受控副本；旧网页明确进入 `reference/web/`。这是对原目录【建议】的调整，目的为减少资源与游戏规则耦合。既定测试要求保留，另加原生Godot与真实导出网页验收，不用参考实现的通过状态替代原生完成度。

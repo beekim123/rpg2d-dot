@@ -8,7 +8,8 @@
 
 用户已明确Godot预期并提供4.7.2编辑器。以 [godot-migration.md](godot-migration.md) 为当前执行顺序；下方原M0/M1勾选仅代表网页原型历史状态。
 
-- [~] G0：Godot原生工程、资源/移动/动画headless验证、匹配Web导出链路
+- [x] G0：Godot原生工程、资源/移动/动画headless验证、匹配Web导出链路（`994a954`；目录整理后需重新验证）
+- [x] 全仓目录管理：分离Godot主工程、资源制作源、内容与网页参考；修复路径、建立资源包索引并完整回归（本次提交；见进度日志）
 - [ ] G1：Godot五图探索、对话、灯柱与存档闭环
 - [ ] G2：GDScript战斗规则迁移与共享回放一致性
 - [ ] G3：原生战斗HUD、动作与声音表现
@@ -20,15 +21,15 @@
 
 - [x] 场景待机动画：人物呼吸/眨眼/围巾、树冠风摆、花草灌木轻摆；脚点/树根稳定、错开物件节奏；实际浏览器逐帧检查与动画预览。
 
-## M0 · 地基
+## M0 · 地基（网页原型历史）
 
 - [x] 选定技术栈，搭建项目脚手架（package.json、tsconfig、vite、目录结构），README 写运行方法（提交号见进度日志“工程与字体”）
 - [x] .gitignore（node_modules、dist、缓存、`.local/`）（提交号见进度日志“工程与字体”）
 - [x] CI：GitHub Actions 跑类型检查、测试、构建（提交号见进度日志“工程与字体”）
-- [x] 调色板 `art/palette.json`（起步调色板见 art-direction.md 第 3 节）（见进度日志“原创美术管线 v0”）
+- [x] 调色板 `resources/art/palette.json`（起步调色板见 art-direction.md 第 3 节）（见进度日志“原创美术管线 v0”）
 - [x] PNG 编码器（可参考 ele-pushbox-arts 的 `tools/lib/png.mjs`，保留 MIT 署名）（见进度日志“原创美术管线 v0”）
 - [x] 绘图工具库 v0：点、线、矩形、椭圆、填充、描边、镜像、换色、带种子的随机数（见进度日志“原创美术管线 v0”）
-- [x] `tools/art.mjs build / verify / sheet`（见进度日志“原创美术管线 v0”）
+- [x] `tools/resources/art.mjs build / verify / sheet`（见进度日志“原创美术管线 v0”）
 - [x] 第一批测试素材：一个 16×24 人物（4 方向行走）、草地和土路图块、一个灯柱（见进度日志“原创美术管线 v0”）
 - [x] 工作台 v0：素材库、动画预览
 - [x] 拷贝 Fusion Pixel 字体和许可证到 `third_party/fonts/`（提交号见进度日志“工程与字体”）
@@ -44,9 +45,9 @@
 - [x] 内容检查工具 v0
 - [x] M0 验收（`f608432`，标签 `m0`；见进度日志）
 
-## M1 · 竖切片：序章
+## M1 · 竖切片：序章（网页原型历史）
 
-实施顺序见 [m1-implementation.md](m1-implementation.md)。当前先完成可独立验证的战斗核心。
+实施顺序见 [m1-implementation.md](m1-implementation.md)。已完成的网页战斗核心作为G2一致性对照；未完成项按Godot迁移计划承接。
 
 - [x] A1：确定性伤害/星距/共享体力/时间轴基础（见进度“M1-A1”）
 - [x] A2：双单位移动与撤销、星绳拖回、待机轮转（见进度“M1-A2”）

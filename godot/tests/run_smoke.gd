@@ -44,6 +44,26 @@ func _run() -> void:
 	initial_accessibility["grid_x"] = 999
 	_check(player.get("grid_position") == Vector2i(8, 12), "mutating an accessibility snapshot cannot change gameplay")
 	var catalog: RefCounted = world.get("catalog") as RefCounted
+	_check(catalog.has_method("map_data") and catalog.has_method("locale") and catalog.has_method("binding"), "resource catalog resolves map, locale and bootstrap IDs")
+	if not catalog.has_method("map_data") or not catalog.has_method("locale") or not catalog.has_method("binding"):
+		world.queue_free()
+		await process_frame
+		_finish()
+		return
+	var map_id: String = catalog.call("binding", "map")
+	var locale_id: String = catalog.call("binding", "locale")
+	var detached_map: Dictionary = catalog.call("map_data", map_id)
+	_check(detached_map.get("id") == "lantern.test", "logical pack map ID resolves source map")
+	detached_map["spawn"]["x"] = 999
+	_check(catalog.call("map_data", map_id)["spawn"]["x"] == 8, "map consumers cannot mutate cached source data")
+	var detached_locale: Dictionary = catalog.call("locale", locale_id)
+	detached_locale["game.title"] = "changed"
+	_check(catalog.call("locale", locale_id)["game.title"] == "伴星 ASTRA", "locale consumers cannot mutate cached source data")
+	var panel: NinePatchRect = world.get_node("HUD/TitlePanel") as NinePatchRect
+	var controls_panel: NinePatchRect = world.get_node("HUD/ControlsPanel") as NinePatchRect
+	_check(panel.texture != null and controls_panel.texture == panel.texture, "HUD resolves both panels from the resource service")
+	var shadow: Sprite2D = player.get_node("Shadow") as Sprite2D
+	_check(shadow.texture != null and shadow.offset == Vector2(-8, -8), "player shadow resolves its pack binding and anchor")
 	var definitions: Dictionary = catalog.get("definitions")
 	for asset_id: String in definitions:
 		var texture: Texture2D = catalog.call("texture", asset_id) as Texture2D

@@ -15,13 +15,23 @@
 
 ---
 
+## 2026-10-25 · 全仓目录管理与资源边界
+- 按用户要求整理整个仓库：`godot/`是主工程；原创美术和合成器独立到`resources/`；数据保留`content/`；旧Canvas代码归`reference/web/`；工具/测试/配置按职责分层，截图归`artifacts/screenshots/`，构建输出统一`build/`且忽略。
+- `docs/plan/screenshots`保留相对兼容链接；各主目录有职责README，根命令dev/build/test默认Godot，旧网页使用reference前缀。Godot.app保留用户放置位置且不提交。
+- 资源同步生成`godot/resource-pack.json`，80个源/副本逐字节与SHA256校验；只清理自身索引拥有且未被手改的旧文件，未知文件保留；路径逃逸、符号链接、重复目标和超大文件有测试。游戏世界/角色只通过资源ID访问，不拼接PNG/地图物理路径；图标是引擎启动前的明确例外。
+- 验证：264参考逻辑、40资源Node测试、19声音测试、123Godot原生检查通过；71素材607帧build→verify→三页sheet已亲自看图；内容检查、确定性、自动回放通过。原生Web启动/真实移动碰撞1项通过，参考生产构建在`/astra/`子路径下10项浏览器测试通过，工作台开发入口补测通过。已检查Godot地图/参考战斗/工作台截图。
+- 修复迁移中误改的工作台测试URL末尾斜线；正常权限下Godot导入/测试/导出无错误。只读代码复核未发现阻断问题。Linux CI已同步新路径、版本锁和官方引擎/模板安装，远端结果待推送后确认，不等同本机通过。
+- 截图：`artifacts/screenshots/godot-g0-map.png`、`m0-workbench.png`、`m1-battle-shade.png`。美术像素与玩法规则没有因目录迁移改动；调整的是技术路线中的【建议】目录与入口。
+- 提交：随本条提交，实际哈希下一条补记。
+- 当前阶段：目录管理完成，Godot仍为G0技术起点。下一步由当前开发代理执行G1五图探索/对话/灯柱/存档；完整序章未验收。当前无需你操作。
+
 ## 2026-10-25 · Godot G0 原生起步
 - 用户提供根目录Godot.app后，实际确认4.7.2官方版，建立`godot/project.godot`与原生Node2D/TileMapLayer/AnimatedSprite2D/Camera2D/Control场景，不再扩展Canvas专用功能。
 - 原生角色移动、碰撞、NPC/树木待机、中文像素字体可用；资源副本80文件/71PNG与源逐字节一致。引擎/导出包/缓存均已忽略。
 - 匹配Web模板从官方包按范围读取，仅下载约20.4MB而非整包1.28GB；版本、外层/内层ZIP CRC校验通过。真实Web导出退出0。
 - 验证：Godot原生117项检查全过、默认主场景启动退出0；Godot导出Web真实键盘移动/撞NPC与截图检查通过，页面无错误。截图`docs/plan/screenshots/godot-g0-map.png`与`godot-g0-collision.png`。
 - 状态：G0原生技术起点，不代表Godot完整M0/M1；战斗、对话、存档尚未迁移。详细G0–G4计划见 `godot-migration.md`。
-- 提交：随本条提交，实际哈希下一条补记。
+- 提交：`994a954`（已推送）。
 - 下一步：当前开发代理按用户新要求整理整个仓库并建立低耦合资源管理，然后以Godot继续G1。当前无需用户操作。
 
 ## 2026-10-25 · Godot切换前候选保存

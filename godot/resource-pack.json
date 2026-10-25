@@ -1,0 +1,500 @@
+{
+  "format": "astra.resource-pack/1",
+  "art_manifest": "res://resources/art/manifest.json",
+  "font": "res://resources/fonts/fusion-pixel-12px/fusion-pixel-12px-proportional-zh_hans.otf.woff2",
+  "maps": {
+    "lantern-test": "res://data/maps/lantern-test.json"
+  },
+  "locales": {
+    "zh-Hans": "res://data/i18n/zh-Hans.json"
+  },
+  "bootstrap": {
+    "map": "lantern-test",
+    "locale": "zh-Hans",
+    "player": "char.finn",
+    "shadow": "prop.shadow",
+    "panel": "ui.panel"
+  },
+  "files": [
+    {
+      "source": "content/i18n/zh-Hans/ui.json",
+      "path": "res://data/i18n/zh-Hans.json",
+      "sha256": "62561e520112147bedc48a413692f4fbc1395eeb1881fea2b2027eee1f627923",
+      "bytes": 9306
+    },
+    {
+      "source": "content/maps/lantern-test.json",
+      "path": "res://data/maps/lantern-test.json",
+      "sha256": "899769e721ee9dca5324a0fa121e922f266a34c427424c895ee27967faea330e",
+      "bytes": 3527
+    },
+    {
+      "source": "resources/art/export/astral.ash_hand.png",
+      "path": "res://resources/art/astral.ash_hand.png",
+      "sha256": "c462049df94c494dccf601eecb3c9cc0cd9651e5c66b211cb788ce72440f8bcc",
+      "bytes": 1965
+    },
+    {
+      "source": "resources/art/export/astral.cornerpress.png",
+      "path": "res://resources/art/astral.cornerpress.png",
+      "sha256": "ef350c412806ca3c47f940644f789a4ef3b30c39d82e4edc8549b657d7e57cad",
+      "bytes": 297
+    },
+    {
+      "source": "resources/art/export/astral.faux_sword.png",
+      "path": "res://resources/art/astral.faux_sword.png",
+      "sha256": "5615406bfb5c2fd144c48efa39ff1a74f967a649d986fb2ae6fbd7a098c5d5a5",
+      "bytes": 1806
+    },
+    {
+      "source": "resources/art/export/astral.laurel.png",
+      "path": "res://resources/art/astral.laurel.png",
+      "sha256": "2be99c5d56684584e6e96585bbe4f601b17afb3dda62e8c0fefaffe8be485acb",
+      "bytes": 1979
+    },
+    {
+      "source": "resources/art/export/astral.morning_star.png",
+      "path": "res://resources/art/astral.morning_star.png",
+      "sha256": "d41a80cb836e710b64d75efbe3d8df817bb459a051e5dd574ba46217c9b40646",
+      "bytes": 1533
+    },
+    {
+      "source": "resources/art/export/astral.rise.png",
+      "path": "res://resources/art/astral.rise.png",
+      "sha256": "56a5867c40b469332cf271dc9ae83b8a2e7b2be79eefa402f2b1d073b55fb971",
+      "bytes": 427
+    },
+    {
+      "source": "resources/art/export/char.brio.png",
+      "path": "res://resources/art/char.brio.png",
+      "sha256": "ff5fb12f0e974e2461a75f146eb05f7747b4610ac27443cf03a0707b5ef7e979",
+      "bytes": 1760
+    },
+    {
+      "source": "resources/art/export/char.ella.png",
+      "path": "res://resources/art/char.ella.png",
+      "sha256": "ec47e89a623e8630d4e14cef546947a296a9692931d225351578b78d54815c41",
+      "bytes": 1234
+    },
+    {
+      "source": "resources/art/export/char.faux_sword.png",
+      "path": "res://resources/art/char.faux_sword.png",
+      "sha256": "70f1863eaec1d1ca31b3266b9fb8f62aec22a8636080ecb02c79e923658fb05d",
+      "bytes": 1054
+    },
+    {
+      "source": "resources/art/export/char.finn.png",
+      "path": "res://resources/art/char.finn.png",
+      "sha256": "67adc4e6245e0b7225cd2a351e5922640e0e616f3bae6db179142aa2b8133dd1",
+      "bytes": 1179
+    },
+    {
+      "source": "resources/art/export/char.hedo.png",
+      "path": "res://resources/art/char.hedo.png",
+      "sha256": "5f9e511eb6c9fe137111ec1678465373069c8892e9f34f2a5f7db14bc8b7d40d",
+      "bytes": 1015
+    },
+    {
+      "source": "resources/art/export/char.hob.png",
+      "path": "res://resources/art/char.hob.png",
+      "sha256": "2e48effcf01490ce08ac189ab0159a8f78b63a4c76060fd8ec4906993bdf3d91",
+      "bytes": 379
+    },
+    {
+      "source": "resources/art/export/char.mayor_tolan.png",
+      "path": "res://resources/art/char.mayor_tolan.png",
+      "sha256": "964b12414dc364dc88480a3fcca71bf6786c8a12767204294ed11ceafb1c7637",
+      "bytes": 1711
+    },
+    {
+      "source": "resources/art/export/char.mili.png",
+      "path": "res://resources/art/char.mili.png",
+      "sha256": "60cc2838785ea1ba82c9b5fd9f40245b72502dc9390763ae9cd234e5049ede15",
+      "bytes": 993
+    },
+    {
+      "source": "resources/art/export/char.nemi.png",
+      "path": "res://resources/art/char.nemi.png",
+      "sha256": "01bc25e01eb14d9f723fab2c44bd9bd7b6ccffd74bca137cf0db12600b3ccb42",
+      "bytes": 1220
+    },
+    {
+      "source": "resources/art/export/char.oren.png",
+      "path": "res://resources/art/char.oren.png",
+      "sha256": "a723f4363a106c3e73b3218b12a67785b5d26fdd67b02c6d25535f5517feda21",
+      "bytes": 1213
+    },
+    {
+      "source": "resources/art/export/char.sela.png",
+      "path": "res://resources/art/char.sela.png",
+      "sha256": "fac90a39d2e8477c2037cb2a13e92c9f1f902fee43562985f56e65f1f414ee82",
+      "bytes": 1360
+    },
+    {
+      "source": "resources/art/export/char.shade.png",
+      "path": "res://resources/art/char.shade.png",
+      "sha256": "c6016f96874b6f491f8a26415836a8bffb1760e200a53662f0aa097e9b62b9e1",
+      "bytes": 1536
+    },
+    {
+      "source": "resources/art/export/char.teya.png",
+      "path": "res://resources/art/char.teya.png",
+      "sha256": "4538d72d53acef6a124ae40cec057a3de4f25af6a62d4ed97df551fa8561196f",
+      "bytes": 1365
+    },
+    {
+      "source": "resources/art/export/fx.ash_hit.png",
+      "path": "res://resources/art/fx.ash_hit.png",
+      "sha256": "169e1d1d77a4f72e791c4b7f8feb84d9426709ec55c2027af18acc3f634f5da3",
+      "bytes": 372
+    },
+    {
+      "source": "resources/art/export/fx.heal.png",
+      "path": "res://resources/art/fx.heal.png",
+      "sha256": "483033511901c28390b86696412d6b7d164cde531bae4e15779d800809af9f68",
+      "bytes": 307
+    },
+    {
+      "source": "resources/art/export/fx.hit.png",
+      "path": "res://resources/art/fx.hit.png",
+      "sha256": "af8ff07ed521647795ef4eec52b0c608766ef02fd9a551f3fa838b9920fb6984",
+      "bytes": 223
+    },
+    {
+      "source": "resources/art/export/fx.leaf_hit.png",
+      "path": "res://resources/art/fx.leaf_hit.png",
+      "sha256": "1444bb9925974cdabffae28f6681d1f789c8b943ace97c97d4116c6ee0d96faa",
+      "bytes": 359
+    },
+    {
+      "source": "resources/art/export/fx.strike.png",
+      "path": "res://resources/art/fx.strike.png",
+      "sha256": "51313db1355f6f004726a342c6160502233df4f778aa12a8a2aeda157b878e8a",
+      "bytes": 416
+    },
+    {
+      "source": "resources/art/export/fx.summon.png",
+      "path": "res://resources/art/fx.summon.png",
+      "sha256": "1082d5b01e34d1f452df44182151095acd2ce51d97f175ad270ad34066ba3caa",
+      "bytes": 353
+    },
+    {
+      "source": "resources/art/export/manifest.json",
+      "path": "res://resources/art/manifest.json",
+      "sha256": "f1d01746e52199025740075b120024e875fe316b786730a61a83d97d2d5eb19f",
+      "bytes": 75701
+    },
+    {
+      "source": "resources/art/export/portrait.brio.png",
+      "path": "res://resources/art/portrait.brio.png",
+      "sha256": "ca9b22602e75c115f5ba326a2d9b8d4de0f8d538347602fbffcffc854dbbf0fd",
+      "bytes": 623
+    },
+    {
+      "source": "resources/art/export/portrait.ella.png",
+      "path": "res://resources/art/portrait.ella.png",
+      "sha256": "8290eeb5b1e000907f23cb0877960977310fea253f7a2d5bf98ea53ece6cd54d",
+      "bytes": 628
+    },
+    {
+      "source": "resources/art/export/portrait.finn.png",
+      "path": "res://resources/art/portrait.finn.png",
+      "sha256": "e922e0c3e5d508f8438e279dde88f99cbba66811571d06d711583bbdee90c6cc",
+      "bytes": 649
+    },
+    {
+      "source": "resources/art/export/portrait.hedo.png",
+      "path": "res://resources/art/portrait.hedo.png",
+      "sha256": "a96b560bf59e7249f58548c9e39114ea40b342c9527ab3bdda525f19adad3872",
+      "bytes": 556
+    },
+    {
+      "source": "resources/art/export/portrait.hob.png",
+      "path": "res://resources/art/portrait.hob.png",
+      "sha256": "21292549e428eff1eb0ff590929c2251760e37c4d7d31cb713f6fcc3541e4b23",
+      "bytes": 638
+    },
+    {
+      "source": "resources/art/export/portrait.mayor_tolan.png",
+      "path": "res://resources/art/portrait.mayor_tolan.png",
+      "sha256": "fcfad18cbce5b3b023d6d093da40c095a2539101ebcdccd28bacc1cf8ddaba8e",
+      "bytes": 576
+    },
+    {
+      "source": "resources/art/export/portrait.mili.png",
+      "path": "res://resources/art/portrait.mili.png",
+      "sha256": "fd58fd1d486986c9a7ce04f1844db28775cb506454244b4bbd5c46ea0c72d8c8",
+      "bytes": 615
+    },
+    {
+      "source": "resources/art/export/portrait.nemi.png",
+      "path": "res://resources/art/portrait.nemi.png",
+      "sha256": "f568caf9a97330a340470993433957401e0d250f35f89dcf0e56bb285ce2c441",
+      "bytes": 589
+    },
+    {
+      "source": "resources/art/export/portrait.oren.png",
+      "path": "res://resources/art/portrait.oren.png",
+      "sha256": "dc3b63e2d03d40e26fe6bd6a1946a0db4a71436e8109932ad2c572a159897f4e",
+      "bytes": 546
+    },
+    {
+      "source": "resources/art/export/portrait.sela.png",
+      "path": "res://resources/art/portrait.sela.png",
+      "sha256": "794a949fe45124e26c710df6b329a4f1d4dfce884138fc4c0d386f332b1e931e",
+      "bytes": 601
+    },
+    {
+      "source": "resources/art/export/portrait.shade.png",
+      "path": "res://resources/art/portrait.shade.png",
+      "sha256": "432d1b0c29fabe7ed2c2f52abe3444caf78791b905c3c5c2cdcfb50ac1436113",
+      "bytes": 561
+    },
+    {
+      "source": "resources/art/export/portrait.teya.png",
+      "path": "res://resources/art/portrait.teya.png",
+      "sha256": "401e7b5674d48b368f49d21074e84213f84d0ce4e489bce0f6a8ae9764640f63",
+      "bytes": 611
+    },
+    {
+      "source": "resources/art/export/prop.barrel.png",
+      "path": "res://resources/art/prop.barrel.png",
+      "sha256": "a595f8d63212bb6521b796346ccf1f9f6f8e327b8d7945f31c5ffbeb9995f2d3",
+      "bytes": 217
+    },
+    {
+      "source": "resources/art/export/prop.bed.png",
+      "path": "res://resources/art/prop.bed.png",
+      "sha256": "8541abbcc3d82007747487c4b06ea9b9fe8b2534e0b8eecf2d513569a4e319ce",
+      "bytes": 234
+    },
+    {
+      "source": "resources/art/export/prop.bookshelf.png",
+      "path": "res://resources/art/prop.bookshelf.png",
+      "sha256": "04aff0470c5e6abc853c8a4a3ea6849c2d3ae4defa97f0f3b3025e0d58d4444e",
+      "bytes": 299
+    },
+    {
+      "source": "resources/art/export/prop.bread_counter.png",
+      "path": "res://resources/art/prop.bread_counter.png",
+      "sha256": "0819a7a20305505b54bf947dc4f24f60745652a8f4fd99a712d8b0d3cddbb43a",
+      "bytes": 347
+    },
+    {
+      "source": "resources/art/export/prop.cooling_mat.png",
+      "path": "res://resources/art/prop.cooling_mat.png",
+      "sha256": "4e3d3bc2fc78a23ab0dc2b20a71fffa4887c9f7dfa7549be17c376d9af0f1839",
+      "bytes": 166
+    },
+    {
+      "source": "resources/art/export/prop.crate.png",
+      "path": "res://resources/art/prop.crate.png",
+      "sha256": "c75516f18be5d7cd8e69381e961d76510b84961df5b3c822d4dea39a14a13d67",
+      "bytes": 167
+    },
+    {
+      "source": "resources/art/export/prop.dough_cart.png",
+      "path": "res://resources/art/prop.dough_cart.png",
+      "sha256": "55ea9ea2e61a4266cc10f6010ecf75f4452457a541c1e6cc6ce84d1623dcddd6",
+      "bytes": 217
+    },
+    {
+      "source": "resources/art/export/prop.festival_lantern.png",
+      "path": "res://resources/art/prop.festival_lantern.png",
+      "sha256": "81c9afefbf295f67b4a3ecf845907f56f4314df8baf8b4180261bfbfbf3039e6",
+      "bytes": 313
+    },
+    {
+      "source": "resources/art/export/prop.flower.png",
+      "path": "res://resources/art/prop.flower.png",
+      "sha256": "3551df98f72b889e67e816277a896f33dc3adbebf5f1a1eb5cf6e3406f8c4ab6",
+      "bytes": 237
+    },
+    {
+      "source": "resources/art/export/prop.hedge.png",
+      "path": "res://resources/art/prop.hedge.png",
+      "sha256": "1e1358be9fe5fa8e280bf9d8e4ec7f4a418c6904cff580561b5629ce9a816938",
+      "bytes": 282
+    },
+    {
+      "source": "resources/art/export/prop.house.png",
+      "path": "res://resources/art/prop.house.png",
+      "sha256": "fde1b3806f9b41d9baa5980e2cf282669891b60fccbcb864d60e634fb2703e09",
+      "bytes": 948
+    },
+    {
+      "source": "resources/art/export/prop.lamp.png",
+      "path": "res://resources/art/prop.lamp.png",
+      "sha256": "b2f58e3e4a41863da177913505ac975d0c837ad3862e98595f57511bc50a63e1",
+      "bytes": 336
+    },
+    {
+      "source": "resources/art/export/prop.paper_boat.png",
+      "path": "res://resources/art/prop.paper_boat.png",
+      "sha256": "80a400a377b8f74c7c9463ed1c4eedbcb481229d06d4016e7bf8f9dcb1267b0d",
+      "bytes": 166
+    },
+    {
+      "source": "resources/art/export/prop.pendant.png",
+      "path": "res://resources/art/prop.pendant.png",
+      "sha256": "c5b6e5f379c13b1fd0a0bac2b24762878d783de6ec3f1c4a5fb58406ff5d67b6",
+      "bytes": 153
+    },
+    {
+      "source": "resources/art/export/prop.pillar.png",
+      "path": "res://resources/art/prop.pillar.png",
+      "sha256": "4303e4019fde08f4f16aa75e8bbeb2bf42258308759ae58e2d2873e6c2a25b58",
+      "bytes": 203
+    },
+    {
+      "source": "resources/art/export/prop.shadow.png",
+      "path": "res://resources/art/prop.shadow.png",
+      "sha256": "292e0b3e828ae77368ff8fd0809d99f464a72d179cfe79c92921e6910c51a8a5",
+      "bytes": 87
+    },
+    {
+      "source": "resources/art/export/prop.sign.png",
+      "path": "res://resources/art/prop.sign.png",
+      "sha256": "2770e33d8427247b74509af3881fc51a9aaa3157662418b2567959ecaac14b7c",
+      "bytes": 159
+    },
+    {
+      "source": "resources/art/export/prop.stove.png",
+      "path": "res://resources/art/prop.stove.png",
+      "sha256": "493c902e0a911bbde6a9584cbc3e6469ce6253cd39ca50e6cca1ec9c8ad393eb",
+      "bytes": 233
+    },
+    {
+      "source": "resources/art/export/prop.table.png",
+      "path": "res://resources/art/prop.table.png",
+      "sha256": "6f225e33d30bb2051b0651b99b9649be485262df7444ac7dde0766a735e2d62a",
+      "bytes": 198
+    },
+    {
+      "source": "resources/art/export/prop.tree.png",
+      "path": "res://resources/art/prop.tree.png",
+      "sha256": "9e003ca1a2c052ad2d35c13266eb8f27af12e5f407b554aa09fe45f3832e64ad",
+      "bytes": 776
+    },
+    {
+      "source": "resources/art/export/prop.well.png",
+      "path": "res://resources/art/prop.well.png",
+      "sha256": "704ae79d48aac0112465cf18a8e2c362748eac9beb9f23e058161a5263458acc",
+      "bytes": 336
+    },
+    {
+      "source": "resources/art/export/prop.windmill.png",
+      "path": "res://resources/art/prop.windmill.png",
+      "sha256": "fd2f5b032756576136bb2adfef43722660bcb23a1550d95f55b83c60ec2fcd0b",
+      "bytes": 2737
+    },
+    {
+      "source": "resources/art/export/prop.workbench.png",
+      "path": "res://resources/art/prop.workbench.png",
+      "sha256": "6a4061db95b9f55e19d9180eef4598c489b7afc9ebf50fb4c99f80d53024687d",
+      "bytes": 324
+    },
+    {
+      "source": "resources/art/export/tile.bridge.png",
+      "path": "res://resources/art/tile.bridge.png",
+      "sha256": "c0f1e5542c91e063460bb7e4de83633cd6064d359e8e2af4b62e0ccf8905cd77",
+      "bytes": 131
+    },
+    {
+      "source": "resources/art/export/tile.edge.png",
+      "path": "res://resources/art/tile.edge.png",
+      "sha256": "5a9e1823c4f5ab28d956432a612c889e6d4c3bc02e5b22aae4f8714b5b5c0d2f",
+      "bytes": 402
+    },
+    {
+      "source": "resources/art/export/tile.grass.png",
+      "path": "res://resources/art/tile.grass.png",
+      "sha256": "6e7890e74fafbd2cab75f75fea246ec8e5e1dce187acbe70a247e1d6c457cf26",
+      "bytes": 149
+    },
+    {
+      "source": "resources/art/export/tile.path.png",
+      "path": "res://resources/art/tile.path.png",
+      "sha256": "ca4d84f0b9d3fcbd8b7220d1823aaea07e53224431fc9604dc55bcdbcaf57c99",
+      "bytes": 181
+    },
+    {
+      "source": "resources/art/export/tile.rug.png",
+      "path": "res://resources/art/tile.rug.png",
+      "sha256": "e1669864ab7840d293631efc8c908d0390362d934892873f415cc1c74f266fae",
+      "bytes": 137
+    },
+    {
+      "source": "resources/art/export/tile.stone_floor.png",
+      "path": "res://resources/art/tile.stone_floor.png",
+      "sha256": "32b4491adc587bff33411524f11da126d845c92b4eaea85df6028a2ac2c1bf0f",
+      "bytes": 120
+    },
+    {
+      "source": "resources/art/export/tile.water.png",
+      "path": "res://resources/art/tile.water.png",
+      "sha256": "966f278ba28543fe3cc50c991bd68f240fc6bcbb977577f5506e2f83fa41aac5",
+      "bytes": 126
+    },
+    {
+      "source": "resources/art/export/tile.wheat.png",
+      "path": "res://resources/art/tile.wheat.png",
+      "sha256": "c58fa729a5b3dc4c23d0d119e0e73833cb51cf4c093b4c40198ee2099cba01f8",
+      "bytes": 328
+    },
+    {
+      "source": "resources/art/export/tile.wood_floor.png",
+      "path": "res://resources/art/tile.wood_floor.png",
+      "sha256": "9d48562344f0d617e34c1d2ac9c3a2f584ef0720621686af6b8dc378cc72ff37",
+      "bytes": 161
+    },
+    {
+      "source": "resources/art/export/tile.wood_wall.png",
+      "path": "res://resources/art/tile.wood_wall.png",
+      "sha256": "5e40d36be53185395ab25952550cbfad918935b75c605fb3fd554f1e6aa180d6",
+      "bytes": 137
+    },
+    {
+      "source": "resources/art/export/ui.panel.png",
+      "path": "res://resources/art/ui.panel.png",
+      "sha256": "a0ba4fd96edaf013e64395ab85c6ba5bc9fad70abbe02c994ef427975245ab48",
+      "bytes": 140
+    },
+    {
+      "source": "third_party/fonts/fusion-pixel-12px/LICENSES/ark-pixel/OFL.txt",
+      "path": "res://resources/fonts/fusion-pixel-12px/LICENSES/ark-pixel/OFL.txt",
+      "sha256": "3ab41567e68e3988ba1ef16dd2644eca95ca5648ea12e7d46e6287fc0bbe5aee",
+      "bytes": 4412
+    },
+    {
+      "source": "third_party/fonts/fusion-pixel-12px/LICENSES/cubic-11/OFL.txt",
+      "path": "res://resources/fonts/fusion-pixel-12px/LICENSES/cubic-11/OFL.txt",
+      "sha256": "2b6e5938e5cffa0b9e183bd05f8c363e174e7ebed1a0556e2855fd1707fa2188",
+      "bytes": 5364
+    },
+    {
+      "source": "third_party/fonts/fusion-pixel-12px/LICENSES/galmuri/LICENSE.txt",
+      "path": "res://resources/fonts/fusion-pixel-12px/LICENSES/galmuri/LICENSE.txt",
+      "sha256": "86a3ee9495f942f0243f18c103da9faca27adb88142613edb8bb852e56c892c1",
+      "bytes": 4360
+    },
+    {
+      "source": "third_party/fonts/fusion-pixel-12px/OFL.txt",
+      "path": "res://resources/fonts/fusion-pixel-12px/OFL.txt",
+      "sha256": "bc518cf64b8032c07690f33cc270c35c179255a6ac8efa7c165ebae7e8f76a63",
+      "bytes": 4418
+    },
+    {
+      "source": "third_party/fonts/fusion-pixel-12px/README.md",
+      "path": "res://resources/fonts/fusion-pixel-12px/README.md",
+      "sha256": "2e5863f7e394de7052c80424cbdebacdaa2b12ff8e94bda41124d66d1e2e356d",
+      "bytes": 673
+    },
+    {
+      "source": "third_party/fonts/fusion-pixel-12px/fusion-pixel-12px-proportional-zh_hans.otf.woff2",
+      "path": "res://resources/fonts/fusion-pixel-12px/fusion-pixel-12px-proportional-zh_hans.otf.woff2",
+      "sha256": "0ebd99e6f1e9b650a793a3f759c1c3dfa99f0c5b6502e78569b48ddb43767e40",
+      "bytes": 666264
+    }
+  ]
+}

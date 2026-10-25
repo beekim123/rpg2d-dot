@@ -1,8 +1,0 @@
-@font-face { font-family: Fusion; src: url('../third_party/fonts/fusion-pixel-12px/fusion-pixel-12px-proportional-zh_hans.otf.woff2') format('woff2'); font-display: block; }
-:root { font-family: Fusion, monospace; color: #f2e6cf; background: #1a1220; color-scheme: dark; }
-* { box-sizing: border-box; }
-body { margin: 0; min-width: 480px; min-height: 270px; height: 100vh; display: grid; place-items: center; overflow: auto; }
-main { position: relative; }
-canvas { display: block; image-rendering: pixelated; outline: none; }
-#status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-button, input, select { font: inherit; }

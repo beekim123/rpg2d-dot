@@ -2,6 +2,7 @@
 import {spawnSync} from 'node:child_process';
 import {createRequire} from 'node:module';
 import {dirname,resolve} from 'node:path';
+import {repoRoot} from './lib/paths.mjs';
 const require=createRequire(import.meta.url);
 const packages={vite:'vite',tsc:'typescript',vitest:'vitest',playwright:'@playwright/test'};
 const [command,...args]=process.argv.slice(2);
@@ -10,6 +11,6 @@ const manifestPath=require.resolve(`${packages[command]}/package.json`),manifest
 const binary=typeof manifest.bin==='string'?manifest.bin:manifest.bin[command];
 const env={...process.env};
 for(const name of ['OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','VECLIB_MAXIMUM_THREADS','RAYON_NUM_THREADS','UV_THREADPOOL_SIZE'])env[name]='1';
-const child=spawnSync(process.execPath,[resolve(dirname(manifestPath),binary),...args],{stdio:'inherit',env});
+const child=spawnSync(process.execPath,[resolve(dirname(manifestPath),binary),...args],{stdio:'inherit',env,cwd:repoRoot});
 if(child.error)throw child.error;
 process.exit(child.status??1);

@@ -1,5 +1,7 @@
 # M0 · 地基实施计划
 
+> 历史网页原型计划。文件路径已按目录整理更新；现行主工程与执行顺序见 [Godot 迁移计划](godot-migration.md)，下方勾选不能替代 Godot 验收。
+
 **目标**：标题进入灯谷测试地图，移动、碰撞、NPC 对话、点灯、存读档形成可重复验证的完整小循环；工作台展示代码绘制的 PNG 与动画。
 **架构**：TypeScript 严格模式，纯逻辑模块产出可序列化状态，Canvas 2D 负责表现。地图和中文文本用 JSON；美术、音频均由本仓库可重复构建。
 **技术栈**：Node 22.12+、Vite、TypeScript、Vitest、Playwright。无游戏运行时依赖；固定 60 Hz、480×270、16px 格、整数像素采样。
@@ -16,17 +18,17 @@
 ## 1 · 工程与资源基础
 
 - [x] 工程：`package.json`、TS/Vite 配置、入口、README、CI，Vitest 单 worker。
-- [x] PNG / 美术：`art/lib/`、`art/palette.json`、`art/source/`、`tools/art.mjs`；支持字符精灵与程序画图，输出清单含帧大小、锚点、动画和 SHA-256。
+- [x] PNG / 美术：`resources/art/lib/`、`resources/art/palette.json`、`resources/art/source/`、`tools/resources/art.mjs`；支持字符精灵与程序画图，输出清单含帧大小、锚点、动画和 SHA-256。
 - [x] 校验：解码 PNG 检查尺寸 / alpha / 调色板；重绘逐字节比较；错误尺寸、颜色、动画引用必须报错。
 - [x] 测试素材：芬恩四方向、霍伯及头像、草土、水、树、木屋和灯柱；图集帧横向排列；清单作为运行时唯一图像入口。
 - [x] 工作台：素材筛选、整数放大、动画播放、调色板；字体复制到 `third_party/fonts/` 并保留许可证。
 
 ## 2 · 探索逻辑与表现
 
-- [x] `src/core/`：固定步进时钟、场景栈、输入动作、版本化游戏状态。
-- [x] `src/systems/`：文本地图解析与合法性检查、移动 / 碰撞 / 跟随、剧情指令（say/move/set/if）、交互与点灯。
+- [x] `reference/web/src/core/`：固定步进时钟、场景栈、输入动作、版本化游戏状态。
+- [x] `reference/web/src/systems/`：文本地图解析与合法性检查、移动 / 碰撞 / 跟随、剧情指令（say/move/set/if）、交互与点灯。
 - [x] 先测试：不能穿越水 / 物件 / NPC；成功移动才更新跟随；脚本跳转有界且阻止缺少文本；状态不被无效操作破坏。
-- [x] `src/render/`、`src/scenes/`：清单加载、地形四边自动拼接、镜头约束、对话框头像和逐字显示、可快进。
+- [x] `reference/web/src/render/`、`reference/web/src/scenes/`：清单加载、地形四边自动拼接、镜头约束、对话框头像和逐字显示、可快进。
 - [x] `content/maps/`、`content/story/`、`content/i18n/zh-Hans/`：测试场景，所有玩家文字走表。
 
 ## 3 · 存档、声音和工具

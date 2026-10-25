@@ -5,7 +5,7 @@ config_version=5
 config/name="伴星 ASTRA"
 run/main_scene="res://scenes/main.tscn"
 boot_splash/show_image=false
-config/icon="res://assets/art/portrait.finn.png"
+config/icon="res://resources/art/portrait.finn.png"
 
 [display]
 window/size/viewport_width=480

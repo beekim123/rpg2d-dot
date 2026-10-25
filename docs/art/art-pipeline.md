@@ -17,14 +17,14 @@
 
 | 路径 | 内容 |
 |---|---|
-| `art/palette.json` | 主调色板：字符 → 颜色、名字、色带 |
-| `art/source/<分类>/<id>.json` | 像素精灵源数据（字符画） |
-| `art/source/<分类>/<id>.mjs` | 程序化素材（导出一个绘制函数） |
-| `art/lib/` | 绘图工具库（见第 4 节） |
-| `art/export/` | 构建输出：PNG 图集和 `manifest.json` |
-| `art/export/sheets/` | 对照表（审图用，可以不进游戏） |
-| `tools/art.mjs` | `build` / `verify` / `sheet` 命令 |
-| `workbench/` | HTML 工作台 |
+| `resources/art/palette.json` | 主调色板：字符 → 颜色、名字、色带 |
+| `resources/art/source/<分类>/<id>.json` | 像素精灵源数据（字符画） |
+| `resources/art/source/<分类>/<id>.mjs` | 程序化素材（导出一个绘制函数） |
+| `resources/art/lib/` | 绘图工具库（见第 4 节） |
+| `resources/art/export/` | 构建输出：PNG 图集和 `manifest.json` |
+| `resources/art/export/sheets/` | 对照表（审图用，可以不进游戏） |
+| `tools/resources/art.mjs` | `build` / `verify` / `sheet` 命令 |
+| `reference/web/workbench/` | HTML 工作台 |
 
 ## 3 三种源数据
 
@@ -90,9 +90,9 @@ export function draw(g, { seed }) {
 ## 5 构建与清单
 
 ```sh
-node tools/art.mjs build    # 所有源数据 → art/export/*.png + manifest.json
-node tools/art.mjs verify   # 重新绘制并与 PNG 逐字节比较；检查调色板、尺寸、锚点、动画
-node tools/art.mjs sheet    # 生成对照表到 art/export/sheets/
+node tools/resources/art.mjs build    # 所有源数据 → resources/art/export/*.png + manifest.json
+node tools/resources/art.mjs verify   # 重新绘制并与 PNG 逐字节比较；检查调色板、尺寸、锚点、动画
+node tools/resources/art.mjs sheet    # 生成对照表到 resources/art/export/sheets/
 ```
 
 `manifest.json` 中每个素材记录：`id`、PNG 文件、在图集中的位置、帧大小、锚点、动画（帧序号、fps、是否循环）、九宫格边距（界面面板）、内容哈希。
@@ -112,7 +112,7 @@ node tools/art.mjs sheet    # 生成对照表到 art/export/sheets/
 
 ## 7 工作台
 
-`workbench/index.html`：一个静态 HTML 页面，双击就能打开（也可以通过开发服务器打开），用来看和检查美术：
+`reference/web/workbench/index.html`：素材工作台入口，通过 `npm run reference:dev` 的 `/workbench/` 打开，用来看和检查美术：
 
 - **素材库**：按分类、区域筛选，点开看大图（整数倍放大）和动画播放
 - **场景预览**：把图块、建筑、人物摆成一张 480×270 的模拟画面，检查放在一起的效果

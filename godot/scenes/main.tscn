@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://scripts/world.gd" id="1_world"]
-
-[ext_resource type="Texture2D" path="res://assets/art/ui.panel.png" id="2_panel"]
+[ext_resource type="Script" path="res://scripts/world/world.gd" id="1_world"]
 
 [node name="LanternWorld" type="Node2D"]
 texture_filter = 1
@@ -27,7 +25,6 @@ offset_left = 6.0
 offset_top = 6.0
 offset_right = 316.0
 offset_bottom = 32.0
-texture = ExtResource("2_panel")
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -39,7 +36,6 @@ offset_left = 6.0
 offset_top = 246.0
 offset_right = 474.0
 offset_bottom = 268.0
-texture = ExtResource("2_panel")
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4

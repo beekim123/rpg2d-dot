@@ -9,7 +9,9 @@ jobs:
       OMP_NUM_THREADS: '1'
       OPENBLAS_NUM_THREADS: '1'
       MKL_NUM_THREADS: '1'
+      VECLIB_MAXIMUM_THREADS: '1'
       RAYON_NUM_THREADS: '1'
+      UV_THREADPOOL_SIZE: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,10 +19,26 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
+      - name: Install pinned official Godot and matching Web templates
+        run: |
+          GODOT_VERSION=$(cat config/godot-version.txt)
+          mkdir -p .local/godot-engine
+          curl --fail --location --retry 2 "https://godot-releases.nbg1.your-objectstorage.com/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o .local/godot-engine.zip
+          unzip -t .local/godot-engine.zip
+          unzip -q .local/godot-engine.zip -d .local/godot-engine
+          echo "ASTRA_GODOT_BIN=$GITHUB_WORKSPACE/.local/godot-engine/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"
+          python3 tools/godot/install-web-templates.py --version "$GODOT_VERSION"
       - run: npm run check
+      - run: npm run build
+      - run: npm run reference:build
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
+      - run: npm run godot:test:web
+      - run: npm run reference:test:web
       - uses: actions/upload-artifact@v4
         with:
-          name: astra-web
-          path: dist
+          name: astra-godot-web
+          path: build/godot-web
+      - uses: actions/upload-artifact@v4
+        with:
+          name: astra-reference-web
+          path: build/reference-web
