@@ -22,3 +22,5 @@ npm run reference:test:web
 `src/` 保留原型运行逻辑和浏览器适配器；美术从共享清单加载，合成器引用 `resources/audio/synth.ts`，不再复制一套制作源。浏览器公开的 `/art/export/` 是兼容资源路由，不是仓库目录位置。
 
 已有视觉记录：[场景待机](../../artifacts/screenshots/scene-idle.gif)、[战斗候选](../../artifacts/screenshots/battle-redesign.gif)。重录待机使用 `ASTRA_CAPTURE_IDLE=1 npm run reference:test:web`，再运行 `python3 tools/qa/idle-preview.py`（可选 Pillow）。脚本只处理本项目 QA 帧。
+
+2026-10-25规则修正：Godot一致性审查实测发现旧意图只固定终点、路径被堵会偷偷绕行。本次仅同步修复这一共有缺陷：公布时保存逐格path，执行时逐格校验；中途受阻明确中断，有捷径也不换路。对应双端红绿测试与共享回放已补齐，未新增Canvas专用功能，后续章节仍只在Godot实施。

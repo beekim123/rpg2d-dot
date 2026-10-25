@@ -1,7 +1,7 @@
 {
   "format": "astra.battle-skills/1",
   "sources": {
-    "reference/web/src/battle/engine.ts": "5a33e761aaefc6d686160f5c4919848314cbda8074e1475552842777d692e472",
+    "reference/web/src/battle/engine.ts": "427d7b6aca06b5621df6a595992369023f6c39d2694436238eb1436aa4ff1d53",
     "reference/web/src/battle/math.ts": "4a42681377231e24eebb1d06194aef5c132fe47a947d8d546085e052312be6d9",
     "reference/web/src/battle/skills.ts": "fee7b5cd21ce0fe4b0b216a3faaa8c26eec44039b44c0caa361d4e970348cfc1",
     "content/data/battle-skills.json": "934105d4c8be9e4d471550295a94e9abb480bc895f14a1846ee8d55e626b0617",

@@ -4,7 +4,7 @@
 
 ## 设计与边界
 
-参考 TypeScript 继续冻结；夹具生成器可调用它，Godot运行规则不调用它。共享JSON放在 `tests/fixtures/battle/`，记录参考源哈希、输入和期望输出。生成后入库；正常检查只比较，不能自动重写期望。原生测试从仓库共享夹具读取，不把测试数据加入资源制作源。
+参考 TypeScript 继续冻结；本次仅同步修复经实测确认的固定意图中途改道缺陷，不新增Canvas专用玩法。夹具生成器可调用它，Godot运行规则不调用它。共享JSON放在 `tests/fixtures/battle/`，记录参考源哈希、输入和期望输出。生成后入库；正常检查只比较，不能自动重写期望。原生测试从仓库共享夹具读取，不把测试数据加入资源制作源。
 
 规则用 RefCounted、显式类型与深拷贝；不依赖节点、绘图、文件、时钟或随机。数值由 `content/data/battle-balance.json` 注入，配置失败保留上一有效配置。保持JSON字段名，GDScript方法使用snake_case。合法调用返回 `{ok:true,value:...}`，非法数据返回 `{ok:false,error:...}`；错误文案不作为跨语言契约。回放比较完整状态及有序事件，不只比较最终HP。
 
@@ -30,11 +30,22 @@
 ## G2c–G2e · 后续顺序
 
 - [x] G2c：技能、治疗/护盾、灯印、射线、击退/共享碰撞去重及剧情生命底线。
-- [ ] G2d：固定定点/锁定意图、可见中断、实时预计扣血，完整事件回放。
-- [ ] G2e：艾拉/影匠两战真实胜负与失败重建，补未觉醒芬恩道具/鼓舞；完整G2技术验收后进入G3原生表现。
+- [x] G2d：固定定点/锁定意图、可见中断、实时预计扣血，完整事件回放。
+- [x] G2e1：艾拉/影匠两战真实胜负、原生自行规划与失败后重试获胜。
+- [ ] G2e2：补未觉醒芬恩道具/鼓舞；完整G2技术验收后进入G3原生表现。
 
 验证入口：`npm run battle:fixtures:verify`、`npm run godot:test:battle`、`npm run check`。每次增量更新本表、backlog/progress/status。G2纯规则阶段不宣称原生战斗画面或完整序章已完成；画面/声音验收在G3，完整故事在G4。
 
 ## G2c实现契约
 
 `BattleSkills.configure(skill_data)`校验并深拷贝rules/skills；`BattleEngine.configure(balance, skill_data)`注入完整数据。旧ID数组只用于G2b移动夹具，不能执行技能。BattleEffects只处理引擎私有事务副本，失败返回原输入和invalid事件；不暴露资源/场景依赖。共享skills.json包含20回放/70指令/200射线；原生额外覆盖三格击退剩余碰撞伤害、非法配置保留旧数据、伤害/治疗/护盾溢出回滚。
+
+## G2d/G2e1实现契约
+
+`BattleEncounter.configure(balance, skill_data)`准备规则；`create_encounter(definition)`返回初态与预告；`command_encounter(encounter, command)`只允许玩家指令；`advance_enemy(encounter)`执行已预告的固定命令。只有行动后才重算该敌人的下一份计划。刷新只改变status/reason/expectedDamage，绝不暗换目标、格子或路径。预报在副本上执行固定计划，以实际目标所属HP差值计算，包含护盾/收回/剧情底线/碰撞。
+
+`BattleSession`拥有私有初始定义和当前状态；`start`成功后才替换旧旅程，`command`/`advance_enemy`提交成功结果，`snapshot`返回独立副本；`retry`仅在真实失败后重新创建完整初态与意图，不编辑失败局HP。错误配置/新战场不覆盖现有会话。session不读写探索存档。
+
+共享intents.json覆盖17段意图场景；四个route文件分别记录艾拉/影匠的成功和真实失败，共21回放/113步。原生既逐步比较全状态/事件/玩家计划，也用自身规划器打到同一终态。显式Session重试还验证原定义和暴露快照被外部改写后，私有重试种子仍完整。
+
+固定路径修正：公告时在副本上执行移动前缀，把每条move的逐格path写进指令；执行/预报逐格检查同一path，不能重新BFS。起点/终点、四邻接、累计预算、动态占用和伴星全程星绳都必须合法。中间格被堵但有等长绕路时仍显示plan_blocked，整段前缀零移动，再按原技能成本/重量取消；出现捷径也不改公告路径。旧移动/技能夹具只更新参考来源哈希，不改其期望数值。

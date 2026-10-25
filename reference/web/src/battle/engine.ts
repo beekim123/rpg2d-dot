@@ -9,7 +9,8 @@ export interface BattleState extends BattleDefinition {
   turnStart:BattleActor;bodySpent:number;astralSpent:number;
   manifestUsed:boolean;enemyActions:Record<string,number>;hitEnemy:Record<string,string[]>;
 }
-export type BattleCommand={actorId:string;type:'move_body'|'move_astral'|'manifest';to:Point}
+export type BattleCommand={actorId:string;type:'move_body'|'move_astral';to:Point;path?:Point[]}
+  |{actorId:string;type:'manifest';to:Point}
   |{actorId:string;type:'undo'|'wait'|'recall'|'guard'}
   |{actorId:string;type:'skill';skillId:string;targetId:string;target:DamageTarget}
   |{actorId:string;type:'cancelled_skill';skillId:string;outcome:'miss'|'interrupted';reason:IntentReason};
@@ -53,6 +54,17 @@ function pathTo(board:BattleDefinition,actor:BattleActor,unit:'body'|'astral',to
       seen.add(key(q));queue.push([...path,q]);
     }
   }return undefined;
+}
+/** Advertised intent paths are validated exactly; never silently run BFS again. */
+function fixedPath(board:BattleDefinition,actor:BattleActor,unit:DamageTarget,to:Point,budget:number,path:unknown):Point[]|undefined {
+  const from=unit==='body'?actor.body:actor.astral;
+  if(!from||!Array.isArray(path)||path.length===0||path.length>budget+1||path.some(p=>!inBounds(board,p)))return undefined;
+  if(!same(path[0],from)||!same(path.at(-1),to))return undefined;
+  for(let i=0;i<path.length;i++){
+    const p=path[i] as Point;
+    if(solid(board,p,actor.id,unit)||(i>0&&manhattan(path[i-1],p)!==1)||unit==='astral'&&manhattan(p,actor.body)>actor.reach)return undefined;
+  }
+  return structuredClone(path);
 }
 /** One bounded flood per unit; callers can score legal endpoints without cloning a battle per cell. */
 export function reachableBattleMoves(state:BattleState,unit:DamageTarget):{to:Point;steps:number}[] {
@@ -198,7 +210,7 @@ export function applyBattleCommand(input:BattleState,command:BattleCommand):Batt
     if(unit==='astral'&&manhattan(command.to,actor.body)>actor.reach)return invalid('outside_tether');
     const allowance=unit==='body'?3:({E:1,D:2,C:3,B:4,A:5,S:6}[rating(actor.chart.spd)]);
     const spent=unit==='body'?state.bodySpent:state.astralSpent;
-    const path=pathTo(state,actor,unit,command.to,allowance-spent);if(!path)return invalid('unreachable');
+    const path=Object.hasOwn(command,'path')?fixedPath(state,actor,unit,command.to,allowance-spent,command.path):pathTo(state,actor,unit,command.to,allowance-spent);if(!path)return invalid('unreachable');
     const from=structuredClone(unit==='body'?actor.body:actor.astral!);const to=structuredClone(command.to);
     const events:BattleEvent[]=[{type:'move',actorId:actor.id,unit,from,to,path}];
     if(unit==='body'){actor.body=to;state.bodySpent+=path.length-1;const pull=pullWithinTether(state,actor);if(pull)events.push(pull);}

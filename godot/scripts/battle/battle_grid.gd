@@ -32,6 +32,21 @@ static func solid(board: Dictionary, point: Dictionary, ignore_id: String, ignor
 			return true
 	return false
 
+static func fixed_path(board: Dictionary, actor: Dictionary, unit: String, to: Dictionary, budget: int, path: Variant) -> Array:
+	var from: Variant = actor[unit]
+	if from == null or not path is Array or path.is_empty() or path.size() > budget + 1:
+		return []
+	for point: Variant in path:
+		if not in_bounds(board, point):
+			return []
+	if not same(path[0], from) or not same(path.back(), to):
+		return []
+	for index: int in path.size():
+		var point: Dictionary = path[index]
+		if solid(board, point, actor["id"], unit) or (index > 0 and distance(path[index - 1], point) != 1) or (unit == "astral" and distance(point, actor["body"]) > actor["reach"]):
+			return []
+	return path.duplicate(true)
+
 static func path_to(board: Dictionary, actor: Dictionary, unit: String, to: Dictionary, budget: int) -> Array:
 	var from: Variant = actor[unit]
 	if from == null or solid(board, to, actor["id"], unit):

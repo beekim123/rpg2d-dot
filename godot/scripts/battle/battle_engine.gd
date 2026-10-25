@@ -58,7 +58,7 @@ func create_battle(definition: Variant) -> Dictionary:
 	return {"ok": true, "state": state}
 
 func apply_command(input: Variant, command: Variant) -> Dictionary:
-	if not _valid_state(input):
+	if not is_valid_state(input):
 		return _invalid(input, "invalid_state")
 	if input["phase"] != "active":
 		return _invalid(input, "battle_finished")
@@ -94,7 +94,7 @@ func apply_command(input: Variant, command: Variant) -> Dictionary:
 		if unit == "astral" and Grid.distance(to, actor["body"]) > actor["reach"]:
 			return _invalid(input, "outside_tether")
 		var spent_key: String = "bodySpent" if unit == "body" else "astralSpent"
-		var path: Array = Grid.path_to(state, actor, unit, to, _allowance(actor, unit) - int(state[spent_key]))
+		var path: Array = Grid.fixed_path(state, actor, unit, to, _allowance(actor, unit) - int(state[spent_key]), command["path"]) if command.has("path") else Grid.path_to(state, actor, unit, to, _allowance(actor, unit) - int(state[spent_key]))
 		if path.is_empty():
 			return _invalid(input, "unreachable")
 		var from: Dictionary = actor[unit].duplicate(true)
@@ -145,7 +145,7 @@ func apply_command(input: Variant, command: Variant) -> Dictionary:
 	return _invalid(input, "unknown_command")
 
 func reachable_moves(state: Variant, unit: Variant) -> Array:
-	if unit not in ["body", "astral"] or not _valid_state(state) or state["phase"] != "active":
+	if unit not in ["body", "astral"] or not is_valid_state(state) or state["phase"] != "active":
 		return []
 	var actor: Dictionary = _find(state, state["activeId"])
 	if actor.is_empty() or actor["hp"] == 0:
@@ -239,7 +239,7 @@ func _goal_error(board: Dictionary) -> String:
 				return "invalid_intent_mode"
 	return ""
 
-func _valid_state(state: Variant) -> bool:
+func is_valid_state(state: Variant) -> bool:
 	if not _definition_error(state).is_empty() or state.get("phase") not in ["active", "won", "lost"] or _find(state, state.get("activeId")).is_empty():
 		return false
 	if not _integer(state.get("turnNumber"), 1) or not _integer(state.get("time")) or not _integer(state.get("bodySpent"), 0, 3) or not _integer(state.get("astralSpent"), 0, 6) or not state.get("manifestUsed") is bool:

@@ -1,0 +1,3859 @@
+{
+  "format": "astra.encounter/1",
+  "sources": {
+    "reference/web/src/battle/engine.ts": "427d7b6aca06b5621df6a595992369023f6c39d2694436238eb1436aa4ff1d53",
+    "reference/web/src/battle/math.ts": "4a42681377231e24eebb1d06194aef5c132fe47a947d8d546085e052312be6d9",
+    "reference/web/src/battle/skills.ts": "fee7b5cd21ce0fe4b0b216a3faaa8c26eec44039b44c0caa361d4e970348cfc1",
+    "reference/web/src/battle/ai.ts": "4573d83bbb5ae1b6b84b975534c4f21fcbf699d49fce178a90353a8b91e80128",
+    "reference/web/src/battle/encounter.ts": "03658bd025ee01bcbe511e0420e855e181b39b5a6bc687e9edc9a4c423e28d0b",
+    "content/data/battle-balance.json": "0cddb0e79f3d85207cc6dae7788ba155a12e668ef9ccb8ef022fa1271804748d",
+    "content/data/battle-skills.json": "934105d4c8be9e4d471550295a94e9abb480bc895f14a1846ee8d55e626b0617",
+    "content/data/battles/prologue_ella.json": "7da4ec6a39ea7688d92d7a136fcee6effc25f5ea58466810b4291b11e4bf5fa4",
+    "content/data/battles/prologue_shade.json": "7a8c752381c0a1eb7c70c38e5a56df5bb3a0123d94c035a3d8ab02c0842581e6"
+  },
+  "balance": {
+    "chart": {
+      "minimum": 0,
+      "maximum": 100,
+      "ratingMinimums": {
+        "E": 0,
+        "D": 20,
+        "C": 40,
+        "B": 60,
+        "A": 75,
+        "S": 90
+      }
+    },
+    "damage": {
+      "basePowerFactor": 0.6,
+      "powerDivisor": 100,
+      "tetherLoss": 0.4,
+      "enduranceDivisor": 250,
+      "bodyMultiplier": 1.5,
+      "recalledBodyMultiplier": 0.7,
+      "astralMultiplier": 1,
+      "defaultOpeningMultiplier": 1
+    },
+    "timeline": {
+      "baseInterval": 100,
+      "speedFactors": {
+        "E": 1.4,
+        "D": 1.25,
+        "C": 1.1,
+        "B": 1,
+        "A": 0.9,
+        "S": 0.8
+      },
+      "actionWeights": {
+        "light": 0.7,
+        "normal": 1,
+        "heavy": 1.3
+      }
+    }
+  },
+  "skillData": {
+    "rules": {
+      "guardShield": 20,
+      "collisionDamagePerCell": 10,
+      "precisionDivisor": 10
+    },
+    "skills": [
+      {
+        "id": "basic_strike",
+        "cost": 0,
+        "power": 16,
+        "range": 1,
+        "weight": "normal",
+        "effect": "damage"
+      },
+      {
+        "id": "lamp_punch",
+        "cost": 0,
+        "power": 18,
+        "range": 1,
+        "weight": "normal",
+        "effect": "damage",
+        "lampMarks": 1
+      },
+      {
+        "id": "flare",
+        "cost": 3,
+        "power": 12,
+        "range": 3,
+        "weight": "heavy",
+        "effect": "damage",
+        "consumeMarks": true
+      },
+      {
+        "id": "laurel_bolt",
+        "cost": 0,
+        "power": 12,
+        "range": 2,
+        "weight": "normal",
+        "effect": "damage"
+      },
+      {
+        "id": "laurel_heal",
+        "cost": 3,
+        "power": 22,
+        "range": 3,
+        "weight": "normal",
+        "effect": "heal"
+      },
+      {
+        "id": "laurel_shield",
+        "cost": 2,
+        "power": 18,
+        "range": 3,
+        "weight": "normal",
+        "effect": "shield"
+      },
+      {
+        "id": "rush",
+        "cost": 4,
+        "power": 24,
+        "range": 1,
+        "weight": "heavy",
+        "effect": "damage",
+        "knockback": 1
+      }
+    ]
+  },
+  "replays": [
+    {
+      "id": "prologue_shade_wait",
+      "initial": {
+        "id": "prologue_shade",
+        "width": 8,
+        "height": 6,
+        "intentModes": {
+          "shade": "unit"
+        },
+        "blocked": [
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 4
+          }
+        ],
+        "actors": [
+          {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 1,
+              "y": 3
+            },
+            "astral": {
+              "x": 2,
+              "y": 3
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 110,
+            "maxHp": 110,
+            "will": 10,
+            "maxWill": 10,
+            "shield": 0,
+            "chart": {
+              "pow": 65,
+              "spd": 65,
+              "rch": 25,
+              "end": 45,
+              "prc": 50,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 0,
+            "skillIds": [
+              "lamp_punch",
+              "flare",
+              "rush"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "shade",
+            "team": "enemy",
+            "order": 0,
+            "body": {
+              "x": 6,
+              "y": 3
+            },
+            "astral": {
+              "x": 5,
+              "y": 3
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 500,
+            "maxHp": 500,
+            "will": 12,
+            "maxWill": 12,
+            "shield": 0,
+            "chart": {
+              "pow": 55,
+              "spd": 50,
+              "rch": 30,
+              "end": 50,
+              "prc": 55,
+              "pot": 70
+            },
+            "reach": 2,
+            "readyAt": 0,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          }
+        ],
+        "goal": {
+          "kind": "survive_and_hit",
+          "actorId": "finn",
+          "enemyId": "shade",
+          "enemyActions": 3
+        },
+        "hpFloors": {
+          "shade": 1
+        }
+      },
+      "expectedInitial": {
+        "battle": {
+          "id": "prologue_shade",
+          "width": 8,
+          "height": 6,
+          "intentModes": {
+            "shade": "unit"
+          },
+          "blocked": [
+            {
+              "x": 3,
+              "y": 1
+            },
+            {
+              "x": 3,
+              "y": 4
+            }
+          ],
+          "actors": [
+            {
+              "id": "finn",
+              "team": "player",
+              "order": 0,
+              "body": {
+                "x": 1,
+                "y": 3
+              },
+              "astral": {
+                "x": 2,
+                "y": 3
+              },
+              "kind": "close",
+              "mode": "manifested",
+              "hp": 110,
+              "maxHp": 110,
+              "will": 10,
+              "maxWill": 10,
+              "shield": 0,
+              "chart": {
+                "pow": 65,
+                "spd": 65,
+                "rch": 25,
+                "end": 45,
+                "prc": 50,
+                "pot": 80
+              },
+              "reach": 2,
+              "readyAt": 0,
+              "skillIds": [
+                "lamp_punch",
+                "flare",
+                "rush"
+              ],
+              "lampMarks": 0
+            },
+            {
+              "id": "shade",
+              "team": "enemy",
+              "order": 0,
+              "body": {
+                "x": 6,
+                "y": 3
+              },
+              "astral": {
+                "x": 5,
+                "y": 3
+              },
+              "kind": "close",
+              "mode": "manifested",
+              "hp": 500,
+              "maxHp": 500,
+              "will": 12,
+              "maxWill": 12,
+              "shield": 0,
+              "chart": {
+                "pow": 55,
+                "spd": 50,
+                "rch": 30,
+                "end": 50,
+                "prc": 55,
+                "pot": 70
+              },
+              "reach": 2,
+              "readyAt": 0,
+              "skillIds": [
+                "basic_strike"
+              ],
+              "lampMarks": 0
+            }
+          ],
+          "goal": {
+            "kind": "survive_and_hit",
+            "actorId": "finn",
+            "enemyId": "shade",
+            "enemyActions": 3
+          },
+          "hpFloors": {
+            "shade": 1
+          },
+          "phase": "active",
+          "activeId": "finn",
+          "turnNumber": 1,
+          "time": 0,
+          "turnStart": {
+            "id": "finn",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 1,
+              "y": 3
+            },
+            "astral": {
+              "x": 2,
+              "y": 3
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 110,
+            "maxHp": 110,
+            "will": 10,
+            "maxWill": 10,
+            "shield": 0,
+            "chart": {
+              "pow": 65,
+              "spd": 65,
+              "rch": 25,
+              "end": 45,
+              "prc": 50,
+              "pot": 80
+            },
+            "reach": 2,
+            "readyAt": 0,
+            "skillIds": [
+              "lamp_punch",
+              "flare",
+              "rush"
+            ],
+            "lampMarks": 0
+          },
+          "bodySpent": 0,
+          "astralSpent": 0,
+          "manifestUsed": false,
+          "enemyActions": {},
+          "hitEnemy": {}
+        },
+        "intents": {
+          "shade": {
+            "actorId": "shade",
+            "mode": "unit",
+            "expectedDamage": 9,
+            "status": "ready",
+            "commands": [
+              {
+                "type": "move_body",
+                "actorId": "shade",
+                "to": {
+                  "x": 4,
+                  "y": 2
+                },
+                "path": [
+                  {
+                    "x": 6,
+                    "y": 3
+                  },
+                  {
+                    "x": 6,
+                    "y": 2
+                  },
+                  {
+                    "x": 5,
+                    "y": 2
+                  },
+                  {
+                    "x": 4,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "type": "move_astral",
+                "actorId": "shade",
+                "to": {
+                  "x": 3,
+                  "y": 3
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 3
+                  },
+                  {
+                    "x": 4,
+                    "y": 3
+                  },
+                  {
+                    "x": 3,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "type": "skill",
+                "actorId": "shade",
+                "skillId": "basic_strike",
+                "targetId": "finn",
+                "target": "astral"
+              }
+            ],
+            "origin": {
+              "body": {
+                "x": 6,
+                "y": 3
+              },
+              "astral": {
+                "x": 5,
+                "y": 3
+              }
+            },
+            "skillId": "basic_strike",
+            "targetId": "finn",
+            "target": "astral",
+            "cell": {
+              "x": 2,
+              "y": 3
+            }
+          }
+        }
+      },
+      "initialPlan": [
+        {
+          "type": "move_body",
+          "actorId": "finn",
+          "to": {
+            "x": 3,
+            "y": 2
+          }
+        },
+        {
+          "type": "move_astral",
+          "actorId": "finn",
+          "to": {
+            "x": 4,
+            "y": 3
+          }
+        },
+        {
+          "type": "skill",
+          "actorId": "finn",
+          "skillId": "rush",
+          "targetId": "shade",
+          "target": "astral"
+        }
+      ],
+      "steps": [
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "wait",
+              "actorId": "finn"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 110,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 70,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 6,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 0,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "shade",
+                "turnNumber": 2,
+                "time": 0,
+                "turnStart": {
+                  "id": "shade",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 6,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 5,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 500,
+                  "maxHp": 500,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 55,
+                    "spd": 50,
+                    "rch": 30,
+                    "end": 50,
+                    "prc": 55,
+                    "pot": 70
+                  },
+                  "reach": 2,
+                  "readyAt": 0,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {},
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 9,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 4,
+                        "y": 2
+                      },
+                      "path": [
+                        {
+                          "x": 6,
+                          "y": 3
+                        },
+                        {
+                          "x": 6,
+                          "y": 2
+                        },
+                        {
+                          "x": 5,
+                          "y": 2
+                        },
+                        {
+                          "x": 4,
+                          "y": 2
+                        }
+                      ]
+                    },
+                    {
+                      "type": "move_astral",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "path": [
+                        {
+                          "x": 5,
+                          "y": 3
+                        },
+                        {
+                          "x": 4,
+                          "y": 3
+                        },
+                        {
+                          "x": 3,
+                          "y": 3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 6,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 5,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "astral",
+                  "cell": {
+                    "x": 2,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "turn",
+                "actorId": "shade",
+                "time": 0
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "shade"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 101,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 70,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 110,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "finn",
+                "turnNumber": 3,
+                "time": 70,
+                "turnStart": {
+                  "id": "finn",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 101,
+                  "maxHp": 110,
+                  "will": 10,
+                  "maxWill": 10,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 65,
+                    "spd": 65,
+                    "rch": 25,
+                    "end": 45,
+                    "prc": 50,
+                    "pot": 80
+                  },
+                  "reach": 2,
+                  "readyAt": 70,
+                  "skillIds": [
+                    "lamp_punch",
+                    "flare",
+                    "rush"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 1
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 15,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 3,
+                        "y": 2
+                      },
+                      "path": [
+                        {
+                          "x": 4,
+                          "y": 2
+                        },
+                        {
+                          "x": 3,
+                          "y": 2
+                        }
+                      ]
+                    },
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "astral",
+                  "cell": {
+                    "x": 2,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "move",
+                "actorId": "shade",
+                "unit": "body",
+                "from": {
+                  "x": 6,
+                  "y": 3
+                },
+                "to": {
+                  "x": 4,
+                  "y": 2
+                },
+                "path": [
+                  {
+                    "x": 6,
+                    "y": 3
+                  },
+                  {
+                    "x": 6,
+                    "y": 2
+                  },
+                  {
+                    "x": 5,
+                    "y": 2
+                  },
+                  {
+                    "x": 4,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "type": "move",
+                "actorId": "shade",
+                "unit": "astral",
+                "from": {
+                  "x": 5,
+                  "y": 3
+                },
+                "to": {
+                  "x": 3,
+                  "y": 3
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 3
+                  },
+                  {
+                    "x": 4,
+                    "y": 3
+                  },
+                  {
+                    "x": 3,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "type": "skill",
+                "actorId": "shade",
+                "skillId": "basic_strike",
+                "targetId": "finn",
+                "target": "astral",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "finn",
+                "sourceId": "shade",
+                "target": "astral",
+                "damage": 9,
+                "absorbed": 0,
+                "hp": 101
+              },
+              {
+                "type": "turn",
+                "actorId": "finn",
+                "time": 70
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "skill",
+              "actorId": "finn",
+              "skillId": "rush",
+              "targetId": "shade",
+              "target": "astral"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "wait",
+              "actorId": "finn"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 101,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 140,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 110,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "shade",
+                "turnNumber": 4,
+                "time": 110,
+                "turnStart": {
+                  "id": "shade",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 4,
+                    "y": 2
+                  },
+                  "astral": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 500,
+                  "maxHp": 500,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 55,
+                    "spd": 50,
+                    "rch": 30,
+                    "end": 50,
+                    "prc": 55,
+                    "pot": 70
+                  },
+                  "reach": 2,
+                  "readyAt": 110,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 1
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 15,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 3,
+                        "y": 2
+                      },
+                      "path": [
+                        {
+                          "x": 4,
+                          "y": 2
+                        },
+                        {
+                          "x": 3,
+                          "y": 2
+                        }
+                      ]
+                    },
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "astral",
+                  "cell": {
+                    "x": 2,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "turn",
+                "actorId": "shade",
+                "time": 110
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "shade"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 86,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 140,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 3,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 220,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "finn",
+                "turnNumber": 5,
+                "time": 140,
+                "turnStart": {
+                  "id": "finn",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 86,
+                  "maxHp": 110,
+                  "will": 10,
+                  "maxWill": 10,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 65,
+                    "spd": 65,
+                    "rch": 25,
+                    "end": 45,
+                    "prc": 50,
+                    "pot": 80
+                  },
+                  "reach": 2,
+                  "readyAt": 140,
+                  "skillIds": [
+                    "lamp_punch",
+                    "flare",
+                    "rush"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 2
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 23,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 1,
+                        "y": 1
+                      },
+                      "path": [
+                        {
+                          "x": 3,
+                          "y": 2
+                        },
+                        {
+                          "x": 2,
+                          "y": 2
+                        },
+                        {
+                          "x": 2,
+                          "y": 1
+                        },
+                        {
+                          "x": 1,
+                          "y": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "move_astral",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 1,
+                        "y": 2
+                      },
+                      "path": [
+                        {
+                          "x": 2,
+                          "y": 2
+                        },
+                        {
+                          "x": 1,
+                          "y": 2
+                        }
+                      ]
+                    },
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 3,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "move",
+                "actorId": "shade",
+                "unit": "body",
+                "from": {
+                  "x": 4,
+                  "y": 2
+                },
+                "to": {
+                  "x": 3,
+                  "y": 2
+                },
+                "path": [
+                  {
+                    "x": 4,
+                    "y": 2
+                  },
+                  {
+                    "x": 3,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "type": "skill",
+                "actorId": "shade",
+                "skillId": "basic_strike",
+                "targetId": "finn",
+                "target": "astral",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "finn",
+                "sourceId": "shade",
+                "target": "astral",
+                "damage": 15,
+                "absorbed": 0,
+                "hp": 86
+              },
+              {
+                "type": "turn",
+                "actorId": "finn",
+                "time": 140
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "move_body",
+              "actorId": "finn",
+              "to": {
+                "x": 1,
+                "y": 2
+              }
+            },
+            {
+              "type": "move_astral",
+              "actorId": "finn",
+              "to": {
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "type": "skill",
+              "actorId": "finn",
+              "skillId": "rush",
+              "targetId": "shade",
+              "target": "body"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "wait",
+              "actorId": "finn"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 86,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 210,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 3,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 220,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "finn",
+                "turnNumber": 6,
+                "time": 210,
+                "turnStart": {
+                  "id": "finn",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 86,
+                  "maxHp": 110,
+                  "will": 10,
+                  "maxWill": 10,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 65,
+                    "spd": 65,
+                    "rch": 25,
+                    "end": 45,
+                    "prc": 50,
+                    "pot": 80
+                  },
+                  "reach": 2,
+                  "readyAt": 210,
+                  "skillIds": [
+                    "lamp_punch",
+                    "flare",
+                    "rush"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 2
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 23,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 1,
+                        "y": 1
+                      },
+                      "path": [
+                        {
+                          "x": 3,
+                          "y": 2
+                        },
+                        {
+                          "x": 2,
+                          "y": 2
+                        },
+                        {
+                          "x": 2,
+                          "y": 1
+                        },
+                        {
+                          "x": 1,
+                          "y": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "move_astral",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 1,
+                        "y": 2
+                      },
+                      "path": [
+                        {
+                          "x": 2,
+                          "y": 2
+                        },
+                        {
+                          "x": 1,
+                          "y": 2
+                        }
+                      ]
+                    },
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 3,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "turn",
+                "actorId": "finn",
+                "time": 210
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "move_body",
+              "actorId": "finn",
+              "to": {
+                "x": 1,
+                "y": 2
+              }
+            },
+            {
+              "type": "move_astral",
+              "actorId": "finn",
+              "to": {
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "type": "skill",
+              "actorId": "finn",
+              "skillId": "rush",
+              "targetId": "shade",
+              "target": "body"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "wait",
+              "actorId": "finn"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 86,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 280,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 3,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 220,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "shade",
+                "turnNumber": 7,
+                "time": 220,
+                "turnStart": {
+                  "id": "shade",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 3,
+                    "y": 2
+                  },
+                  "astral": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 500,
+                  "maxHp": 500,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 55,
+                    "spd": 50,
+                    "rch": 30,
+                    "end": 50,
+                    "prc": 55,
+                    "pot": 70
+                  },
+                  "reach": 2,
+                  "readyAt": 220,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 2
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 23,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 1,
+                        "y": 1
+                      },
+                      "path": [
+                        {
+                          "x": 3,
+                          "y": 2
+                        },
+                        {
+                          "x": 2,
+                          "y": 2
+                        },
+                        {
+                          "x": 2,
+                          "y": 1
+                        },
+                        {
+                          "x": 1,
+                          "y": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "move_astral",
+                      "actorId": "shade",
+                      "to": {
+                        "x": 1,
+                        "y": 2
+                      },
+                      "path": [
+                        {
+                          "x": 2,
+                          "y": 2
+                        },
+                        {
+                          "x": 1,
+                          "y": 2
+                        }
+                      ]
+                    },
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 3,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 3,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "turn",
+                "actorId": "shade",
+                "time": 220
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "shade"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 63,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 280,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 330,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "finn",
+                "turnNumber": 8,
+                "time": 280,
+                "turnStart": {
+                  "id": "finn",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 63,
+                  "maxHp": 110,
+                  "will": 10,
+                  "maxWill": 10,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 65,
+                    "spd": 65,
+                    "rch": 25,
+                    "end": 45,
+                    "prc": 50,
+                    "pot": 80
+                  },
+                  "reach": 2,
+                  "readyAt": 280,
+                  "skillIds": [
+                    "lamp_punch",
+                    "flare",
+                    "rush"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 3
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 23,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "move",
+                "actorId": "shade",
+                "unit": "body",
+                "from": {
+                  "x": 3,
+                  "y": 2
+                },
+                "to": {
+                  "x": 1,
+                  "y": 1
+                },
+                "path": [
+                  {
+                    "x": 3,
+                    "y": 2
+                  },
+                  {
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "x": 2,
+                    "y": 1
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              {
+                "type": "tether_pull",
+                "actorId": "shade",
+                "from": {
+                  "x": 3,
+                  "y": 3
+                },
+                "to": {
+                  "x": 2,
+                  "y": 2
+                }
+              },
+              {
+                "type": "move",
+                "actorId": "shade",
+                "unit": "astral",
+                "from": {
+                  "x": 2,
+                  "y": 2
+                },
+                "to": {
+                  "x": 1,
+                  "y": 2
+                },
+                "path": [
+                  {
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "x": 1,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "type": "skill",
+                "actorId": "shade",
+                "skillId": "basic_strike",
+                "targetId": "finn",
+                "target": "body",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "finn",
+                "sourceId": "shade",
+                "target": "body",
+                "damage": 23,
+                "absorbed": 0,
+                "hp": 63
+              },
+              {
+                "type": "turn",
+                "actorId": "finn",
+                "time": 280
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "move_body",
+              "actorId": "finn",
+              "to": {
+                "x": 0,
+                "y": 3
+              }
+            },
+            {
+              "type": "move_astral",
+              "actorId": "finn",
+              "to": {
+                "x": 1,
+                "y": 3
+              }
+            },
+            {
+              "type": "skill",
+              "actorId": "finn",
+              "skillId": "rush",
+              "targetId": "shade",
+              "target": "astral"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "wait",
+              "actorId": "finn"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 63,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 350,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 330,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "shade",
+                "turnNumber": 9,
+                "time": 330,
+                "turnStart": {
+                  "id": "shade",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 1
+                  },
+                  "astral": {
+                    "x": 1,
+                    "y": 2
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 500,
+                  "maxHp": 500,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 55,
+                    "spd": 50,
+                    "rch": 30,
+                    "end": 50,
+                    "prc": 55,
+                    "pot": 70
+                  },
+                  "reach": 2,
+                  "readyAt": 330,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 3
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 23,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "turn",
+                "actorId": "shade",
+                "time": 330
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "shade"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 40,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 350,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 440,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "finn",
+                "turnNumber": 10,
+                "time": 350,
+                "turnStart": {
+                  "id": "finn",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 40,
+                  "maxHp": 110,
+                  "will": 10,
+                  "maxWill": 10,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 65,
+                    "spd": 65,
+                    "rch": 25,
+                    "end": 45,
+                    "prc": 50,
+                    "pot": 80
+                  },
+                  "reach": 2,
+                  "readyAt": 350,
+                  "skillIds": [
+                    "lamp_punch",
+                    "flare",
+                    "rush"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 4
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 23,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "skill",
+                "actorId": "shade",
+                "skillId": "basic_strike",
+                "targetId": "finn",
+                "target": "body",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "finn",
+                "sourceId": "shade",
+                "target": "body",
+                "damage": 23,
+                "absorbed": 0,
+                "hp": 40
+              },
+              {
+                "type": "turn",
+                "actorId": "finn",
+                "time": 350
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "move_body",
+              "actorId": "finn",
+              "to": {
+                "x": 0,
+                "y": 3
+              }
+            },
+            {
+              "type": "move_astral",
+              "actorId": "finn",
+              "to": {
+                "x": 1,
+                "y": 3
+              }
+            },
+            {
+              "type": "skill",
+              "actorId": "finn",
+              "skillId": "rush",
+              "targetId": "shade",
+              "target": "astral"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "wait",
+              "actorId": "finn"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 40,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 420,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 440,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "finn",
+                "turnNumber": 11,
+                "time": 420,
+                "turnStart": {
+                  "id": "finn",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 40,
+                  "maxHp": 110,
+                  "will": 10,
+                  "maxWill": 10,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 65,
+                    "spd": 65,
+                    "rch": 25,
+                    "end": 45,
+                    "prc": 50,
+                    "pot": 80
+                  },
+                  "reach": 2,
+                  "readyAt": 420,
+                  "skillIds": [
+                    "lamp_punch",
+                    "flare",
+                    "rush"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 4
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 23,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "turn",
+                "actorId": "finn",
+                "time": 420
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "move_body",
+              "actorId": "finn",
+              "to": {
+                "x": 0,
+                "y": 3
+              }
+            },
+            {
+              "type": "move_astral",
+              "actorId": "finn",
+              "to": {
+                "x": 1,
+                "y": 3
+              }
+            },
+            {
+              "type": "skill",
+              "actorId": "finn",
+              "skillId": "rush",
+              "targetId": "shade",
+              "target": "astral"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "wait",
+              "actorId": "finn"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 40,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 490,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 440,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "shade",
+                "turnNumber": 12,
+                "time": 440,
+                "turnStart": {
+                  "id": "shade",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 1
+                  },
+                  "astral": {
+                    "x": 1,
+                    "y": 2
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 500,
+                  "maxHp": 500,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 55,
+                    "spd": 50,
+                    "rch": 30,
+                    "end": 50,
+                    "prc": 55,
+                    "pot": 70
+                  },
+                  "reach": 2,
+                  "readyAt": 440,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 4
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 23,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "turn",
+                "actorId": "shade",
+                "time": 440
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "shade"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 17,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 490,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 550,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "finn",
+                "turnNumber": 13,
+                "time": 490,
+                "turnStart": {
+                  "id": "finn",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 17,
+                  "maxHp": 110,
+                  "will": 10,
+                  "maxWill": 10,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 65,
+                    "spd": 65,
+                    "rch": 25,
+                    "end": 45,
+                    "prc": 50,
+                    "pot": 80
+                  },
+                  "reach": 2,
+                  "readyAt": 490,
+                  "skillIds": [
+                    "lamp_punch",
+                    "flare",
+                    "rush"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 5
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 17,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "skill",
+                "actorId": "shade",
+                "skillId": "basic_strike",
+                "targetId": "finn",
+                "target": "body",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "finn",
+                "sourceId": "shade",
+                "target": "body",
+                "damage": 23,
+                "absorbed": 0,
+                "hp": 17
+              },
+              {
+                "type": "turn",
+                "actorId": "finn",
+                "time": 490
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "move_body",
+              "actorId": "finn",
+              "to": {
+                "x": 0,
+                "y": 3
+              }
+            },
+            {
+              "type": "move_astral",
+              "actorId": "finn",
+              "to": {
+                "x": 1,
+                "y": 3
+              }
+            },
+            {
+              "type": "skill",
+              "actorId": "finn",
+              "skillId": "rush",
+              "targetId": "shade",
+              "target": "astral"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "wait",
+              "actorId": "finn"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 17,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 560,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 550,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "active",
+                "activeId": "shade",
+                "turnNumber": 14,
+                "time": 550,
+                "turnStart": {
+                  "id": "shade",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 1
+                  },
+                  "astral": {
+                    "x": 1,
+                    "y": 2
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 500,
+                  "maxHp": 500,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 55,
+                    "spd": 50,
+                    "rch": 30,
+                    "end": 50,
+                    "prc": 55,
+                    "pot": 70
+                  },
+                  "reach": 2,
+                  "readyAt": 550,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 5
+                },
+                "hitEnemy": {}
+              },
+              "intents": {
+                "shade": {
+                  "actorId": "shade",
+                  "mode": "unit",
+                  "expectedDamage": 17,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "shade",
+                      "skillId": "basic_strike",
+                      "targetId": "finn",
+                      "target": "body"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "finn",
+                  "target": "body",
+                  "cell": {
+                    "x": 1,
+                    "y": 3
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "turn",
+                "actorId": "shade",
+                "time": 550
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "shade"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_shade",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "shade": "unit"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "finn",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 3
+                    },
+                    "astral": null,
+                    "kind": "close",
+                    "mode": "extinguished",
+                    "hp": 0,
+                    "maxHp": 110,
+                    "will": 10,
+                    "maxWill": 10,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 65,
+                      "spd": 65,
+                      "rch": 25,
+                      "end": 45,
+                      "prc": 50,
+                      "pot": 80
+                    },
+                    "reach": 2,
+                    "readyAt": 560,
+                    "skillIds": [
+                      "lamp_punch",
+                      "flare",
+                      "rush"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "shade",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 1
+                    },
+                    "astral": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 500,
+                    "maxHp": 500,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 55,
+                      "spd": 50,
+                      "rch": 30,
+                      "end": 50,
+                      "prc": 55,
+                      "pot": 70
+                    },
+                    "reach": 2,
+                    "readyAt": 660,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "goal": {
+                  "kind": "survive_and_hit",
+                  "actorId": "finn",
+                  "enemyId": "shade",
+                  "enemyActions": 3
+                },
+                "hpFloors": {
+                  "shade": 1
+                },
+                "phase": "lost",
+                "activeId": "shade",
+                "turnNumber": 14,
+                "time": 550,
+                "turnStart": {
+                  "id": "shade",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 1
+                  },
+                  "astral": {
+                    "x": 1,
+                    "y": 2
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 500,
+                  "maxHp": 500,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 55,
+                    "spd": 50,
+                    "rch": 30,
+                    "end": 50,
+                    "prc": 55,
+                    "pot": 70
+                  },
+                  "reach": 2,
+                  "readyAt": 550,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "shade": 6
+                },
+                "hitEnemy": {}
+              },
+              "intents": {}
+            },
+            "events": [
+              {
+                "type": "skill",
+                "actorId": "shade",
+                "skillId": "basic_strike",
+                "targetId": "finn",
+                "target": "body",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "finn",
+                "sourceId": "shade",
+                "target": "body",
+                "damage": 17,
+                "absorbed": 0,
+                "hp": 0
+              },
+              {
+                "type": "ko",
+                "actorId": "finn"
+              },
+              {
+                "type": "outcome",
+                "phase": "lost"
+              }
+            ]
+          },
+          "playerPlan": []
+        }
+      ]
+    }
+  ]
+}

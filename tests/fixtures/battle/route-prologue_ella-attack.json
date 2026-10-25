@@ -1,0 +1,2591 @@
+{
+  "format": "astra.encounter/1",
+  "sources": {
+    "reference/web/src/battle/engine.ts": "427d7b6aca06b5621df6a595992369023f6c39d2694436238eb1436aa4ff1d53",
+    "reference/web/src/battle/math.ts": "4a42681377231e24eebb1d06194aef5c132fe47a947d8d546085e052312be6d9",
+    "reference/web/src/battle/skills.ts": "fee7b5cd21ce0fe4b0b216a3faaa8c26eec44039b44c0caa361d4e970348cfc1",
+    "reference/web/src/battle/ai.ts": "4573d83bbb5ae1b6b84b975534c4f21fcbf699d49fce178a90353a8b91e80128",
+    "reference/web/src/battle/encounter.ts": "03658bd025ee01bcbe511e0420e855e181b39b5a6bc687e9edc9a4c423e28d0b",
+    "content/data/battle-balance.json": "0cddb0e79f3d85207cc6dae7788ba155a12e668ef9ccb8ef022fa1271804748d",
+    "content/data/battle-skills.json": "934105d4c8be9e4d471550295a94e9abb480bc895f14a1846ee8d55e626b0617",
+    "content/data/battles/prologue_ella.json": "7da4ec6a39ea7688d92d7a136fcee6effc25f5ea58466810b4291b11e4bf5fa4",
+    "content/data/battles/prologue_shade.json": "7a8c752381c0a1eb7c70c38e5a56df5bb3a0123d94c035a3d8ab02c0842581e6"
+  },
+  "balance": {
+    "chart": {
+      "minimum": 0,
+      "maximum": 100,
+      "ratingMinimums": {
+        "E": 0,
+        "D": 20,
+        "C": 40,
+        "B": 60,
+        "A": 75,
+        "S": 90
+      }
+    },
+    "damage": {
+      "basePowerFactor": 0.6,
+      "powerDivisor": 100,
+      "tetherLoss": 0.4,
+      "enduranceDivisor": 250,
+      "bodyMultiplier": 1.5,
+      "recalledBodyMultiplier": 0.7,
+      "astralMultiplier": 1,
+      "defaultOpeningMultiplier": 1
+    },
+    "timeline": {
+      "baseInterval": 100,
+      "speedFactors": {
+        "E": 1.4,
+        "D": 1.25,
+        "C": 1.1,
+        "B": 1,
+        "A": 0.9,
+        "S": 0.8
+      },
+      "actionWeights": {
+        "light": 0.7,
+        "normal": 1,
+        "heavy": 1.3
+      }
+    }
+  },
+  "skillData": {
+    "rules": {
+      "guardShield": 20,
+      "collisionDamagePerCell": 10,
+      "precisionDivisor": 10
+    },
+    "skills": [
+      {
+        "id": "basic_strike",
+        "cost": 0,
+        "power": 16,
+        "range": 1,
+        "weight": "normal",
+        "effect": "damage"
+      },
+      {
+        "id": "lamp_punch",
+        "cost": 0,
+        "power": 18,
+        "range": 1,
+        "weight": "normal",
+        "effect": "damage",
+        "lampMarks": 1
+      },
+      {
+        "id": "flare",
+        "cost": 3,
+        "power": 12,
+        "range": 3,
+        "weight": "heavy",
+        "effect": "damage",
+        "consumeMarks": true
+      },
+      {
+        "id": "laurel_bolt",
+        "cost": 0,
+        "power": 12,
+        "range": 2,
+        "weight": "normal",
+        "effect": "damage"
+      },
+      {
+        "id": "laurel_heal",
+        "cost": 3,
+        "power": 22,
+        "range": 3,
+        "weight": "normal",
+        "effect": "heal"
+      },
+      {
+        "id": "laurel_shield",
+        "cost": 2,
+        "power": 18,
+        "range": 3,
+        "weight": "normal",
+        "effect": "shield"
+      },
+      {
+        "id": "rush",
+        "cost": 4,
+        "power": 24,
+        "range": 1,
+        "weight": "heavy",
+        "effect": "damage",
+        "knockback": 1
+      }
+    ]
+  },
+  "replays": [
+    {
+      "id": "prologue_ella_attack",
+      "initial": {
+        "id": "prologue_ella",
+        "width": 8,
+        "height": 6,
+        "intentModes": {
+          "faux_sword": "point"
+        },
+        "blocked": [
+          {
+            "x": 3,
+            "y": 1
+          },
+          {
+            "x": 3,
+            "y": 4
+          }
+        ],
+        "actors": [
+          {
+            "id": "ella",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 1,
+              "y": 3
+            },
+            "astral": {
+              "x": 2,
+              "y": 3
+            },
+            "kind": "remote",
+            "mode": "manifested",
+            "hp": 140,
+            "maxHp": 140,
+            "will": 12,
+            "maxWill": 12,
+            "shield": 0,
+            "chart": {
+              "pow": 50,
+              "spd": 50,
+              "rch": 65,
+              "end": 60,
+              "prc": 65,
+              "pot": 65
+            },
+            "reach": 5,
+            "readyAt": 0,
+            "skillIds": [
+              "laurel_bolt",
+              "laurel_heal",
+              "laurel_shield"
+            ],
+            "lampMarks": 0
+          },
+          {
+            "id": "faux_sword",
+            "team": "enemy",
+            "order": 0,
+            "body": {
+              "x": 6,
+              "y": 2
+            },
+            "astral": {
+              "x": 5,
+              "y": 2
+            },
+            "kind": "close",
+            "mode": "manifested",
+            "hp": 65,
+            "maxHp": 65,
+            "will": 8,
+            "maxWill": 8,
+            "shield": 0,
+            "chart": {
+              "pow": 40,
+              "spd": 35,
+              "rch": 25,
+              "end": 25,
+              "prc": 20,
+              "pot": 10
+            },
+            "reach": 2,
+            "readyAt": 0,
+            "skillIds": [
+              "basic_strike"
+            ],
+            "lampMarks": 0
+          }
+        ]
+      },
+      "expectedInitial": {
+        "battle": {
+          "id": "prologue_ella",
+          "width": 8,
+          "height": 6,
+          "intentModes": {
+            "faux_sword": "point"
+          },
+          "blocked": [
+            {
+              "x": 3,
+              "y": 1
+            },
+            {
+              "x": 3,
+              "y": 4
+            }
+          ],
+          "actors": [
+            {
+              "id": "ella",
+              "team": "player",
+              "order": 0,
+              "body": {
+                "x": 1,
+                "y": 3
+              },
+              "astral": {
+                "x": 2,
+                "y": 3
+              },
+              "kind": "remote",
+              "mode": "manifested",
+              "hp": 140,
+              "maxHp": 140,
+              "will": 12,
+              "maxWill": 12,
+              "shield": 0,
+              "chart": {
+                "pow": 50,
+                "spd": 50,
+                "rch": 65,
+                "end": 60,
+                "prc": 65,
+                "pot": 65
+              },
+              "reach": 5,
+              "readyAt": 0,
+              "skillIds": [
+                "laurel_bolt",
+                "laurel_heal",
+                "laurel_shield"
+              ],
+              "lampMarks": 0
+            },
+            {
+              "id": "faux_sword",
+              "team": "enemy",
+              "order": 0,
+              "body": {
+                "x": 6,
+                "y": 2
+              },
+              "astral": {
+                "x": 5,
+                "y": 2
+              },
+              "kind": "close",
+              "mode": "manifested",
+              "hp": 65,
+              "maxHp": 65,
+              "will": 8,
+              "maxWill": 8,
+              "shield": 0,
+              "chart": {
+                "pow": 40,
+                "spd": 35,
+                "rch": 25,
+                "end": 25,
+                "prc": 20,
+                "pot": 10
+              },
+              "reach": 2,
+              "readyAt": 0,
+              "skillIds": [
+                "basic_strike"
+              ],
+              "lampMarks": 0
+            }
+          ],
+          "phase": "active",
+          "activeId": "ella",
+          "turnNumber": 1,
+          "time": 0,
+          "turnStart": {
+            "id": "ella",
+            "team": "player",
+            "order": 0,
+            "body": {
+              "x": 1,
+              "y": 3
+            },
+            "astral": {
+              "x": 2,
+              "y": 3
+            },
+            "kind": "remote",
+            "mode": "manifested",
+            "hp": 140,
+            "maxHp": 140,
+            "will": 12,
+            "maxWill": 12,
+            "shield": 0,
+            "chart": {
+              "pow": 50,
+              "spd": 50,
+              "rch": 65,
+              "end": 60,
+              "prc": 65,
+              "pot": 65
+            },
+            "reach": 5,
+            "readyAt": 0,
+            "skillIds": [
+              "laurel_bolt",
+              "laurel_heal",
+              "laurel_shield"
+            ],
+            "lampMarks": 0
+          },
+          "bodySpent": 0,
+          "astralSpent": 0,
+          "manifestUsed": false,
+          "enemyActions": {},
+          "hitEnemy": {}
+        },
+        "intents": {
+          "faux_sword": {
+            "actorId": "faux_sword",
+            "mode": "point",
+            "expectedDamage": 0,
+            "status": "ready",
+            "commands": [
+              {
+                "type": "move_body",
+                "actorId": "faux_sword",
+                "to": {
+                  "x": 6,
+                  "y": 3
+                },
+                "path": [
+                  {
+                    "x": 6,
+                    "y": 2
+                  },
+                  {
+                    "x": 6,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "type": "move_astral",
+                "actorId": "faux_sword",
+                "to": {
+                  "x": 4,
+                  "y": 3
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 2
+                  },
+                  {
+                    "x": 5,
+                    "y": 3
+                  },
+                  {
+                    "x": 4,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "type": "wait",
+                "actorId": "faux_sword"
+              }
+            ],
+            "origin": {
+              "body": {
+                "x": 6,
+                "y": 2
+              },
+              "astral": {
+                "x": 5,
+                "y": 2
+              }
+            }
+          }
+        }
+      },
+      "initialPlan": [
+        {
+          "type": "move_body",
+          "actorId": "ella",
+          "to": {
+            "x": 1,
+            "y": 2
+          }
+        },
+        {
+          "type": "move_astral",
+          "actorId": "ella",
+          "to": {
+            "x": 4,
+            "y": 2
+          }
+        },
+        {
+          "type": "skill",
+          "actorId": "ella",
+          "skillId": "laurel_bolt",
+          "targetId": "faux_sword",
+          "target": "body"
+        }
+      ],
+      "steps": [
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "move_body",
+              "actorId": "ella",
+              "to": {
+                "x": 1,
+                "y": 2
+              }
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 2,
+                      "y": 3
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 140,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 0,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 6,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 5,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 65,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 0,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "active",
+                "activeId": "ella",
+                "turnNumber": 1,
+                "time": 0,
+                "turnStart": {
+                  "id": "ella",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "remote",
+                  "mode": "manifested",
+                  "hp": 140,
+                  "maxHp": 140,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 50,
+                    "spd": 50,
+                    "rch": 65,
+                    "end": 60,
+                    "prc": 65,
+                    "pot": 65
+                  },
+                  "reach": 5,
+                  "readyAt": 0,
+                  "skillIds": [
+                    "laurel_bolt",
+                    "laurel_heal",
+                    "laurel_shield"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 1,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {},
+                "hitEnemy": {}
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 0,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "faux_sword",
+                      "to": {
+                        "x": 6,
+                        "y": 3
+                      },
+                      "path": [
+                        {
+                          "x": 6,
+                          "y": 2
+                        },
+                        {
+                          "x": 6,
+                          "y": 3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "move_astral",
+                      "actorId": "faux_sword",
+                      "to": {
+                        "x": 4,
+                        "y": 3
+                      },
+                      "path": [
+                        {
+                          "x": 5,
+                          "y": 2
+                        },
+                        {
+                          "x": 5,
+                          "y": 3
+                        },
+                        {
+                          "x": 4,
+                          "y": 3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "wait",
+                      "actorId": "faux_sword"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 6,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 5,
+                      "y": 2
+                    }
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "move",
+                "actorId": "ella",
+                "unit": "body",
+                "from": {
+                  "x": 1,
+                  "y": 3
+                },
+                "to": {
+                  "x": 1,
+                  "y": 2
+                },
+                "path": [
+                  {
+                    "x": 1,
+                    "y": 3
+                  },
+                  {
+                    "x": 1,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "move_astral",
+              "actorId": "ella",
+              "to": {
+                "x": 4,
+                "y": 2
+              }
+            },
+            {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "move_astral",
+              "actorId": "ella",
+              "to": {
+                "x": 4,
+                "y": 2
+              }
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 140,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 0,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 6,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 5,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 65,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 0,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "active",
+                "activeId": "ella",
+                "turnNumber": 1,
+                "time": 0,
+                "turnStart": {
+                  "id": "ella",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 2,
+                    "y": 3
+                  },
+                  "kind": "remote",
+                  "mode": "manifested",
+                  "hp": 140,
+                  "maxHp": 140,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 50,
+                    "spd": 50,
+                    "rch": 65,
+                    "end": 60,
+                    "prc": 65,
+                    "pot": 65
+                  },
+                  "reach": 5,
+                  "readyAt": 0,
+                  "skillIds": [
+                    "laurel_bolt",
+                    "laurel_heal",
+                    "laurel_shield"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 1,
+                "astralSpent": 3,
+                "manifestUsed": false,
+                "enemyActions": {},
+                "hitEnemy": {}
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 0,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "faux_sword",
+                      "to": {
+                        "x": 6,
+                        "y": 3
+                      },
+                      "path": [
+                        {
+                          "x": 6,
+                          "y": 2
+                        },
+                        {
+                          "x": 6,
+                          "y": 3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "move_astral",
+                      "actorId": "faux_sword",
+                      "to": {
+                        "x": 4,
+                        "y": 3
+                      },
+                      "path": [
+                        {
+                          "x": 5,
+                          "y": 2
+                        },
+                        {
+                          "x": 5,
+                          "y": 3
+                        },
+                        {
+                          "x": 4,
+                          "y": 3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "wait",
+                      "actorId": "faux_sword"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 6,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 5,
+                      "y": 2
+                    }
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "move",
+                "actorId": "ella",
+                "unit": "astral",
+                "from": {
+                  "x": 2,
+                  "y": 3
+                },
+                "to": {
+                  "x": 4,
+                  "y": 2
+                },
+                "path": [
+                  {
+                    "x": 2,
+                    "y": 3
+                  },
+                  {
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "x": 3,
+                    "y": 2
+                  },
+                  {
+                    "x": 4,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 140,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 110,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 6,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 5,
+                      "y": 2
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 47,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 0,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "active",
+                "activeId": "faux_sword",
+                "turnNumber": 2,
+                "time": 0,
+                "turnStart": {
+                  "id": "faux_sword",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 6,
+                    "y": 2
+                  },
+                  "astral": {
+                    "x": 5,
+                    "y": 2
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 47,
+                  "maxHp": 65,
+                  "will": 8,
+                  "maxWill": 8,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 40,
+                    "spd": 35,
+                    "rch": 25,
+                    "end": 25,
+                    "prc": 20,
+                    "pot": 10
+                  },
+                  "reach": 2,
+                  "readyAt": 0,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {},
+                "hitEnemy": {
+                  "ella": [
+                    "faux_sword"
+                  ]
+                }
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 0,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "faux_sword",
+                      "to": {
+                        "x": 6,
+                        "y": 3
+                      },
+                      "path": [
+                        {
+                          "x": 6,
+                          "y": 2
+                        },
+                        {
+                          "x": 6,
+                          "y": 3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "move_astral",
+                      "actorId": "faux_sword",
+                      "to": {
+                        "x": 4,
+                        "y": 3
+                      },
+                      "path": [
+                        {
+                          "x": 5,
+                          "y": 2
+                        },
+                        {
+                          "x": 5,
+                          "y": 3
+                        },
+                        {
+                          "x": 4,
+                          "y": 3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "wait",
+                      "actorId": "faux_sword"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 6,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 5,
+                      "y": 2
+                    }
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "skill",
+                "actorId": "ella",
+                "skillId": "laurel_bolt",
+                "targetId": "faux_sword",
+                "target": "body",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "faux_sword",
+                "sourceId": "ella",
+                "target": "body",
+                "damage": 18,
+                "absorbed": 0,
+                "hp": 47
+              },
+              {
+                "type": "turn",
+                "actorId": "faux_sword",
+                "time": 0
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "faux_sword"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 140,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 110,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 6,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 47,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 88,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "active",
+                "activeId": "faux_sword",
+                "turnNumber": 3,
+                "time": 88,
+                "turnStart": {
+                  "id": "faux_sword",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 6,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 4,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 47,
+                  "maxHp": 65,
+                  "will": 8,
+                  "maxWill": 8,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 40,
+                    "spd": 35,
+                    "rch": 25,
+                    "end": 25,
+                    "prc": 20,
+                    "pot": 10
+                  },
+                  "reach": 2,
+                  "readyAt": 88,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "faux_sword": 1
+                },
+                "hitEnemy": {
+                  "ella": [
+                    "faux_sword"
+                  ]
+                }
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 12,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "move_body",
+                      "actorId": "faux_sword",
+                      "to": {
+                        "x": 5,
+                        "y": 3
+                      },
+                      "path": [
+                        {
+                          "x": 6,
+                          "y": 3
+                        },
+                        {
+                          "x": 5,
+                          "y": 3
+                        }
+                      ]
+                    },
+                    {
+                      "type": "skill",
+                      "actorId": "faux_sword",
+                      "skillId": "basic_strike",
+                      "targetId": "ella",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 6,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "ella",
+                  "target": "astral",
+                  "cell": {
+                    "x": 4,
+                    "y": 2
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "move",
+                "actorId": "faux_sword",
+                "unit": "body",
+                "from": {
+                  "x": 6,
+                  "y": 2
+                },
+                "to": {
+                  "x": 6,
+                  "y": 3
+                },
+                "path": [
+                  {
+                    "x": 6,
+                    "y": 2
+                  },
+                  {
+                    "x": 6,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "type": "move",
+                "actorId": "faux_sword",
+                "unit": "astral",
+                "from": {
+                  "x": 5,
+                  "y": 2
+                },
+                "to": {
+                  "x": 4,
+                  "y": 3
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 2
+                  },
+                  {
+                    "x": 5,
+                    "y": 3
+                  },
+                  {
+                    "x": 4,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "type": "turn",
+                "actorId": "faux_sword",
+                "time": 88
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "faux_sword"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 128,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 110,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 47,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 213,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "active",
+                "activeId": "ella",
+                "turnNumber": 4,
+                "time": 110,
+                "turnStart": {
+                  "id": "ella",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 2
+                  },
+                  "astral": {
+                    "x": 4,
+                    "y": 2
+                  },
+                  "kind": "remote",
+                  "mode": "manifested",
+                  "hp": 128,
+                  "maxHp": 140,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 50,
+                    "spd": 50,
+                    "rch": 65,
+                    "end": 60,
+                    "prc": 65,
+                    "pot": 65
+                  },
+                  "reach": 5,
+                  "readyAt": 110,
+                  "skillIds": [
+                    "laurel_bolt",
+                    "laurel_heal",
+                    "laurel_shield"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "faux_sword": 2
+                },
+                "hitEnemy": {
+                  "ella": [
+                    "faux_sword"
+                  ]
+                }
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 12,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "faux_sword",
+                      "skillId": "basic_strike",
+                      "targetId": "ella",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "ella",
+                  "target": "astral",
+                  "cell": {
+                    "x": 4,
+                    "y": 2
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "move",
+                "actorId": "faux_sword",
+                "unit": "body",
+                "from": {
+                  "x": 6,
+                  "y": 3
+                },
+                "to": {
+                  "x": 5,
+                  "y": 3
+                },
+                "path": [
+                  {
+                    "x": 6,
+                    "y": 3
+                  },
+                  {
+                    "x": 5,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "type": "skill",
+                "actorId": "faux_sword",
+                "skillId": "basic_strike",
+                "targetId": "ella",
+                "target": "astral",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "ella",
+                "sourceId": "faux_sword",
+                "target": "astral",
+                "damage": 12,
+                "absorbed": 0,
+                "hp": 128
+              },
+              {
+                "type": "turn",
+                "actorId": "ella",
+                "time": 110
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 128,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 220,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 29,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 213,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "active",
+                "activeId": "faux_sword",
+                "turnNumber": 5,
+                "time": 213,
+                "turnStart": {
+                  "id": "faux_sword",
+                  "team": "enemy",
+                  "order": 0,
+                  "body": {
+                    "x": 5,
+                    "y": 3
+                  },
+                  "astral": {
+                    "x": 4,
+                    "y": 3
+                  },
+                  "kind": "close",
+                  "mode": "manifested",
+                  "hp": 29,
+                  "maxHp": 65,
+                  "will": 8,
+                  "maxWill": 8,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 40,
+                    "spd": 35,
+                    "rch": 25,
+                    "end": 25,
+                    "prc": 20,
+                    "pot": 10
+                  },
+                  "reach": 2,
+                  "readyAt": 213,
+                  "skillIds": [
+                    "basic_strike"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "faux_sword": 2
+                },
+                "hitEnemy": {
+                  "ella": [
+                    "faux_sword"
+                  ]
+                }
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 12,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "faux_sword",
+                      "skillId": "basic_strike",
+                      "targetId": "ella",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "ella",
+                  "target": "astral",
+                  "cell": {
+                    "x": 4,
+                    "y": 2
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "skill",
+                "actorId": "ella",
+                "skillId": "laurel_bolt",
+                "targetId": "faux_sword",
+                "target": "body",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "faux_sword",
+                "sourceId": "ella",
+                "target": "body",
+                "damage": 18,
+                "absorbed": 0,
+                "hp": 29
+              },
+              {
+                "type": "turn",
+                "actorId": "faux_sword",
+                "time": 213
+              }
+            ]
+          },
+          "playerPlan": []
+        },
+        {
+          "step": {
+            "kind": "enemy",
+            "actorId": "faux_sword"
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 116,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 220,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 29,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 338,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "active",
+                "activeId": "ella",
+                "turnNumber": 6,
+                "time": 220,
+                "turnStart": {
+                  "id": "ella",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 2
+                  },
+                  "astral": {
+                    "x": 4,
+                    "y": 2
+                  },
+                  "kind": "remote",
+                  "mode": "manifested",
+                  "hp": 116,
+                  "maxHp": 140,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 50,
+                    "spd": 50,
+                    "rch": 65,
+                    "end": 60,
+                    "prc": 65,
+                    "pot": 65
+                  },
+                  "reach": 5,
+                  "readyAt": 220,
+                  "skillIds": [
+                    "laurel_bolt",
+                    "laurel_heal",
+                    "laurel_shield"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "faux_sword": 3
+                },
+                "hitEnemy": {
+                  "ella": [
+                    "faux_sword"
+                  ]
+                }
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 12,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "faux_sword",
+                      "skillId": "basic_strike",
+                      "targetId": "ella",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "ella",
+                  "target": "astral",
+                  "cell": {
+                    "x": 4,
+                    "y": 2
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "skill",
+                "actorId": "faux_sword",
+                "skillId": "basic_strike",
+                "targetId": "ella",
+                "target": "astral",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "ella",
+                "sourceId": "faux_sword",
+                "target": "astral",
+                "damage": 12,
+                "absorbed": 0,
+                "hp": 116
+              },
+              {
+                "type": "turn",
+                "actorId": "ella",
+                "time": 220
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 116,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 330,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    },
+                    "kind": "close",
+                    "mode": "manifested",
+                    "hp": 11,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 338,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "active",
+                "activeId": "ella",
+                "turnNumber": 7,
+                "time": 330,
+                "turnStart": {
+                  "id": "ella",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 2
+                  },
+                  "astral": {
+                    "x": 4,
+                    "y": 2
+                  },
+                  "kind": "remote",
+                  "mode": "manifested",
+                  "hp": 116,
+                  "maxHp": 140,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 50,
+                    "spd": 50,
+                    "rch": 65,
+                    "end": 60,
+                    "prc": 65,
+                    "pot": 65
+                  },
+                  "reach": 5,
+                  "readyAt": 330,
+                  "skillIds": [
+                    "laurel_bolt",
+                    "laurel_heal",
+                    "laurel_shield"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "faux_sword": 3
+                },
+                "hitEnemy": {
+                  "ella": [
+                    "faux_sword"
+                  ]
+                }
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 12,
+                  "status": "ready",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "faux_sword",
+                      "skillId": "basic_strike",
+                      "targetId": "ella",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "ella",
+                  "target": "astral",
+                  "cell": {
+                    "x": 4,
+                    "y": 2
+                  }
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "skill",
+                "actorId": "ella",
+                "skillId": "laurel_bolt",
+                "targetId": "faux_sword",
+                "target": "body",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "faux_sword",
+                "sourceId": "ella",
+                "target": "body",
+                "damage": 18,
+                "absorbed": 0,
+                "hp": 11
+              },
+              {
+                "type": "turn",
+                "actorId": "ella",
+                "time": 330
+              }
+            ]
+          },
+          "playerPlan": [
+            {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          ]
+        },
+        {
+          "step": {
+            "kind": "player",
+            "command": {
+              "type": "skill",
+              "actorId": "ella",
+              "skillId": "laurel_bolt",
+              "targetId": "faux_sword",
+              "target": "body"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "encounter": {
+              "battle": {
+                "id": "prologue_ella",
+                "width": 8,
+                "height": 6,
+                "intentModes": {
+                  "faux_sword": "point"
+                },
+                "blocked": [
+                  {
+                    "x": 3,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 4
+                  }
+                ],
+                "actors": [
+                  {
+                    "id": "ella",
+                    "team": "player",
+                    "order": 0,
+                    "body": {
+                      "x": 1,
+                      "y": 2
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 2
+                    },
+                    "kind": "remote",
+                    "mode": "manifested",
+                    "hp": 116,
+                    "maxHp": 140,
+                    "will": 12,
+                    "maxWill": 12,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 50,
+                      "spd": 50,
+                      "rch": 65,
+                      "end": 60,
+                      "prc": 65,
+                      "pot": 65
+                    },
+                    "reach": 5,
+                    "readyAt": 440,
+                    "skillIds": [
+                      "laurel_bolt",
+                      "laurel_heal",
+                      "laurel_shield"
+                    ],
+                    "lampMarks": 0
+                  },
+                  {
+                    "id": "faux_sword",
+                    "team": "enemy",
+                    "order": 0,
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": null,
+                    "kind": "close",
+                    "mode": "extinguished",
+                    "hp": 0,
+                    "maxHp": 65,
+                    "will": 8,
+                    "maxWill": 8,
+                    "shield": 0,
+                    "chart": {
+                      "pow": 40,
+                      "spd": 35,
+                      "rch": 25,
+                      "end": 25,
+                      "prc": 20,
+                      "pot": 10
+                    },
+                    "reach": 2,
+                    "readyAt": 338,
+                    "skillIds": [
+                      "basic_strike"
+                    ],
+                    "lampMarks": 0
+                  }
+                ],
+                "phase": "won",
+                "activeId": "ella",
+                "turnNumber": 7,
+                "time": 330,
+                "turnStart": {
+                  "id": "ella",
+                  "team": "player",
+                  "order": 0,
+                  "body": {
+                    "x": 1,
+                    "y": 2
+                  },
+                  "astral": {
+                    "x": 4,
+                    "y": 2
+                  },
+                  "kind": "remote",
+                  "mode": "manifested",
+                  "hp": 116,
+                  "maxHp": 140,
+                  "will": 12,
+                  "maxWill": 12,
+                  "shield": 0,
+                  "chart": {
+                    "pow": 50,
+                    "spd": 50,
+                    "rch": 65,
+                    "end": 60,
+                    "prc": 65,
+                    "pot": 65
+                  },
+                  "reach": 5,
+                  "readyAt": 330,
+                  "skillIds": [
+                    "laurel_bolt",
+                    "laurel_heal",
+                    "laurel_shield"
+                  ],
+                  "lampMarks": 0
+                },
+                "bodySpent": 0,
+                "astralSpent": 0,
+                "manifestUsed": false,
+                "enemyActions": {
+                  "faux_sword": 3
+                },
+                "hitEnemy": {
+                  "ella": [
+                    "faux_sword"
+                  ]
+                }
+              },
+              "intents": {
+                "faux_sword": {
+                  "actorId": "faux_sword",
+                  "mode": "point",
+                  "expectedDamage": 0,
+                  "status": "interrupted",
+                  "commands": [
+                    {
+                      "type": "skill",
+                      "actorId": "faux_sword",
+                      "skillId": "basic_strike",
+                      "targetId": "ella",
+                      "target": "astral"
+                    }
+                  ],
+                  "origin": {
+                    "body": {
+                      "x": 5,
+                      "y": 3
+                    },
+                    "astral": {
+                      "x": 4,
+                      "y": 3
+                    }
+                  },
+                  "skillId": "basic_strike",
+                  "targetId": "ella",
+                  "target": "astral",
+                  "cell": {
+                    "x": 4,
+                    "y": 2
+                  },
+                  "reason": "actor_unavailable"
+                }
+              }
+            },
+            "events": [
+              {
+                "type": "skill",
+                "actorId": "ella",
+                "skillId": "laurel_bolt",
+                "targetId": "faux_sword",
+                "target": "body",
+                "cost": 0
+              },
+              {
+                "type": "damage",
+                "actorId": "faux_sword",
+                "sourceId": "ella",
+                "target": "body",
+                "damage": 11,
+                "absorbed": 0,
+                "hp": 0
+              },
+              {
+                "type": "ko",
+                "actorId": "faux_sword"
+              },
+              {
+                "type": "outcome",
+                "phase": "won"
+              },
+              {
+                "type": "intent_status",
+                "actorId": "faux_sword",
+                "status": "interrupted",
+                "reason": "actor_unavailable"
+              }
+            ]
+          },
+          "playerPlan": []
+        }
+      ]
+    }
+  ]
+}

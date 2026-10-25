@@ -72,6 +72,18 @@ function planTurn(input:BattleState):Plan {
 
 export function planEnemyIntent(state:BattleState,actorId:string):EnemyIntent {
   const actor=actorIn(state,actorId),plan=planTurn(actorTurnView(state,actorId)),action=plan.commands.at(-1)!;
+  // Freeze each intermediate cell when announcing, not merely the destination.
+  let projected=actorTurnView(state,actorId);
+  for(let i=0;i<plan.commands.length-1;i++){
+    const command=plan.commands[i]!,result=applyBattleCommand(projected,command);
+    if(!result.ok)throw new Error('Planner produced an invalid movement prefix');
+    if(command.type==='move_body'||command.type==='move_astral'){
+      const movement=result.events.find(event=>event.type==='move');
+      if(!movement||movement.type!=='move')throw new Error('Missing planned movement path');
+      plan.commands[i]={...command,path:structuredClone(movement.path)};
+    }
+    projected=result.state;
+  }
   const mode=state.intentModes&&Object.hasOwn(state.intentModes,actorId)?state.intentModes[actorId]!:'unit';
   const intent:EnemyIntent={actorId,mode,expectedDamage:plan.damage,status:'ready',commands:plan.commands,
     origin:{body:{...actor.body},astral:actor.astral?{...actor.astral}:null}};

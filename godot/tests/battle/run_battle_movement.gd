@@ -110,3 +110,13 @@ func _boundaries(engine: EngineRules, fixture: Dictionary) -> void:
 	dead_snapshot["turnStart"].merge({"hp": 0, "mode": "extinguished", "astral": null}, true)
 	var extinguished: Dictionary = engine.apply_command(dead_snapshot, {"actorId": "finn", "type": "undo"})
 	_check(not extinguished["ok"] and Compare.equal(extinguished["state"], dead_snapshot), "undo cannot extinguish a living actor through a forged dead snapshot")
+	var fixed_path: Array = [{"x": 1, "y": 2}, {"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 1, "y": 3}]
+	var fixed: Dictionary = engine.apply_command(state, {"type": "move_body", "actorId": "finn", "to": {"x": 1, "y": 3}, "path": fixed_path})
+	_check(fixed["ok"] and fixed["state"]["bodySpent"] == 3, "fixed route preserves three spent steps despite open shortcut")
+	_check(Compare.equal(fixed["events"][0].get("path"), fixed_path), "fixed route event uses advertised intermediate cells")
+	for path: Variant in [null, [], [{"x": 1, "y": 3}], [{"x": 1, "y": 2}, {"x": 2, "y": 3}], [{"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 3}, {"x": 1, "y": 3}], [{"x": 1, "y": 2}, {"x": 0, "y": 2}, {"x": 0, "y": 1}, {"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 1, "y": 3}]]:
+		var rejected: Dictionary = engine.apply_command(state, {"type": "move_body", "actorId": "finn", "to": {"x": 1, "y": 3}, "path": path})
+		_check(not rejected["ok"] and Compare.equal(rejected["state"], state), "invalid fixed route rejects atomically")
+	var outside_path: Array = [{"x": 2, "y": 2}, {"x": 3, "y": 2}, {"x": 3, "y": 3}, {"x": 2, "y": 3}]
+	var outside: Dictionary = engine.apply_command(state, {"type": "move_astral", "actorId": "finn", "to": {"x": 2, "y": 3}, "path": outside_path})
+	_check(not outside["ok"] and Compare.equal(outside["state"], state), "fixed astral path cannot leave tether before a legal endpoint")
