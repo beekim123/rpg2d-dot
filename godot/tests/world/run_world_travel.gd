@@ -16,6 +16,7 @@ func _check(condition: bool, message: String) -> void:
 func _run() -> void:
 	var packed: PackedScene = load("res://scenes/main.tscn") as PackedScene
 	var world: Node = packed.instantiate()
+	world.set("enable_prologue", false)
 	world.set("persistence_enabled", false)
 	root.add_child(world)
 	await process_frame

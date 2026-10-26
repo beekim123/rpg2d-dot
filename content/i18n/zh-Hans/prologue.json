@@ -174,5 +174,21 @@
   "prologue.ui.ending.explore": "继续在灯谷查看",
   "prologue.ui.item.lamp_rod.name": "点灯杆",
   "prologue.ui.item.lamp_rod.description": "学徒用的长柄点灯杆。\n先把脚边的灯点稳。",
-  "prologue.ui.hint.need_travel_lamp": "先拿点灯杆，向霍伯借旅灯。"
+  "prologue.ui.hint.need_travel_lamp": "先拿点灯杆，向霍伯借旅灯。",
+  "prologue.ui.choice.hint": "↑↓ 选择 · Z 确认 · X 返回",
+  "prologue.ui.dialogue.hint": "Z / 回车 继续 · X 查看概要",
+  "prologue.ui.skip.short": "X 跳过这段",
+  "prologue.ui.title.manage": "管理存档",
+  "prologue.ui.title.confirm_new": "开始新的序章？\n当前旅程将重置，手动存档会保留。",
+  "prologue.ui.save.warning": "旅程暂未保存，可在灯柱旁重试或导出。",
+  "prologue.ui.field.hint": "{goal}  ·  Z 调查  C 手记",
+  "prologue.ui.objective.borrow_lamp": "出门到灯铺前，向霍伯借旅灯",
+  "prologue.ui.dough.title": "面团的反抗 · 可选",
+  "prologue.ui.dough.count": "已放稳 {count}/2",
+  "prologue.ui.dough.controls": "方向键推动 · U 撤销 · R 复位 · X 离开",
+  "prologue.ui.dough.done": "都放稳了！Z 收好 · R 再试一次 · X 离开",
+  "prologue.ui.dough.offer": "帮布丽欧把两块轮板推到垫上？\n可随时退出，离开后摆位复原。",
+  "prologue.ui.dough.start": "来帮忙",
+  "prologue.ui.dough.reward": "放稳了！这两个面包带上。\n剩下的归我，别把祭典错过啦。",
+  "prologue.ui.dough.again": "手越来越稳了。\n下回可以试着揉面——先洗手！"
 }

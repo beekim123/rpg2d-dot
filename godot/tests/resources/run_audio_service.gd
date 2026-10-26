@@ -16,10 +16,10 @@ func _run() -> void:
 	if failures.is_empty():
 		for id: String in catalog.call("audio_ids"):
 			var stream: AudioStreamWAV = catalog.call("audio_stream", id)
-			check(stream != null and stream.mix_rate == 44100 and not stream.stereo and stream.format == AudioStreamWAV.FORMAT_16_BITS, id + " imports uncompressed mono PCM16 at authored rate")
+			var raw: PackedByteArray = FileAccess.get_file_as_bytes("res://resources/audio/" + id + ".wav")
+			check(stream != null and stream.mix_rate == raw.decode_u32(24) and not stream.stereo and stream.format == AudioStreamWAV.FORMAT_16_BITS, id + " imports uncompressed mono PCM16 at authored rate")
 			if stream == null:
 				continue
-			var raw: PackedByteArray = FileAccess.get_file_as_bytes("res://resources/audio/" + id + ".wav")
 			check(stream.data == raw.slice(44), id + " native samples exactly match release PCM16")
 			check((stream.loop_mode == AudioStreamWAV.LOOP_FORWARD) == (catalog.call("audio_kind", id) == "music"), id + " loops only music")
 			stream.loop_mode = AudioStreamWAV.LOOP_PINGPONG

@@ -1,0 +1,172 @@
+{
+  "format": "astra.prologue-staging/1",
+  "following": { "body": "char.ella", "astral": "astral.laurel" },
+  "props": [
+    { "id": "borrowed_lamp", "asset": "prop.travel_lamp", "player_offset": [0, 0], "offset": [7, -6], "all": ["p.main_started", "p.s02_started"], "none": ["p.borrowed_lamp_returned"] },
+    { "id": "hob_returned_lamp", "asset": "prop.travel_lamp", "map": "lv.town", "entity": "lv.town.hob", "offset": [7, -6], "all": ["p.main_started", "p.borrowed_lamp_returned"], "none": ["p.attack_started"] },
+    { "id": "hob_crisis_lamp", "asset": "prop.travel_lamp", "map": "lv.town", "entity": "lv.town.hob.crisis", "offset": [7, -6], "all": ["p.main_started", "p.attack_started"], "none": ["p.s09_done"] },
+    { "id": "hob_shop_lamp", "asset": "prop.travel_lamp", "map": "lv.lamp_shop", "entity": "lv.shop.hob", "offset": [7, -6], "all": ["p.main_started", "p.aftermath_heard"], "none": ["p.travel_lamp_owned"] },
+    { "id": "entrusted_lamp", "asset": "prop.travel_lamp", "player_offset": [0, 0], "offset": [7, -6], "all": ["p.main_started", "p.travel_lamp_owned"] },
+    { "id": "shadow_casket", "asset": "prop.star_casket", "map": "lv.town", "entity": "lv.town.shade.waiting", "offset": [-6, -3], "all": ["p.main_started", "p.ella_starplucked"], "none": ["p.s09_done"] },
+    { "id": "awakened_morning", "asset": "astral.morning_star", "player_offset": [16, -6], "all": ["p.main_started", "p.awakening_resolved"], "none": ["p.s09_done"] }
+  ],
+  "steps": {
+    "ella_returns": {
+      "map": "lv.town", "camera": [27, 12], "hide_followers": true,
+      "hide_entities": ["lv.town.ella", "lv.town.laurel", "lv.town.mili", "lv.town.hedo"],
+      "cast": [
+        { "id": "ella", "asset": "char.ella", "at": [28, 11], "animation": "idle_down" },
+        { "id": "laurel", "asset": "astral.laurel", "at": [29, 12] },
+        { "id": "mili", "asset": "char.mili", "at": [26, 12], "animation": "idle_right" },
+        { "id": "hedo", "asset": "char.hedo", "at": [27, 11], "animation": "idle_down" },
+        { "id": "crown", "asset": "prop.leaf_crown", "at": [29, 12], "offset": [0, -24] }
+      ],
+      "lines": {
+        "0": [{ "op": "move", "id": "crown", "to": [26, 12], "seconds": 0.8 }],
+        "3": [{ "op": "animation", "id": "ella", "animation": "idle_left" }],
+        "7": [{ "op": "move", "id": "crown", "to": [26, 13], "seconds": 0.35 }]
+      },
+      "summary": [{ "op": "move", "id": "crown", "to": [26, 12] }]
+    },
+    "introduction": {
+      "map": "lv.town", "camera": [17, 17],
+      "hide_entities": ["lv.town.mayor_tolan", "lv.town.brio", "lv.town.mili"],
+      "cast": [
+        { "id": "mayor", "asset": "char.mayor_tolan", "at": [19, 16], "animation": "idle_down" },
+        { "id": "brio", "asset": "char.brio", "at": [15, 18], "animation": "idle_right" },
+        { "id": "mili", "asset": "char.mili", "at": [19, 18], "animation": "idle_up" }
+      ],
+      "lines": {}, "summary": []
+    },
+    "fold_share": {
+      "map": "lv.town", "camera": [17, 17],
+      "cast": [{ "id": "paper", "asset": "prop.paper_lantern", "at": [16, 17], "offset": [0, -5] }],
+      "lines": {}, "summary": []
+    },
+    "pendant": {
+      "map": "lv.town", "camera": [17, 17],
+      "cast": [{ "id": "pendant", "asset": "prop.star_pendant", "at": [16, 16], "offset": [4, -12], "visible": false }],
+      "lines": {
+        "2": [{ "op": "show", "id": "pendant" }, { "op": "closeup", "asset": "prop.star_pendant" }],
+        "5": [{ "op": "closeup_hide" }, { "op": "move", "id": "pendant", "to_player_offset": [0, -12], "seconds": 0.4, "hide_after": true }]
+      },
+      "summary": [{ "op": "closeup", "asset": "prop.star_pendant" }]
+    },
+    "release_instruction": {
+      "map": "lv.town", "camera": [19, 16],
+      "cast": [{ "id": "paper", "asset": "prop.paper_lantern", "player_offset": [0, 0], "offset": [7, -6] }],
+      "lines": {}, "summary": []
+    },
+    "ella_intro": {
+      "map": "lv.town", "camera": [17, 17], "hide_followers": true,
+      "cast": [
+        { "id": "ella", "asset": "char.ella", "at": [15, 18], "animation": "idle_right" },
+        { "id": "laurel", "asset": "astral.laurel", "at": [16, 18] },
+        { "id": "mili", "asset": "char.mili", "at": [15, 15], "animation": "idle_left" },
+        { "id": "hedo", "asset": "char.hedo", "at": [20, 16], "animation": "idle_right", "avoid_player": true },
+        { "id": "brio", "asset": "char.brio", "at": [14, 18], "animation": "idle_left" },
+        { "id": "paper", "asset": "prop.paper_lantern", "at": [21, 16], "offset": [0, -8] }
+      ],
+      "lines": {
+        "0": [
+          { "op": "move", "id": "mili", "path": [[14, 15], [13, 15], [13, 14]], "seconds": 0.75, "hide_after": true },
+          { "op": "move", "id": "hedo", "path": [[21, 16], [22, 16], [23, 16]], "seconds": 0.75, "hide_after": true },
+          { "op": "move", "id": "brio", "to": [13, 18], "seconds": 0.4, "hide_after": true },
+          { "op": "move", "id": "paper", "to": [21, 13], "seconds": 1.0, "hide_after": true }
+        ]
+      },
+      "summary": [{ "op": "hide", "id": "mili" }, { "op": "hide", "id": "hedo" }, { "op": "hide", "id": "brio" }, { "op": "hide", "id": "paper" }]
+    },
+    "ella_victory": { "map": "lv.town", "camera": [15, 17], "cast": [], "lines": {}, "summary": [] },
+    "starpluck": {
+      "map": "lv.town", "camera": [15, 17],
+      "hide_entities": ["lv.town.ella.after_battle", "lv.town.laurel.after_battle", "lv.town.hob.crisis", "lv.town.shade.waiting"],
+      "hide_props": ["hob_crisis_lamp"],
+      "cast": [
+        { "id": "ella", "asset": "char.ella", "at": [13, 16], "animation": "idle_right" },
+        { "id": "laurel", "asset": "astral.laurel", "at": [13, 15] },
+        { "id": "shade", "asset": "char.shade", "at": [22, 17], "animation": "idle_left" },
+        { "id": "gray_hand", "asset": "astral.ash_hand", "at": [22, 16] },
+        { "id": "casket", "asset": "prop.star_casket", "at": [13, 16], "visible": false },
+        { "id": "hob", "asset": "char.hob", "at": [11, 16], "animation": "idle_right" },
+        { "id": "travel_lamp", "asset": "prop.travel_lamp", "at": [11, 16], "offset": [7, -6] }
+      ],
+      "lines": {
+        "0": [{ "op": "move", "id": "gray_hand", "to": [14, 15], "seconds": 0.7 }],
+        "2": [
+          { "op": "asset", "id": "ella", "asset": "char.ella_fallen" },
+          { "op": "move", "id": "ella", "to": [12, 17], "seconds": 0.25 },
+          { "op": "show", "id": "casket" },
+          { "op": "animation", "id": "gray_hand", "animation": "attack_left" },
+          { "op": "move", "id": "laurel", "to": [13, 16], "seconds": 0.65, "hide_after": true },
+          { "op": "move", "id": "gray_hand", "to": [13, 16], "seconds": 0.65 },
+          { "op": "glow", "id": "travel_lamp", "visible": true }
+        ],
+        "4": [
+          { "op": "move", "id": "casket", "to": [22, 17], "seconds": 0.7 },
+          { "op": "move", "id": "gray_hand", "to": [22, 16], "seconds": 0.7 },
+          { "op": "glow", "id": "travel_lamp", "visible": false }
+        ]
+      },
+      "summary": [
+        { "op": "asset", "id": "ella", "asset": "char.ella_fallen" },
+        { "op": "move", "id": "ella", "to": [12, 17] },
+        { "op": "hide", "id": "laurel" },
+        { "op": "show", "id": "casket" },
+        { "op": "move", "id": "casket", "to": [22, 17] },
+        { "op": "move", "id": "gray_hand", "to": [22, 16] },
+        { "op": "glow", "id": "travel_lamp", "visible": false }
+      ]
+    },
+    "awakening_inner": { "map": "lv.town", "camera": [13, 17], "cast": [], "lines": {}, "summary": [] },
+    "steady_resolve": {
+      "map": "lv.town", "camera": [13, 17],
+      "cast": [{ "id": "morning", "asset": "astral.morning_star", "player_offset": [0, 0], "visible": false }],
+      "lines": { "1": [{ "op": "show", "id": "morning" }, { "op": "move", "id": "morning", "to_player_offset": [16, -6], "seconds": 0.6 }] },
+      "summary": [{ "op": "show", "id": "morning" }, { "op": "move", "id": "morning", "to_player_offset": [16, -6] }]
+    },
+    "card": {
+      "map": "lv.town", "camera": [13, 17],
+      "hide_props": ["awakened_morning"],
+      "cast": [{ "id": "morning", "asset": "astral.morning_star", "player_offset": [16, -6] }],
+      "lines": {}, "summary": []
+    },
+    "shade_intro": {
+      "map": "lv.town", "camera": [15, 17],
+      "hide_props": ["awakened_morning"],
+      "cast": [{ "id": "morning", "asset": "astral.morning_star", "player_offset": [16, -6] }],
+      "lines": {}, "summary": []
+    },
+    "shade_victory": {
+      "map": "lv.town", "camera": [17, 17],
+      "hide_entities": ["lv.town.shade.waiting"],
+      "hide_props": ["shadow_casket"],
+      "cast": [
+        { "id": "shade", "asset": "char.shade", "at": [22, 17], "animation": "idle_left" },
+        { "id": "casket", "asset": "prop.star_casket", "at": [22, 17], "offset": [-6, -3] }
+      ],
+      "lines": {
+        "0": [{ "op": "closeup", "asset": "portrait.shade_cracked" }],
+        "1": [{ "op": "closeup_hide" }, { "op": "move", "id": "shade", "path": [[23, 17], [24, 17], [25, 17]], "seconds": 0.8, "hide_after": true }, { "op": "move", "id": "casket", "path": [[23, 17], [24, 17], [25, 17]], "seconds": 0.8, "hide_after": true }]
+      },
+      "summary": [{ "op": "closeup", "asset": "portrait.shade_cracked" }, { "op": "hide", "id": "shade" }, { "op": "hide", "id": "casket" }]
+    },
+    "home": { "map": "lv.finn_house", "camera": [10, 7], "cast": [], "lines": {}, "summary": [] },
+    "handover": {
+      "map": "lv.lamp_shop", "camera": [7, 6], "hide_props": ["hob_shop_lamp"],
+      "cast": [{ "id": "travel_lamp", "asset": "prop.travel_lamp", "entity": "lv.shop.hob", "offset": [7, -6] }],
+      "lines": { "0": [{ "op": "closeup", "asset": "prop.travel_lamp" }], "4": [{ "op": "closeup_hide" }, { "op": "move", "id": "travel_lamp", "to_player_offset": [0, 0], "seconds": 0.45 }] },
+      "summary": [{ "op": "closeup", "asset": "prop.travel_lamp" }]
+    },
+    "departure_gate": {
+      "map": "lv.town", "camera": [19, 28],
+      "hide_entities": ["lv.town.brio.dawn"],
+      "cast": [
+        { "id": "brio", "asset": "char.brio", "at": [17, 28], "animation": "idle_right" },
+        { "id": "hob", "asset": "char.hob", "at": [20, 28], "animation": "idle_left" }
+      ],
+      "lines": {}, "summary": []
+    },
+    "departure_end": { "map": "lv.wheat_road", "camera": [16, 16], "cast": [], "lines": {}, "summary": [] }
+  }
+}

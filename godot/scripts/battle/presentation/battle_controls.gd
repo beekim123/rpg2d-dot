@@ -25,6 +25,8 @@ func setup(prepared: Dictionary) -> bool:
 	return true
 func snapshot() -> Dictionary:
 	return _session.snapshot()
+func session_handle() -> Session:
+	return _session
 func active_actor() -> Dictionary:
 	var state: Dictionary = snapshot()["battle"]
 	if state["phase"] != "active":
@@ -35,7 +37,11 @@ func active_actor() -> Dictionary:
 func options() -> Array:
 	var state: Dictionary = snapshot()["battle"]
 	if state["phase"] != "active" or _fatal:
+		if _prepared.get("story_mode",false) and state["phase"] == "won":
+			return [{"id":"return","label":"prologue.ui.choice.continue","enabled":true}]
 		var terminal: Array = [{"id": "retry", "label": "battle.outcome.retry", "enabled": true}, {"id": "return", "label": "battle.outcome.return", "enabled": true}]
+		if _prepared.get("story_mode",false):
+			terminal[1]["label"] = "prologue.ui.choice.return_checkpoint"
 		if state["phase"] == "won":
 			terminal.reverse()
 		return terminal

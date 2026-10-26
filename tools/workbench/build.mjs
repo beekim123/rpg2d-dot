@@ -73,7 +73,7 @@ function synthBundle(source, labels) {
   // Only direct exported const/function declarations are supported. Type-only exports vanish above.
   const declarations = stripped.replace(/(^|[;\r\n])([ \t]*)export[ \t]+(?=(?:const|function)\b)/g, '$1$2');
   checkStandaloneScript(declarations, 'stripped synth.js');
-  const closure = `(() => {\n"use strict";\n${declarations}\nreturn Object.freeze({renderCue, cues, cueKinds, cueDurations});\n})()`;
+  const closure = `(() => {\n"use strict";\n${declarations}\nreturn Object.freeze({renderCue, cues, cueKinds, cueDurations, cueSampleRates:typeof cueSampleRates==='undefined'?{}:cueSampleRates});\n})()`;
   // Read declarations only; renderCue is never invoked during builds. No process/require is exposed.
   const api = new vm.Script(closure, {filename: 'astra-synth.js'}).runInNewContext({}, {timeout: 1000});
   if (!Array.isArray(api.cues) || !api.cueKinds || !api.cueDurations || typeof api.renderCue !== 'function') throw new Error('Synth metadata exports missing');
@@ -84,7 +84,9 @@ function synthBundle(source, labels) {
     if (!Object.hasOwn(labels, id) || typeof labels[id] !== 'string' || labels[id].trim() === '') throw new Error(`Missing independent audio label: ${id}`);
     const kind = api.cueKinds[id], duration = api.cueDurations[id];
     if (!['music', 'effect'].includes(kind) || !Number.isFinite(duration) || duration <= 0) throw new Error(`Invalid audio cue metadata: ${id}`);
-    return {id, label: labels[id], kind, duration};
+    const sampleRate=api.cueSampleRates[id]??44100;
+    if(!Number.isInteger(sampleRate)||sampleRate<8000||sampleRate>96000)throw new Error(`Invalid audio sample rate: ${id}`);
+    return {id, label: labels[id], kind, duration, sampleRate};
   });
   return {source: `window.ASTRA_SYNTH = ${closure};`, cues};
 }
@@ -142,7 +144,7 @@ export async function buildWorkbench({repoRoot = defaultRoot, outDir = join(repo
   const audio = synthBundle(synth, labels);
   const release=await readAudioManifest(repoRoot);
   if(release.manifest){
-    if(release.manifest.cues.length!==audio.cues.length||audio.cues.some(cue=>!release.manifest.cues.some(entry=>entry.id===cue.id&&entry.kind===cue.kind&&Math.abs(entry.frames/44100-cue.duration)<1/44100)))throw new Error('Audio release metadata differs from independent synthesizer');
+    if(release.manifest.cues.length!==audio.cues.length||audio.cues.some(cue=>!release.manifest.cues.some(entry=>entry.id===cue.id&&entry.kind===cue.kind&&entry.sampleRate===cue.sampleRate&&Math.abs(entry.frames/entry.sampleRate-cue.duration)<1/entry.sampleRate)))throw new Error('Audio release metadata differs from independent synthesizer');
     if(verifyGodot)for(const [source,bytes] of release.files)await verifyCopy(repoRoot,bytes,'godot/resources/audio/'+source.split('/').at(-1),'audio');
   }
   const template = await textAt(repoRoot, 'workbench/index.html');

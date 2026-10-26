@@ -15,7 +15,7 @@ test('lamp memories, four slots and real file transfer persist through reload an
   test.setTimeout(120000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-  await page.goto('/');const canvas=page.locator('#canvas');await expect(canvas).toHaveAttribute('data-ready','true',{timeout:30000});await canvas.click();
+  await page.goto('/?explore=1');const canvas=page.locator('#canvas');await expect(canvas).toHaveAttribute('data-ready','true',{timeout:30000});await canvas.click();
   const home=maps['lv.finn_house']!,town=maps['lv.town']!;
   const arrival=await traverse(page,home,home.spawn,'lv.town');
   await walkTo(page,town,arrival,{x:18,y:11});await face(page,'ArrowUp','up');
@@ -64,14 +64,14 @@ test('lamp memories, four slots and real file transfer persist through reload an
   await page.reload();await expect(canvas).toHaveAttribute('data-ready','true',{timeout:30000});
   await expect(canvas).toHaveAttribute('data-map_id','lv.town');await expect(canvas).toHaveAttribute('data-grid_x','12');await expect(canvas).toHaveAttribute('data-lit_lamps','lv.lamp.square');
   await page.screenshot({path:'artifacts/screenshots/godot-g1-save-reloaded.png'});
-  const second=await context.newPage();await second.goto('/');await expect(second.locator('#canvas')).toHaveAttribute('data-ready','true',{timeout:30000});
+  const second=await context.newPage();await second.goto('/?explore=1');await expect(second.locator('#canvas')).toHaveAttribute('data-ready','true',{timeout:30000});
   await expect(second.locator('#canvas')).toHaveAttribute('data-map_id','lv.town');await expect(second.locator('#canvas')).toHaveAttribute('data-lit_lamps','lv.lamp.square');await second.close();
   expect(errors).toEqual([]);
 });
 
 test('a browser storage write failure cannot replace an existing manual record',async({page})=>{
   test.setTimeout(60000);
-  await page.goto('/');const canvas=page.locator('#canvas');await expect(canvas).toHaveAttribute('data-ready','true',{timeout:30000});await canvas.click();
+  await page.goto('/?explore=1');const canvas=page.locator('#canvas');await expect(canvas).toHaveAttribute('data-ready','true',{timeout:30000});await canvas.click();
   const home=maps['lv.finn_house']!,town=maps['lv.town']!;
   const at=await traverse(page,home,home.spawn,'lv.town');
   await walkTo(page,town,at,{x:12,y:19});await face(page,'ArrowUp','up');await page.keyboard.press('KeyZ');

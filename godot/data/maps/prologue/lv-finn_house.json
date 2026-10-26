@@ -122,6 +122,23 @@
           "p.aftermath_heard"
         ]
       }
+    },
+    {
+      "id": "lv.home.lighting_rod",
+      "kind": "decoration",
+      "sprite": "prop.lighting_rod",
+      "x": 7,
+      "y": 11,
+      "solid": false,
+      "visibleWhen": {
+        "all": [
+          "p.main_started",
+          "p.woken"
+        ],
+        "none": [
+          "p.rod_taken"
+        ]
+      }
     }
   ],
   "required": [],

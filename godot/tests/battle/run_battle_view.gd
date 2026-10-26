@@ -13,6 +13,7 @@ func check(value: bool, label: String) -> void:
 		push_error("FAIL: " + label)
 func _run() -> void:
 	var world: Node = WorldScene.instantiate()
+	world.set("enable_prologue", false)
 	world.persistence_enabled = false
 	root.add_child(world)
 	await process_frame

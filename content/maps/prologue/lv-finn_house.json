@@ -50,6 +50,17 @@
       "script": "lv.inspect.ella_bed"
     },
     {
+      "id": "lv.home.ella.sleeping",
+      "kind": "decoration",
+      "sprite": "char.ella_sleeping",
+      "x": 11,
+      "y": 6,
+      "solid": false,
+      "visibleWhen": {
+        "all": ["p.main_started", "p.s09_done"]
+      }
+    },
+    {
       "id": "lv.home.table",
       "kind": "decoration",
       "sprite": "prop.table",
@@ -120,6 +131,23 @@
         ],
         "none": [
           "p.aftermath_heard"
+        ]
+      }
+    },
+    {
+      "id": "lv.home.lighting_rod",
+      "kind": "decoration",
+      "sprite": "prop.lighting_rod",
+      "x": 7,
+      "y": 11,
+      "solid": false,
+      "visibleWhen": {
+        "all": [
+          "p.main_started",
+          "p.woken"
+        ],
+        "none": [
+          "p.rod_taken"
         ]
       }
     }

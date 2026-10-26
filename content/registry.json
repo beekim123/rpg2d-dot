@@ -27,7 +27,8 @@
     "battle.presentation": "data/battle-presentation.json",
     "battle.prologue_ella": "data/battles/prologue_ella.json",
     "battle.prologue_shade": "data/battles/prologue_shade.json",
-    "prologue.flow": "data/prologue-flow.json"
+    "prologue.flow": "data/prologue-flow.json",
+    "puzzle.dough": "data/puzzles/dough.json"
   },
   "cinematics": {
     "prologue": "story/prologue-scenes.json"

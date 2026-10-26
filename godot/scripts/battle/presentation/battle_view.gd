@@ -7,6 +7,7 @@ signal gesture_received
 signal muted_changed(value: bool)
 signal restarted
 signal outcome_presented(phase: String)
+signal reduced_changed(value: bool)
 const Controls = preload("res://scripts/battle/presentation/battle_controls.gd")
 const EventPlayer = preload("res://scripts/battle/presentation/battle_event_player.gd")
 const Unit = preload("res://scripts/battle/presentation/battle_unit_view.gd")
@@ -86,6 +87,8 @@ func _ready() -> void:
 		_schedule_enemy()
 func busy() -> bool:
 	return _playing or _enemy_queued
+func session_handle() -> RefCounted:
+	return _controls.session_handle()
 func choose_option(id: String) -> bool:
 	if not loaded or busy():
 		return false
@@ -122,6 +125,7 @@ func _input(event: InputEvent) -> void:
 			set_animation_speed(speed_mode + 1)
 		elif key == KEY_R:
 			reduced_motion = not reduced_motion
+			reduced_changed.emit(reduced_motion)
 			if reduced_motion:
 				for unit: Unit in _units.values():
 					unit.set_flash(false)

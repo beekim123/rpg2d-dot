@@ -8,7 +8,7 @@
     if (text !== undefined) node.textContent = text;
     return node;
   };
-  const categoryNames = { char: '人物', character: '人物', astral: '伴星', portrait: '头像', prop: '物件', tile: '地形', ui: '界面', fx: '特效', effect: '特效' };
+  const categoryNames = { char: '人物', character: '人物', astral: '伴星', portrait: '头像', prop: '物件', tile: '地形', ui: '界面', fx: '特效', effect: '特效', scene: '剧情画面' };
   try {
     const dataNode = byId('astra-workbench-data');
     if (!dataNode) throw new Error('展示包尚未生成。请使用构建后的 HTML。');
@@ -103,6 +103,7 @@
       if (image.naturalWidth !== asset.size[0] * asset.frames || image.naturalHeight !== asset.size[1]) throw new Error(`图集尺寸与清单不同：${asset.id}`);
       const category = asset.category || asset.id.split('.')[0];
       const article = make('article', 'asset-card'); article.dataset.id = asset.id; article.dataset.category = category;
+      if(category==='scene')article.classList.add('asset-card-wide');
       const heading = make('h3', '', asset.id);
       const categoryLabel = make('p', 'category', categoryNames[category] || category);
       const preview = make('div', 'preview');
@@ -186,11 +187,12 @@
         stopVoice();
         let buffer = buffers.get(cue.id);
         if (!buffer) {
-          const samples = window.ASTRA_SYNTH.renderCue(cue.id, 44100);
+          const sampleRate = cue.sampleRate || 44100;
+          const samples = window.ASTRA_SYNTH.renderCue(cue.id, sampleRate);
           if (pack.audio.sample_format === 'pcm16') for (let index = 0; index < samples.length; index++) {
             const value = samples[index]; samples[index] = Math.round(value * (value < 0 ? 32768 : 32767)) / 32768;
           }
-          buffer = audioContext.createBuffer(1, samples.length, 44100); buffer.getChannelData(0).set(samples); buffers.set(cue.id, buffer);
+          buffer = audioContext.createBuffer(1, samples.length, sampleRate); buffer.getChannelData(0).set(samples); buffers.set(cue.id, buffer);
         }
         const source = audioContext.createBufferSource(); source.buffer = buffer; source.loop = cue.kind === 'music'; source.connect(audioMaster);
         currentVoice = source; audioStop.disabled = false; audioButtons.get(cue.id).setAttribute('aria-pressed', 'true');

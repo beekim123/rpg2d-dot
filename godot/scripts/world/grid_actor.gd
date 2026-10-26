@@ -10,6 +10,7 @@ const STEP_TICKS: int = 10
 var grid_position: Vector2i = Vector2i.ZERO
 var is_moving: bool = false
 var facing: String = "down"
+var visual_id: String = ""
 var _step_tick: int = 0
 var _start_position: Vector2 = Vector2.ZERO
 var _target_position: Vector2 = Vector2.ZERO
@@ -28,8 +29,17 @@ func setup(catalog: AssetCatalog, cell: Vector2i) -> void:
 	shadow.texture = catalog.frame_texture(shadow_id, 0)
 	add_child(shadow)
 	var body: AnimatedSprite2D = catalog.animated_sprite(catalog.binding("player"), StringName("idle_" + facing))
+	visual_id = catalog.binding("player")
 	body.name = "Sprite"
 	add_child(body)
+
+func set_visual_asset(catalog: AssetCatalog, id: String) -> void:
+	if visual_id == id or not catalog.definitions.has(id):
+		return
+	visual_id = id
+	sprite.sprite_frames = catalog.sprite_frames(id)
+	sprite.offset = -catalog.anchor(id)
+	sprite.play(StringName(("walk_" if is_moving else "idle_") + facing))
 
 func set_ground_shadow(catalog: AssetCatalog, terrain_asset_id: String) -> void:
 	var shadow_id: String = catalog.shadow_for_terrain(terrain_asset_id)

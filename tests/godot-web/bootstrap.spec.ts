@@ -5,7 +5,7 @@ test('Godot Web starts at home and real keys traverse paired doors without losin
   test.setTimeout(60000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-  await page.goto('/');const canvas=page.locator('#canvas');
+  await page.goto('/?explore=1');const canvas=page.locator('#canvas');
   await expect(canvas).toHaveAttribute('data-ready','true',{timeout:30000});
   await expect(canvas).toHaveAttribute('data-map_id','lv.finn_house');
   await expect(canvas).toHaveAttribute('aria-label',/芬恩家/);

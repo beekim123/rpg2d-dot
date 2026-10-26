@@ -118,9 +118,27 @@
           "p.festival_started"
         ]
       }
+    },
+    {
+      "id": "lv.bakery.brio.dawn",
+      "kind": "npc",
+      "sprite": "char.brio",
+      "x": 5,
+      "y": 6,
+      "solid": true,
+      "script": "lv.npc.brio.day",
+      "visibleWhen": {
+        "all": [
+          "p.main_started",
+          "q.dough_started",
+          "p.s09_done"
+        ]
+      }
     }
   ],
-  "required": [],
+  "required": [
+    "lv.bakery.brio.dawn"
+  ],
   "exits": [
     {
       "pair": "lv.bakery_door",

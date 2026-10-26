@@ -13,6 +13,7 @@ func _check(ok: bool, message: String) -> void:
 func _scene() -> Node:
 	var packed: PackedScene = load("res://scenes/main.tscn") as PackedScene
 	var world: Node = packed.instantiate()
+	world.set("enable_prologue", false)
 	world.set("save_root",_folder)
 	return world
 func _run() -> void:

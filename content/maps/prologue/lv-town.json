@@ -431,6 +431,10 @@
         ],
         "none": [
           "p.attack_started"
+        ],
+        "notAll": [
+          "p.main_started",
+          "p.s04_done"
         ]
       }
     },
@@ -448,7 +452,108 @@
         ],
         "none": [
           "p.attack_started"
+        ],
+        "notAll": [
+          "p.main_started",
+          "p.s04_done"
         ]
+      }
+    },
+    {
+      "id": "lv.town.ella.festival",
+      "kind": "npc",
+      "sprite": "char.ella",
+      "x": 16,
+      "y": 16,
+      "solid": true,
+      "script": "lv.npc.ella.day",
+      "visibleWhen": {
+        "all": ["p.main_started", "p.festival_started"],
+        "none": ["p.attack_started"]
+      }
+    },
+    {
+      "id": "lv.town.laurel.festival",
+      "kind": "decoration",
+      "sprite": "astral.laurel",
+      "x": 15,
+      "y": 16,
+      "solid": false,
+      "visibleWhen": {
+        "all": ["p.main_started", "p.festival_started"],
+        "none": ["p.attack_started"]
+      }
+    },
+    {
+      "id": "lv.town.ella.after_battle",
+      "kind": "npc",
+      "sprite": "char.ella",
+      "x": 13,
+      "y": 16,
+      "solid": true,
+      "visibleWhen": {
+        "all": ["p.main_started", "p.ella_battle_won"],
+        "none": ["p.ella_starplucked", "p.s09_done"]
+      }
+    },
+    {
+      "id": "lv.town.laurel.after_battle",
+      "kind": "decoration",
+      "sprite": "astral.laurel",
+      "x": 13,
+      "y": 15,
+      "solid": false,
+      "visibleWhen": {
+        "all": ["p.main_started", "p.ella_battle_won"],
+        "none": ["p.ella_starplucked", "p.s09_done"]
+      }
+    },
+    {
+      "id": "lv.town.hob.crisis",
+      "kind": "npc",
+      "sprite": "char.hob",
+      "x": 11,
+      "y": 16,
+      "solid": true,
+      "visibleWhen": {
+        "all": ["p.main_started", "p.attack_started"],
+        "none": ["p.s09_done"]
+      }
+    },
+    {
+      "id": "lv.town.shade.waiting",
+      "kind": "npc",
+      "sprite": "char.shade",
+      "x": 22,
+      "y": 17,
+      "solid": true,
+      "visibleWhen": {
+        "all": ["p.main_started", "p.attack_started"],
+        "none": ["p.s09_done"]
+      }
+    },
+    {
+      "id": "lv.town.ella.fallen",
+      "kind": "decoration",
+      "sprite": "char.ella_fallen",
+      "x": 12,
+      "y": 17,
+      "solid": true,
+      "visibleWhen": {
+        "all": ["p.main_started", "p.ella_starplucked"],
+        "none": ["p.s09_done"]
+      }
+    },
+    {
+      "id": "lv.town.broken_lamp",
+      "kind": "decoration",
+      "sprite": "prop.broken_lamp",
+      "x": 11,
+      "y": 17,
+      "solid": false,
+      "visibleWhen": {
+        "all": ["p.main_started", "p.ella_starplucked"],
+        "none": ["p.s09_done"]
       }
     },
     {
@@ -671,8 +776,16 @@
       "y": 17
     },
     "ella_fall": {
-      "x": 18,
-      "y": 18
+      "x": 12,
+      "y": 17
+    },
+    "ella_follow": {
+      "x": 13,
+      "y": 16
+    },
+    "starpluck_player": {
+      "x": 15,
+      "y": 16
     },
     "release_platform": {
       "x": 21,

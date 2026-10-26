@@ -14,6 +14,10 @@ var _busy: bool = false
 var _snapshot: Callable
 var _restore: Callable
 var _start_map_id: String = ""
+var _new_game_factory: Callable
+
+func set_new_game_factory(factory: Callable) -> void:
+	_new_game_factory = factory
 
 func configure(maps: Dictionary, root_path: String, persistence_enabled: bool, snapshot: Callable, restore: Callable, start_map_id: String = "") -> Array[String]:
 	var errors: Array[String] = codec.configure(maps)
@@ -103,6 +107,14 @@ func start_new_game() -> Dictionary:
 	var state: Dictionary = codec.fresh(_start_map_id)
 	if state.is_empty():
 		return _failure("save.unsupported_map", "new", -1)
+	if _new_game_factory.is_valid():
+		var prepared: Variant = _new_game_factory.call(state.duplicate(true))
+		if not prepared is Dictionary or not prepared.get("ok",false) or not prepared.get("state") is Dictionary:
+			return _failure("save.invalid", "new", -1)
+		var checked: Dictionary = codec.validate(prepared["state"])
+		if not checked["ok"]:
+			return _failure(checked["error"], "new", -1)
+		state = checked["state"]
 	_busy = true
 	return _apply_loaded_result({"ok": true, "error": "", "state": state}, "new", -1, "save.new_started")
 

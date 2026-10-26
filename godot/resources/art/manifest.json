@@ -722,6 +722,56 @@
       "hash": "ec47e89a623e8630d4e14cef546947a296a9692931d225351578b78d54815c41"
     },
     {
+      "id": "char.ella_fallen",
+      "file": "char.ella_fallen.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        32,
+        16
+      ],
+      "anchor": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "ba3929d3366f42084b78067b2fdf6b531b6b5ccfc991221aa77833e6f1af2de3"
+    },
+    {
+      "id": "char.ella_sleeping",
+      "file": "char.ella_sleeping.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        24,
+        24
+      ],
+      "anchor": [
+        12,
+        24
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "ae9ab5ef18c8c0aae1d70c823a2968d76c50e21dbb8657afffbe8327f78c669d"
+    },
+    {
       "id": "char.faux_sword",
       "file": "char.faux_sword.png",
       "category": "character",
@@ -1144,6 +1194,214 @@
         }
       },
       "hash": "67adc4e6245e0b7225cd2a351e5922640e0e616f3bae6db179142aa2b8133dd1"
+    },
+    {
+      "id": "char.finn_unarmed",
+      "file": "char.finn_unarmed.png",
+      "category": "character",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 32,
+      "animations": {
+        "idle_down": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            24,
+            24,
+            24,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            25,
+            1,
+            24,
+            24,
+            24,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_down": {
+          "frames": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_up": {
+          "frames": [
+            6,
+            6,
+            6,
+            7,
+            7,
+            7,
+            7,
+            26,
+            26,
+            26,
+            6,
+            6,
+            6,
+            6,
+            6,
+            7,
+            7,
+            27,
+            7,
+            26,
+            26,
+            26,
+            6,
+            6
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_up": {
+          "frames": [
+            8,
+            9,
+            10,
+            11
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_left": {
+          "frames": [
+            12,
+            12,
+            12,
+            13,
+            13,
+            13,
+            13,
+            28,
+            28,
+            28,
+            12,
+            12,
+            12,
+            12,
+            12,
+            13,
+            13,
+            29,
+            13,
+            28,
+            28,
+            28,
+            12,
+            12
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_left": {
+          "frames": [
+            14,
+            15,
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle_right": {
+          "frames": [
+            18,
+            18,
+            18,
+            19,
+            19,
+            19,
+            19,
+            30,
+            30,
+            30,
+            18,
+            18,
+            18,
+            18,
+            18,
+            19,
+            19,
+            31,
+            19,
+            30,
+            30,
+            30,
+            18,
+            18
+          ],
+          "fps": 4,
+          "loop": true
+        },
+        "walk_right": {
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            24,
+            24,
+            24,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            25,
+            1,
+            24,
+            24,
+            24,
+            0,
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "5f8adc544d328a913bf2b994f02416f27df18f727d7d9625fbf71a864bed5532"
     },
     {
       "id": "char.hedo",
@@ -3374,6 +3632,31 @@
       "hash": "432d1b0c29fabe7ed2c2f52abe3444caf78791b905c3c5c2cdcfb50ac1436113"
     },
     {
+      "id": "portrait.shade_cracked",
+      "file": "portrait.shade_cracked.png",
+      "category": "portrait",
+      "kind": "procedural",
+      "size": [
+        48,
+        48
+      ],
+      "anchor": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "e4b9cd59ca576a1ed6f02058e36bb72b8050ec3098d01565449776d57a10b017"
+    },
+    {
       "id": "portrait.teya",
       "file": "portrait.teya.png",
       "category": "portrait",
@@ -3497,6 +3780,31 @@
         }
       },
       "hash": "0819a7a20305505b54bf947dc4f24f60745652a8f4fd99a712d8b0d3cddbb43a"
+    },
+    {
+      "id": "prop.broken_lamp",
+      "file": "prop.broken_lamp.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        24,
+        24
+      ],
+      "anchor": [
+        12,
+        24
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "e7dffbec7faec1dbac52c2657afef71ad94c9c617d30f05aa6ea003da5c0227c"
     },
     {
       "id": "prop.cooling_mat",
@@ -3751,6 +4059,56 @@
       "hash": "b2f58e3e4a41863da177913505ac975d0c837ad3862e98595f57511bc50a63e1"
     },
     {
+      "id": "prop.leaf_crown",
+      "file": "prop.leaf_crown.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        24,
+        12
+      ],
+      "anchor": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "6494470841b2661102e3fa233b3f312770ac21bb4e2da5fe01c1e387b53c4a11"
+    },
+    {
+      "id": "prop.lighting_rod",
+      "file": "prop.lighting_rod.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        24
+      ],
+      "anchor": [
+        8,
+        24
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "217d680c0e09ef15be4156efd15f9aed8703f27b782e935232f633be21a5f6c4"
+    },
+    {
       "id": "prop.paper_boat",
       "file": "prop.paper_boat.png",
       "category": "prop",
@@ -3774,6 +4132,31 @@
         }
       },
       "hash": "80a400a377b8f74c7c9463ed1c4eedbcb481229d06d4016e7bf8f9dcb1267b0d"
+    },
+    {
+      "id": "prop.paper_lantern",
+      "file": "prop.paper_lantern.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        20
+      ],
+      "anchor": [
+        8,
+        20
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "272bb0bc8352cb49fee2ee81d45ff2b9ba6f8d51823976c5d936bc1bc669d294"
     },
     {
       "id": "prop.pendant",
@@ -3926,6 +4309,56 @@
       "hash": "2770e33d8427247b74509af3881fc51a9aaa3157662418b2567959ecaac14b7c"
     },
     {
+      "id": "prop.star_casket",
+      "file": "prop.star_casket.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        20,
+        20
+      ],
+      "anchor": [
+        10,
+        20
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "92b2445608b6962949e60a9924f73d7b1dda2e40833c31d848a67284fa1e2bf2"
+    },
+    {
+      "id": "prop.star_pendant",
+      "file": "prop.star_pendant.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        24,
+        24
+      ],
+      "anchor": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "5ba9a483c7742a556d92bd6b33f94c15138adf11e0875f200c29a9989fd2cf54"
+    },
+    {
       "id": "prop.stove",
       "file": "prop.stove.png",
       "category": "prop",
@@ -3974,6 +4407,31 @@
         }
       },
       "hash": "6f225e33d30bb2051b0651b99b9649be485262df7444ac7dde0766a735e2d62a"
+    },
+    {
+      "id": "prop.travel_lamp",
+      "file": "prop.travel_lamp.png",
+      "category": "prop",
+      "kind": "procedural",
+      "size": [
+        16,
+        20
+      ],
+      "anchor": [
+        8,
+        20
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "2bd55b5328d6346d65df94b36948efdf5d328dccb99db1354eeee2bacf16d227"
     },
     {
       "id": "prop.tree",
@@ -4092,6 +4550,106 @@
         }
       },
       "hash": "6a4061db95b9f55e19d9180eef4598c489b7afc9ebf50fb4c99f80d53024687d"
+    },
+    {
+      "id": "scene.legend.fall",
+      "file": "scene.legend.fall.png",
+      "category": "scene",
+      "kind": "procedural",
+      "size": [
+        480,
+        270
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "e40abbb2662090ee6b3f929c4c9981553fba713bd9cc2451884fe1460057ef09"
+    },
+    {
+      "id": "scene.legend.lamp",
+      "file": "scene.legend.lamp.png",
+      "category": "scene",
+      "kind": "procedural",
+      "size": [
+        480,
+        270
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "5c8fb4906d5e87babb679e6a87d881c1e465cc7c6952e556d4629b79a0588644"
+    },
+    {
+      "id": "scene.legend.shatter",
+      "file": "scene.legend.shatter.png",
+      "category": "scene",
+      "kind": "procedural",
+      "size": [
+        480,
+        270
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "78a7ae63ee421a9f942754517b3a4b96f095f89cad159124d024470546c900c8"
+    },
+    {
+      "id": "scene.legend.sky",
+      "file": "scene.legend.sky.png",
+      "category": "scene",
+      "kind": "procedural",
+      "size": [
+        480,
+        270
+      ],
+      "anchor": [
+        0,
+        0
+      ],
+      "frames": 1,
+      "animations": {
+        "idle": {
+          "frames": [
+            0
+          ],
+          "fps": 4,
+          "loop": true
+        }
+      },
+      "hash": "21897254e0b39d047b8f0d5d40aebbd4d0add19b71752c63176f8435a271a104"
     },
     {
       "id": "tile.bridge",

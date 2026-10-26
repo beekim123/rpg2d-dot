@@ -174,5 +174,13 @@
   "prologue.ui.ending.explore": "继续在灯谷查看",
   "prologue.ui.item.lamp_rod.name": "点灯杆",
   "prologue.ui.item.lamp_rod.description": "学徒用的长柄点灯杆。\n先把脚边的灯点稳。",
-  "prologue.ui.hint.need_travel_lamp": "先拿点灯杆，向霍伯借旅灯。"
+  "prologue.ui.hint.need_travel_lamp": "先拿点灯杆，向霍伯借旅灯。",
+  "prologue.ui.choice.hint": "↑↓ 选择 · Z 确认 · X 返回",
+  "prologue.ui.dialogue.hint": "Z / 回车 继续 · X 查看概要",
+  "prologue.ui.skip.short": "X 跳过这段",
+  "prologue.ui.title.manage": "管理存档",
+  "prologue.ui.title.confirm_new": "开始新的序章？\n当前旅程将重置，手动存档会保留。",
+  "prologue.ui.save.warning": "旅程暂未保存，可在灯柱旁重试或导出。",
+  "prologue.ui.field.hint": "{goal}  ·  Z 调查  C 手记",
+  "prologue.ui.objective.borrow_lamp": "出门到灯铺前，向霍伯借旅灯"
 }

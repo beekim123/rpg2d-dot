@@ -24,6 +24,7 @@ func _run() -> void:
 		_finish()
 		return
 	var world: Node = packed.instantiate()
+	world.set("enable_prologue", false)
 	# Preserve G0 as a regression fixture while the normal entry moves to the prologue.
 	world.set("initial_map_id", "lantern.test")
 	world.set("persistence_enabled", false)

@@ -82,7 +82,7 @@ test('self-contained bundle embeds canonical PNG/font bytes, complete licenses a
   assert.equal(data.font.licenses.length, 2);
   assert.ok(data.font.licenses.some(license => license.text === 'Complete component permission'));
   assert.equal(data.audio.source_sha256, sha(Buffer.from(synth)));
-  assert.deepEqual(data.audio.cues, [{id: 'tap', label: '轻触</script>', kind: 'effect', duration: 0.125}]);
+  assert.deepEqual(data.audio.cues, [{id: 'tap', label: '轻触</script>', kind: 'effect', duration: 0.125, sampleRate:44100}]);
   const runtime = runInline(html);
   assert.equal(runtime.ASTRA_SYNTH.renderCue('marker'), '</script><!--');
   assert.deepEqual(Object.keys(runtime.ASTRA_SYNTH).sort(), ['cueDurations', 'cueKinds', 'cues', 'renderCue']);

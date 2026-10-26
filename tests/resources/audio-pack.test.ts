@@ -23,9 +23,11 @@ it('refuses symbolic output ancestors before writing outside the chosen output t
 });
 it('builds deterministic first-party cues under2MB and verifies without repairing edits',async()=>{
   const outDir=await mkdtemp(join(tmpdir(),'astra-audio-pack-'));folders.push(outDir);
-  const built=await buildAudioPack({outDir});expect(built.cues).toBe(14);
+  const built=await buildAudioPack({outDir});expect(built.cues).toBe(21);
   const first=await readFile(join(outDir,'manifest.json'));
   const manifest=JSON.parse(first.toString());expect(manifest.cues.every((c:{bytes:number})=>c.bytes<2000000)).toBe(true);
+  expect(manifest.format).toBe('astra.audio/2');
+  expect(manifest.cues.find((c:{id:string})=>c.id==='title')).toMatchObject({kind:'music',sampleRate:22050});
   expect(manifest.cues.find((c:{id:string})=>c.id==='battle_theme')).toMatchObject({kind:'music',frames:705600,sampleRate:44100});
   await buildAudioPack({outDir});expect(await readFile(join(outDir,'manifest.json'))).toEqual(first);
   expect((await buildAudioPack({outDir,verify:true})).mismatches).toEqual([]);

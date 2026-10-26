@@ -6,7 +6,7 @@ test('native investigation and NPC dialogue respond to real keyboard and mouse w
   test.setTimeout(60000);
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-  await page.goto('/');const canvas=page.locator('#canvas');
+  await page.goto('/?explore=1');const canvas=page.locator('#canvas');
   await expect(canvas).toHaveAttribute('data-ready','true',{timeout:30000});await canvas.click();
   const home=maps['lv.finn_house']!,town=maps['lv.town']!;
   await walkTo(page,home,home.spawn,{x:4,y:7});await face(page,'ArrowUp','up');

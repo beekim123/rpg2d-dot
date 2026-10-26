@@ -4,15 +4,20 @@ extends Node2D
 
 signal map_entered(map_id: String, cell: Vector2i)
 signal battle_finished(battle_id: String, phase: String)
+signal battle_closed(battle_id: String, session: RefCounted, previous: Dictionary, story: bool)
+signal dough_closed(completed: bool, rewarded: bool)
 
 const BattleBook = preload("res://scripts/resources/battle_catalog.gd")
 const BattleView = preload("res://scripts/battle/presentation/battle_view.gd")
 const BattleScene = preload("res://scenes/battle/battle_view.tscn")
 const SoundService = preload("res://scripts/audio/audio_service.gd")
+const Prologue = preload("res://scripts/story/prologue_director.gd")
+const DoughView = preload("res://scripts/puzzles/dough_view.gd")
 
 @export var initial_map_id: String = ""
 @export var persistence_enabled: bool = true
 @export var save_root: String = "user://astra/saves"
+@export var enable_prologue: bool = true
 
 const DEFAULT_TERRAIN: Dictionary = {"grass": "tile.grass", "path": "tile.path", "bridge": "tile.bridge", "water": "tile.water", "border": "tile.grass"}
 const TERRAIN_ROLES: Array[String] = ["grass", "path", "bridge", "water", "border"]
@@ -50,6 +55,11 @@ var _battle_id: String = ""
 var _battle_materials: Dictionary = {}
 var _audio_service: SoundService
 var _battle_music: String = ""
+var _battle_story: bool = false
+var _prologue: Node
+var _story_committing: bool = false
+var _dough: DoughView
+var _dough_before: Dictionary = {}
 
 @onready var ground: TileMapLayer = $Ground
 @onready var edges: TileMapLayer = $Edges
@@ -120,17 +130,32 @@ func _ready() -> void:
 	_audio_service.setup(catalog)
 	_audio_service.changed.connect(_publish_accessibility_state)
 	_audio_service.music("test_theme")
+	var options: Dictionary = _runtime_options()
+	if enable_prologue and not options["explore"] and options["battle"].is_empty():
+		_prologue = Prologue.new()
+		_prologue.name = "PrologueDirector"
+		add_child(_prologue)
+		var prologue_errors: Array[String] = _prologue.setup(self,catalog,world_data,persistence.codec,_strings,_audio_service,_battle_book)
+		if not prologue_errors.is_empty():
+			push_error("Prologue could not configure: " + str(prologue_errors))
+			return
+		# Bind Node callbacks rather than creating a Progress <-> Codec reference cycle.
+		persistence.codec.set_story_validator(_validate_story_state)
+		persistence.set_new_game_factory(_prepare_story_start)
+		_prologue.changed.connect(_on_story_changed)
 	controls_label.text = String(_strings["hint.explore"])
 	_install_input_actions()
 	var start_id: String = initial_map_id if not initial_map_id.is_empty() else catalog.binding("map")
 	if not enter_map(start_id):
 		push_error("Initial map could not be entered: " + start_id)
 		return
-	persistence.startup()
+	var startup_result: Dictionary = persistence.startup()
+	if _prologue != null:
+		_prologue.startup(startup_result)
 	_start_battle_preview.call_deferred()
 
 func _physics_process(_delta: float) -> void:
-	if not loaded or battle_active() or dialogue_active() or menu_active() or persistence.is_busy():
+	if not loaded or battle_active() or puzzle_active() or _story_blocks_input() or dialogue_active() or menu_active() or persistence.is_busy():
 		return
 	if not player.is_moving:
 		for index: int in range(INPUT_ACTIONS.size()):
@@ -145,7 +170,11 @@ func _process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if loaded and event.is_pressed() and not event.is_echo():
 		_audio_service.unlock()
-	if not loaded or battle_active() or _save_controller.is_busy() or (event is InputEventKey and event.echo):
+	if not loaded or battle_active() or puzzle_active() or _story_blocks_input() or _save_controller.is_busy() or (event is InputEventKey and event.echo):
+		return
+	if _prologue != null and event is InputEventKey and event.pressed and event.physical_keycode == KEY_R:
+		get_viewport().set_input_as_handled()
+		_prologue.toggle_setting("reduced")
 		return
 	if event is InputEventKey and event.pressed and event.physical_keycode == KEY_M:
 		_audio_service.set_muted(not _audio_service.is_muted())
@@ -165,10 +194,17 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not loaded or battle_active() or menu_active() or persistence.is_busy() or (event is InputEventKey and event.echo):
+	if not loaded or battle_active() or puzzle_active() or _story_blocks_input() or menu_active() or persistence.is_busy() or (event is InputEventKey and event.echo):
 		return
+	if not dialogue_active():
+		for index: int in INPUT_ACTIONS.size():
+			if event.is_action_pressed(INPUT_ACTIONS[index]):
+				get_viewport().set_input_as_handled()
+				request_move(DIRECTIONS[index])
+				return
 	if event is InputEventKey and event.pressed and event.physical_keycode in [KEY_F5, KEY_F6]:
-		start_battle("prologue_ella" if event.physical_keycode == KEY_F5 else "prologue_shade")
+		if not flags.get("p.main_started",false):
+			start_battle("prologue_ella" if event.physical_keycode == KEY_F5 else "prologue_shade")
 		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed(&"interact"):
@@ -182,7 +218,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func request_move(direction: Vector2i) -> bool:
-	if not loaded or battle_active() or dialogue_active() or menu_active() or persistence.is_busy() or player.is_moving or not direction in DIRECTIONS:
+	if not loaded or battle_active() or puzzle_active() or _story_blocks_input() or dialogue_active() or menu_active() or persistence.is_busy() or player.is_moving or not direction in DIRECTIONS:
 		return false
 	player.face(direction)
 	if not is_walkable(player.grid_position + direction):
@@ -195,13 +231,15 @@ func request_move(direction: Vector2i) -> bool:
 	return true
 
 func enter_map(map_id: String, at: Vector2i = Vector2i(-1, -1)) -> bool:
-	if battle_active() or dialogue_active() or menu_active() or persistence.is_busy() or (is_instance_valid(player) and player.is_moving) or not world_data.validate_state(flags).is_empty():
+	if battle_active() or puzzle_active() or _story_blocks_input() or dialogue_active() or menu_active() or persistence.is_busy() or (is_instance_valid(player) and player.is_moving) or not world_data.validate_state(flags).is_empty():
 		return false
 	return _enter_validated_map(map_id, at)
 
 func interact() -> bool:
-	if not loaded or battle_active() or player.is_moving or dialogue_active() or menu_active() or persistence.is_busy():
+	if not loaded or battle_active() or puzzle_active() or _story_blocks_input() or player.is_moving or dialogue_active() or menu_active() or persistence.is_busy():
 		return false
+	if _prologue != null and _prologue.try_interact():
+		return true
 	var target: Dictionary = _interaction_target()
 	if target.is_empty():
 		controls_label.text = String(_strings["hint.no_target"])
@@ -265,13 +303,17 @@ func menu_active() -> bool:
 	return _save_controller.is_active()
 
 func open_save_menu() -> bool:
-	return _save_controller.open() if _can_persistence_action() else false
+	return _save_controller.open() if _can_persistence_action() and not _story_blocks_input() else false
 
 func close_save_menu() -> void:
 	_save_controller.close()
 
 func light_facing_lamp() -> bool:
 	if not _can_persistence_action() or menu_active() or _save_controller.is_busy():
+		return false
+	if _prologue != null and not _prologue.can_light_lamp():
+		_audio_service.play("deny")
+		controls_label.text = _strings["prologue.ui.hint.need_travel_lamp"]
 		return false
 	var target: Dictionary = _interaction_target()
 	if target.is_empty() or target["kind"] != "lamp":
@@ -289,6 +331,8 @@ func light_facing_lamp() -> bool:
 		var message: String = "lamp.lit" if saved.get("ok",false) or not persistence.enabled else String(saved.get("error","save.io"))
 		controls_label.text = String(_strings.get(message,_strings["save.failed"]))
 	_publish_accessibility_state()
+	if _prologue != null:
+		_prologue.explore_changed()
 	return true
 
 func _restore_persistent_state(state: Dictionary) -> bool:
@@ -323,7 +367,29 @@ func _assign_persistent_fields(state: Dictionary) -> void:
 	actor_memory = (state["actorMemory"] as Dictionary).duplicate(true)
 
 func _can_persistence_action() -> bool:
-	return loaded and not battle_active() and is_instance_valid(player) and not player.is_moving and not dialogue_active() and not _restoring_state
+	return loaded and not battle_active() and not puzzle_active() and is_instance_valid(player) and not player.is_moving and not dialogue_active() and not _restoring_state and (_story_committing or _prologue == null or not _prologue.blocks_persistence())
+
+func _story_blocks_input() -> bool:
+	return _prologue != null and _prologue.is_modal()
+func story_state() -> Dictionary:
+	return _prologue.snapshot() if _prologue != null else {"mode":"","step":"","enabled":false}
+func _validate_story_state(state: Dictionary) -> String:
+	return _prologue.validate_story_state(state)
+func _prepare_story_start(state: Dictionary) -> Dictionary:
+	return _prologue.prepare_new_game(state)
+func apply_story_checkpoint(state: Dictionary) -> bool:
+	_story_committing = true
+	var restored: bool = _restore_persistent_state(state)
+	_story_committing = false
+	return restored
+func _on_story_changed() -> void:
+	$HUD.visible = not battle_active() and not puzzle_active() and not _story_blocks_input()
+	if loaded:
+		var map_title: String = String(_strings.get(map_data.get("name",""),""))
+		title_label.text = map_title if flags.get("p.main_started",false) and not flags.get("p.departed",false) else String(_strings["game.title"]) + "  ·  " + map_title
+		if not menu_active() and not dialogue_active() and not _story_blocks_input():
+			_refresh_interaction_hint()
+	_publish_accessibility_state()
 
 func _saved_map_title(map_id: String) -> String:
 	var source: Dictionary = world_data.get_map(map_id)
@@ -336,6 +402,8 @@ func _on_save_presentation_changed() -> void:
 	if show_controls:
 		_refresh_interaction_hint()
 	_publish_accessibility_state()
+	if _prologue != null:
+		_prologue.explore_changed()
 
 func _on_persistence_result(result: Dictionary) -> void:
 	if not menu_active() and not dialogue_active():
@@ -414,6 +482,7 @@ func _on_dialogue_line(line: Dictionary) -> void:
 	_publish_accessibility_state()
 
 func _on_dialogue_advance() -> void:
+	_audio_service.play("confirm")
 	_dialogue.advance()
 
 func _on_dialogue_closed(error: String) -> void:
@@ -427,6 +496,8 @@ func _on_dialogue_closed(error: String) -> void:
 	if not error.is_empty():
 		controls_label.text = String(_strings["hint.interaction_failed"])
 	_publish_accessibility_state()
+	if _prologue != null:
+		_prologue.explore_changed()
 
 func _interaction_target() -> Dictionary:
 	return world_data.interaction_target(map_data, player.grid_position, _direction_for_facing(player.facing))
@@ -442,6 +513,15 @@ func _direction_for_facing(facing: String) -> Vector2i:
 func _refresh_interaction_hint() -> void:
 	if not loaded or battle_active() or dialogue_active() or menu_active():
 		return
+	if _prologue != null and flags.get("p.main_started",false):
+		var warning: String = _prologue.warning()
+		var goal: String = _prologue.objective()
+		if not warning.is_empty():
+			controls_label.text = warning
+			return
+		if not goal.is_empty():
+			controls_label.text = String(_strings["prologue.ui.field.hint"]).replace("{goal}",goal)
+			return
 	var target: Dictionary = {} if player.is_moving else _interaction_target()
 	var key: String = "hint.explore"
 	if not target.is_empty():
@@ -544,6 +624,8 @@ func accessibility_state() -> Dictionary:
 	var sorted_lamps: Array[String] = lamps.duplicate()
 	sorted_lamps.sort()
 	return {
+		"story_ui": JSON.stringify(story_state()),
+		"puzzle_ui": JSON.stringify(puzzle_state()),
 		"audio_state": JSON.stringify(audio_state()),
 		"battle_active": battle_active(),
 		"battle_id": _battle_id if battle_active() else "",
@@ -570,6 +652,10 @@ func accessibility_state() -> Dictionary:
 func _on_player_step_finished(cell: Vector2i) -> void:
 	_audio_service.play("step")
 	steps = mini(steps + 1, SaveCodec.MAX_INTEGER)
+	if map_data["id"] == "lv.bakery" and flags.get("q.dough_started",false) and map_data["exits"].any(func(door: Dictionary) -> bool: return Vector2i(int(door["x"]),int(door["y"])) == cell):
+		var finished_visit: Dictionary = flags.duplicate(true)
+		finished_visit["q.dough_started"] = false
+		apply_story_flags(finished_visit)
 	var result: Dictionary = world_data.transition(String(map_data["id"]), cell, flags)
 	if bool(result.get("ok", false)):
 		# transition has already validated all layouts and exits for these flags.
@@ -578,6 +664,8 @@ func _on_player_step_finished(cell: Vector2i) -> void:
 	_refresh_ground_shadow()
 	_refresh_interaction_hint()
 	_publish_accessibility_state()
+	if _prologue != null:
+		_prologue.explore_changed()
 
 func _refresh_ground_shadow() -> void:
 	var cell: Vector2i = player.grid_position
@@ -746,16 +834,80 @@ func _camera_axis(focus: float, map_pixels: int, viewport_pixels: int) -> int:
 func battle_active() -> bool:
 	return is_instance_valid(_battle)
 
+func puzzle_active() -> bool:
+	return is_instance_valid(_dough)
+func puzzle_state() -> Dictionary:
+	return _dough.snapshot() if puzzle_active() else {"active":false}
+func start_dough() -> bool:
+	if not _can_persistence_action() or menu_active() or map_data["id"] != "lv.bakery" or not catalog.has_table("puzzle.dough"):
+		return false
+	var definition: Dictionary = catalog.table_data("puzzle.dough")
+	var ready: Dictionary = snapshot_state()
+	ready["flags"]["q.dough_started"] = true
+	if not apply_story_checkpoint(ready):
+		return false
+	var view: DoughView = DoughView.new()
+	view.name = "DoughView"
+	add_child(view)
+	if not view.setup(self,catalog,definition,_strings):
+		view.queue_free()
+		return false
+	_dough_before = snapshot_state()
+	_dough = view
+	view.close_requested.connect(_close_dough)
+	view.sound_requested.connect(_audio_service.play)
+	view.mute_requested.connect(func() -> void: _audio_service.set_muted(not _audio_service.is_muted()))
+	view.changed.connect(_publish_accessibility_state)
+	$HUD.hide()
+	_publish_accessibility_state()
+	return true
+func _close_dough(exit_room: bool = false) -> void:
+	if not puzzle_active():
+		return
+	var view: DoughView = _dough
+	var completed: bool = view.completed_once
+	var state: Dictionary = _dough_before.duplicate(true)
+	var local: Dictionary = view.snapshot()["state"]
+	var rewarded: bool = completed and not state["flags"].get("q.dough_rewarded",false)
+	state["steps"] = mini(SaveCodec.MAX_INTEGER,int(state["steps"])+view.moves)
+	if completed:
+		state["flags"]["q.dough_done"] = true
+		if rewarded:
+			state["flags"]["q.dough_rewarded"] = true
+			for item: String in local["display"].get("reward",{}):
+				state["inventory"][item] = mini(999,int(state["inventory"].get(item,0))+int(local["display"]["reward"][item]))
+	if exit_room:
+		state["flags"]["q.dough_started"] = false
+		var transition: Dictionary = world_data.transition("lv.bakery",Vector2i(int(local["player"]["x"]),int(local["player"]["y"])),state["flags"])
+		if transition["ok"]:
+			state["mapId"] = transition["map_id"]
+			state["player"]["x"] = transition["position"].x
+			state["player"]["y"] = transition["position"].y
+	_dough = null
+	_dough_before = {}
+	remove_child(view)
+	view.queue_free()
+	apply_story_checkpoint(state)
+	persistence.autosave()
+	$HUD.show()
+	dough_closed.emit(completed,rewarded)
+	_publish_accessibility_state()
+
 func audio_state() -> Dictionary:
 	return _audio_service.snapshot() if is_instance_valid(_audio_service) else {}
 
-func start_battle(id: String) -> bool:
+func start_battle(id: String, inventory_override: Variant = null, story_mode: bool = false) -> bool:
 	if not _can_persistence_action() or menu_active() or _save_controller.is_busy():
 		return false
 	var prepared: Dictionary = _battle_book.prepare(id, flags)
 	if not prepared["ok"]:
 		controls_label.text = String(_strings["battle.error.setup"])
 		return false
+	if inventory_override != null:
+		if not inventory_override is Dictionary:
+			return false
+		prepared["definition"]["inventory"] = inventory_override.duplicate(true)
+	prepared["story_mode"] = story_mode
 	var previous: Dictionary = snapshot_state()
 	var arena: Dictionary = prepared["arena"]
 	_restoring_state = true
@@ -774,6 +926,8 @@ func start_battle(id: String) -> bool:
 			node.material = dim
 	var view: BattleView = BattleScene.instantiate() as BattleView
 	view.muted = _audio_service.is_muted()
+	if _prologue != null:
+		view.reduced_motion = _prologue.reduced_motion
 	if not view.setup(catalog, prepared, _strings, actors):
 		view.free()
 		_restore_battle_materials()
@@ -782,6 +936,7 @@ func start_battle(id: String) -> bool:
 	_battle_before = previous
 	_battle_id = id
 	_battle = view
+	_battle_story = story_mode
 	view.name = "BattleView"
 	view.changed.connect(_publish_accessibility_state)
 	view.close_requested.connect(close_battle)
@@ -790,6 +945,8 @@ func start_battle(id: String) -> bool:
 	view.muted_changed.connect(_audio_service.set_muted)
 	view.restarted.connect(_restart_battle_sound)
 	view.outcome_presented.connect(_on_battle_outcome_sound)
+	if _prologue != null:
+		view.reduced_changed.connect(_prologue.set_reduced)
 	add_child(view)
 	_battle_music = prepared["presentation"]["music"]
 	_restart_battle_sound()
@@ -809,8 +966,11 @@ func close_battle() -> void:
 	var id: String = _battle_id
 	var phase: String = _battle.ui_state()["snapshot"]["battle"]["phase"]
 	var view: BattleView = _battle
+	var session: RefCounted = view.session_handle()
+	var story: bool = _battle_story
 	_audio_service.stop_effects()
-	_audio_service.music("test_theme")
+	if not story:
+		_audio_service.music("test_theme")
 	_battle = null
 	remove_child(view)
 	view.queue_free()
@@ -819,10 +979,15 @@ func close_battle() -> void:
 	var saved: Dictionary = _battle_before
 	_battle_before = {}
 	_battle_id = ""
+	_battle_story = false
 	if not _restore_persistent_state(saved):
 		push_error("Battle preview could not restore its validated exploration snapshot")
 	_publish_accessibility_state()
 	battle_finished.emit(id, phase)
+	battle_closed.emit(id,session,saved.duplicate(true),story)
+
+func battle_session() -> RefCounted:
+	return _battle.session_handle() if battle_active() else null
 
 func _restart_battle_sound() -> void:
 	_audio_service.stop_effects()
@@ -833,16 +998,26 @@ func _on_battle_outcome_sound(_phase: String) -> void:
 	_audio_service.music("")
 
 func _start_battle_preview() -> void:
-	var requested: String = ""
-	for argument: String in OS.get_cmdline_user_args():
-		if argument.begins_with("--battle="):
-			requested = argument.trim_prefix("--battle=")
-	if OS.has_feature("web") and Engine.has_singleton("JavaScriptBridge"):
-		var value: Variant = Engine.get_singleton("JavaScriptBridge").call("eval", "new URLSearchParams(window.location.search).get('battle') || ''", true)
-		if value is String:
-			requested = value
+	var requested: String = _runtime_options()["battle"]
 	if requested in ["prologue_ella", "prologue_shade"]:
 		start_battle(requested)
+
+func _runtime_options() -> Dictionary:
+	var result: Dictionary = {"battle":"","explore":false}
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--battle="):
+			result["battle"] = argument.trim_prefix("--battle=")
+		elif argument == "--explore":
+			result["explore"] = true
+	if OS.has_feature("web") and Engine.has_singleton("JavaScriptBridge"):
+		var value: Variant = Engine.get_singleton("JavaScriptBridge").call("eval", "JSON.stringify({battle:new URLSearchParams(location.search).get('battle')||'',explore:new URLSearchParams(location.search).get('explore')==='1'})", true)
+		if value is String:
+			var parsed: Variant = JSON.parse_string(value)
+			if parsed is Dictionary:
+				result.merge(parsed,true)
+	if not result["battle"] in ["prologue_ella","prologue_shade"]:
+		result["battle"] = ""
+	return result
 
 func _restore_battle_materials() -> void:
 	for node: Variant in _battle_materials:

@@ -3,7 +3,7 @@ import {mkdir,readFile,writeFile,rename,lstat,unlink} from 'node:fs/promises';
 import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {tmpdir} from 'node:os';
-import {cues,cueKinds,renderCue} from '../../resources/audio/synth.ts';
+import {cues,cueKinds,cueSampleRates,renderCue} from '../../resources/audio/synth.ts';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
 const SAMPLE_RATE=44100,MAX_BYTES=2_000_000;
 const sha=(bytes:Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
@@ -39,11 +39,11 @@ export async function buildAudioPack({outDir=join(root,'resources/audio/export')
     await rejectSymlink(cursor);if(cursor===dirname(cursor))break;
   }
   const prepared=cues.map(id=>{
-    const bytes=encodeWav(renderCue(id,SAMPLE_RATE),SAMPLE_RATE);
-    return {file:id+'.wav',bytes,entry:{id,file:id+'.wav',kind:cueKinds[id],sampleRate:SAMPLE_RATE,frames:(bytes.length-44)/2,bytes:bytes.length,sha256:sha(bytes),...metrics(bytes,cueKinds[id]==='music')}};
+    const rate=cueSampleRates[id],bytes=encodeWav(renderCue(id,rate),rate);
+    return {file:id+'.wav',bytes,entry:{id,file:id+'.wav',kind:cueKinds[id],sampleRate:rate,frames:(bytes.length-44)/2,bytes:bytes.length,sha256:sha(bytes),...metrics(bytes,cueKinds[id]==='music')}};
   });
   const source=await readFile(join(root,'resources/audio/synth.ts'));
-  const manifest={format:'astra.audio/1',sampleFormat:'pcm16',sampleRate:SAMPLE_RATE,source_sha256:sha(source),cues:prepared.map(item=>item.entry)};
+  const manifest={format:'astra.audio/2',sampleFormat:'pcm16',defaultSampleRate:SAMPLE_RATE,source_sha256:sha(source),cues:prepared.map(item=>item.entry)};
   const files=[...prepared.map(item=>({file:item.file,bytes:item.bytes})),{file:'manifest.json',bytes:Buffer.from(JSON.stringify(manifest,null,2)+'\n')}];
   for(const item of files)await rejectSymlink(join(output,item.file));
   const mismatches:string[]=[];

@@ -102,7 +102,7 @@ func content_fits() -> bool:
 		return false
 	if _body_label.get_line_count() > MAX_BODY_LINES or _speaker_label.get_line_count() > 1 or _hint_label.get_line_count() > 1:
 		return false
-	var body_bounds: Rect2 = Rect2(Vector2.ZERO, Vector2(388, 44))
+	var body_bounds: Rect2 = Rect2(Vector2.ZERO, Vector2(_body_label.size.x, 44))
 	for index: int in range(_text.length()):
 		var character: Rect2 = _body_label.get_character_bounds(index)
 		if character.has_area() and not body_bounds.encloses(character):
@@ -123,6 +123,11 @@ func _apply_line() -> void:
 	_body_label.visible_characters = _visible_count
 	_portrait_view.texture = _portrait
 	_portrait_view.visible = _portrait != null
+	var left: float = 68.0 if _portrait != null else 16.0
+	_speaker_label.position.x = left
+	_speaker_label.size.x = 456.0 - left
+	_body_label.position.x = left
+	_body_label.size.x = 456.0 - left
 
 func _set_visible_count(count: int) -> void:
 	var next: int = clampi(count, 0, _text.length())

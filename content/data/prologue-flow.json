@@ -448,7 +448,7 @@
       "trigger": {
         "kind": "interact",
         "mapId": "lv.town",
-        "anchor": "ella_fall",
+        "anchor": "ella_follow",
         "radius": 1
       },
       "require": {
@@ -460,6 +460,10 @@
       "done": "p.s07_done",
       "set": {
         "p.ella_starplucked": true
+      },
+      "relocate": {
+        "mapId": "lv.town",
+        "anchor": "starpluck_player"
       },
       "presentation": {
         "kind": "dialogue",
@@ -918,9 +922,21 @@
       "require": {
         "flags": {
           "p.main_started": true,
-          "p.s01_done": true,
+          "p.rod_taken": true,
           "p.s02_started": false,
           "p.s11_done": false
+        }
+      },
+      "text": "prologue.ui.objective.borrow_lamp"
+    },
+    {
+      "require": {
+        "flags": {
+          "p.main_started": true,
+          "p.s01_done": true,
+          "p.s02_started": false,
+          "p.s11_done": false,
+          "p.rod_taken": false
         }
       },
       "text": "prologue.ui.objective.wake"
